@@ -1,0 +1,8 @@
+query getQuestions {
+	questions {
+		id
+		text
+		answer
+		category
+	}
+}

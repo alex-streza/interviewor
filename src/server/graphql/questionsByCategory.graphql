@@ -1,0 +1,8 @@
+query getQuestionsByCategory($category: String!) {
+	questionsByCategory(category: $category) {
+		id
+		text
+		answer
+		category
+	}
+}

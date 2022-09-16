@@ -1,0 +1,161 @@
+@font-face {
+	font-family: "Argentum Sans";
+	src: url("/assets/fonts/ArgentumSans-Regular.woff2") format("woff2"),
+		url("/assets/fonts/ArgentumSans-Regular.woff") format("woff");
+	font-weight: normal;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Argentum Sans";
+	src: url("/assets/fonts/ArgentumSans-SemiBold.woff2") format("woff2"),
+		url("/assets/fonts/ArgentumSans-SemiBold.woff") format("woff");
+	font-weight: 600;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Argentum Sans";
+	src: url("/assets/fonts/ArgentumSans-ExtraBold.woff2") format("woff2"),
+		url("/assets/fonts/ArgentumSans-ExtraBold.woff") format("woff");
+	font-weight: bold;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Argentum Sans";
+	src: url("/assets/fonts/ArgentumSans-Italic.woff2") format("woff2"),
+		url("/assets/fonts/ArgentumSans-Italic.woff") format("woff");
+	font-weight: normal;
+	font-style: italic;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Argentum Sans";
+	src: url("/assets/fonts/ArgentumSans-ExtraLight.woff2") format("woff2"),
+		url("/assets/fonts/ArgentumSans-ExtraLight.woff") format("woff");
+	font-weight: 200;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Argentum Sans";
+	src: url("/assets/fonts/ArgentumSans-LightItalic.woff2") format("woff2"),
+		url("/assets/fonts/ArgentumSans-LightItalic.woff") format("woff");
+	font-weight: 300;
+	font-style: italic;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Argentum Sans";
+	src: url("/assets/fonts/ArgentumSans-Bold.woff2") format("woff2"),
+		url("/assets/fonts/ArgentumSans-Bold.woff") format("woff");
+	font-weight: bold;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Argentum Sans";
+	src: url("/assets/fonts/ArgentumSans-ExtraBoldItalic.woff2") format("woff2"),
+		url("/assets/fonts/ArgentumSans-ExtraBoldItalic.woff") format("woff");
+	font-weight: bold;
+	font-style: italic;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Argentum Sans";
+	src: url("/assets/fonts/ArgentumSans-ExtraLightItalic.woff2") format("woff2"),
+		url("/assets/fonts/ArgentumSans-ExtraLightItalic.woff") format("woff");
+	font-weight: 200;
+	font-style: italic;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Argentum Sans";
+	src: url("/assets/fonts/ArgentumSans-Medium.woff2") format("woff2"),
+		url("/assets/fonts/ArgentumSans-Medium.woff") format("woff");
+	font-weight: 500;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Argentum Sans";
+	src: url("/assets/fonts/ArgentumSans-MediumItalic.woff2") format("woff2"),
+		url("/assets/fonts/ArgentumSans-MediumItalic.woff") format("woff");
+	font-weight: 500;
+	font-style: italic;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Argentum Sans";
+	src: url("/assets/fonts/ArgentumSans-ThinItalic.woff2") format("woff2"),
+		url("/assets/fonts/ArgentumSans-ThinItalic.woff") format("woff");
+	font-weight: 100;
+	font-style: italic;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Argentum Sans";
+	src: url("/assets/fonts/ArgentumSans-SemiBoldItalic.woff2") format("woff2"),
+		url("/assets/fonts/ArgentumSans-SemiBoldItalic.woff") format("woff");
+	font-weight: 600;
+	font-style: italic;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Argentum Sans";
+	src: url("/assets/fonts/ArgentumSans-Light.woff2") format("woff2"),
+		url("/assets/fonts/ArgentumSans-Light.woff") format("woff");
+	font-weight: 300;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Argentum Sans";
+	src: url("/assets/fonts/ArgentumSans-Thin.woff2") format("woff2"),
+		url("/assets/fonts/ArgentumSans-Thin.woff") format("woff");
+	font-weight: 100;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Argentum Sans";
+	src: url("/assets/fonts/ArgentumSans-Black.woff2") format("woff2"),
+		url("/assets/fonts/ArgentumSans-Black.woff") format("woff");
+	font-weight: 900;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Argentum Sans";
+	src: url("/assets/fonts/ArgentumSans-BoldItalic.woff2") format("woff2"),
+		url("/assets/fonts/ArgentumSans-BoldItalic.woff") format("woff");
+	font-weight: bold;
+	font-style: italic;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Argentum Sans";
+	src: url("/assets/fonts/ArgentumSans-BlackItalic.woff2") format("woff2"),
+		url("/assets/fonts/ArgentumSans-BlackItalic.woff") format("woff");
+	font-weight: 900;
+	font-style: italic;
+	font-display: swap;
+}
