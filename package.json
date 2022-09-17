@@ -9,7 +9,7 @@
     "lint": "next lint",
     "generate": "npm -s run generate:prisma && npm -s run generate:types",
     "generate:prisma": "prisma generate",
-    "generate:types": "graphql-codegen",
+    "generate:types": "graphql-codegen --config codegen.ts",
     "migrate:dev": "prisma migrate dev --name init",
     "seed": "ts-node ./src/server/prisma/seed.ts",
     "scrape": "ts-node ./scraper/index.ts"

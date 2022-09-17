@@ -39,14 +39,14 @@ export type Question = {
 export type GetQuestionsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetQuestionsQuery = { __typename?: 'Query', questions: Array<{ __typename?: 'Question', id: string, text: string, answer: string, difficulty: string, category: string }> };
+export type GetQuestionsQuery = { __typename?: 'Query', questions: Array<{ __typename?: 'Question', id: string, text: string, answer: string, category: string }> };
 
 export type GetQuestionsByCategoryQueryVariables = Exact<{
   category: Scalars['String'];
 }>;
 
 
-export type GetQuestionsByCategoryQuery = { __typename?: 'Query', questionsByCategory: Array<{ __typename?: 'Question', id: string, text: string, answer: string, category: string, difficulty: string }> };
+export type GetQuestionsByCategoryQuery = { __typename?: 'Query', questionsByCategory: Array<{ __typename?: 'Question', id: string, text: string, answer: string, category: string }> };
 
 
 export const GetQuestionsDocument = gql`
@@ -55,7 +55,6 @@ export const GetQuestionsDocument = gql`
     id
     text
     answer
-    difficulty
     category
   }
 }
@@ -67,7 +66,6 @@ export const GetQuestionsByCategoryDocument = gql`
     text
     answer
     category
-    difficulty
   }
 }
     `;
