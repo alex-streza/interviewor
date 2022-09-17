@@ -1,5 +1,8 @@
+import Cards from "@components/cards/Cards";
+import QuestionCard from "@components/cards/QuestionCard";
 import LiveBlocks from "@components/logo/LiveBlocks";
 import { Button, Container, Stack, createStyles, Text, Title } from "@mantine/core";
+import { Question } from "@prisma/client";
 
 const useStyles = createStyles((theme) => ({
 	container: {
@@ -67,7 +70,11 @@ const useStyles = createStyles((theme) => ({
 	},
 }));
 
-const Hero = () => {
+interface HeroProps {
+	questions: Question[];
+}
+
+const Hero = ({ questions }: HeroProps) => {
 	const { classes } = useStyles();
 
 	return (
@@ -89,6 +96,7 @@ const Hero = () => {
 							No account required
 						</Text>
 					</Stack>
+					<Cards questions={questions} autoPlay />
 					<LiveBlocks />
 				</Stack>
 			</Container>

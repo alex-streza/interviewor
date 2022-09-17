@@ -39,6 +39,9 @@ export const ScrollableLink = ({ label, name, onClick }: ScrollableLinkProps) =>
 	return (
 		<Link href={`#${name}`} passHref>
 			<NavLink
+				style={{
+					textAlign: "center",
+				}}
 				label={label}
 				onClick={() => {
 					if (onClick) {
@@ -70,7 +73,9 @@ const NavigationItems = ({ onClick }: { onClick: () => void }) => (
 		{links.map((link, index) => (
 			<ScrollableLink key={index} label={link.label} name={link.name} onClick={onClick} />
 		))}
-		<Button size="sm">Get started</Button>
+		<Button size="md" mt="sm">
+			Get started
+		</Button>
 	</>
 );
 
