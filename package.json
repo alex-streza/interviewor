@@ -30,6 +30,7 @@
     "@tanstack/react-query": "^4.3.4",
     "apollo-server-micro": "^3.10.2",
     "class-validator": "^0.13.2",
+    "color2k": "^2.0.0",
     "embla-carousel-autoplay": "^7.0.3",
     "embla-carousel-react": "^7.0.3",
     "framer-motion": "^7.3.5",

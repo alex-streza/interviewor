@@ -1,4 +1,5 @@
 import { Button, Container, createStyles, Stack, Text, Title } from "@mantine/core";
+import Link from "next/link";
 
 const useStyles = createStyles((theme) => ({
 	container: {
@@ -67,7 +68,9 @@ const GetStarted = () => {
 					explaining concepts know.
 				</Text>
 				<Stack mt="sm" align="center" spacing="xxs">
-					<Button size="lg">Get started</Button>
+					<Link href="/interview" passHref>
+						<Button size="lg">Get started</Button>
+					</Link>
 					<Text align="center" color="blue" size="sm">
 						No account required
 					</Text>

@@ -1,4 +1,5 @@
 import { Box, Button, Collapse, createStyles, Title } from "@mantine/core";
+import { darken } from "color2k";
 import { useState } from "react";
 
 interface QuestionCardProps {
@@ -10,14 +11,14 @@ interface QuestionCardProps {
 
 const useStyles = createStyles((theme, { index }: { index: number }) => ({
 	container: {
-		backgroundColor: theme.colors.white[0],
+		backgroundColor: darken("#F5FEFF", index * 0.05),
 		borderRadius: "12px",
 		padding: "20px",
 		scale: 100 - 10 * index + "%",
 		zIndex: 3 - index,
-		marginTop: index > 0 ? "-60px" : "0px",
-		opacity: index === 0 ? 1 : 1 - 0.2 * index,
+		marginTop: index > 0 ? (index == 1 ? -80 : -60) : 0,
 		width: "100%",
+		border: `1px solid ${theme.colors.blue[5]}`,
 		boxShadow: `4px 4px 12px 0px hsla(189, 75%, 75%, 0.25)`,
 	},
 	title: {

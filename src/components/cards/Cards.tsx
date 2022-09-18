@@ -1,4 +1,5 @@
 import { Button, createStyles, Group, Stack } from "@mantine/core";
+import { ArrowLeftIcon, ArrowRightIcon } from "@primer/octicons-react";
 import { Question } from "@prisma/client";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
@@ -70,6 +71,7 @@ const Cards = ({ questions: initialQuestions, autoPlay, hasNavigation }: CardsPr
 							setQuestions([...rest, first] as any[]);
 							setPaused(false);
 						}}>
+						<ArrowLeftIcon />
 						Previous
 					</Button>
 					<Button
@@ -79,6 +81,7 @@ const Cards = ({ questions: initialQuestions, autoPlay, hasNavigation }: CardsPr
 							setPaused(false);
 						}}>
 						Next
+						<ArrowRightIcon />
 					</Button>
 				</Group>
 			)}

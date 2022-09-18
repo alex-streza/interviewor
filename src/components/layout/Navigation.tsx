@@ -15,7 +15,7 @@ import {
 import Link from "next/link";
 import { useState } from "react";
 
-const useStyles = createStyles((theme) => ({
+const useStyles = createStyles((theme, { centered }: { centered?: boolean }) => ({
 	container: {
 		display: "flex",
 		alignItems: "center",
@@ -27,21 +27,35 @@ const useStyles = createStyles((theme) => ({
 		top: "70px",
 		backgroundColor: theme.colors.blue[0],
 	},
+	link: {
+		background: "none",
+		fontWeight: 700,
+		alignItems: centered ? "center" : "right",
+		textAlign: centered ? "center" : "right",
+
+		"&:hover": {
+			background: "none",
+			color: theme.colors.blue[6],
+		},
+	},
 }));
 
 interface ScrollableLinkProps {
 	label: string;
 	name: string;
+	centered?: boolean;
 	onClick?: () => void;
 }
 
-export const ScrollableLink = ({ label, name, onClick }: ScrollableLinkProps) => {
+export const ScrollableLink = ({ label, name, centered, onClick }: ScrollableLinkProps) => {
+	const { classes } = useStyles({
+		centered,
+	});
+
 	return (
-		<Link href={`#${name}`} passHref>
+		<Link href={`/#${name}`} passHref>
 			<NavLink
-				style={{
-					textAlign: "center",
-				}}
+				className={classes.link}
 				label={label}
 				onClick={() => {
 					if (onClick) {
@@ -68,26 +82,32 @@ const links = [
 	},
 ];
 
-const NavigationItems = ({ onClick }: { onClick: () => void }) => (
+const NavigationItems = ({ onClick, centered }: { onClick: () => void; centered?: boolean }) => (
 	<>
 		{links.map((link, index) => (
-			<ScrollableLink key={index} label={link.label} name={link.name} onClick={onClick} />
+			<ScrollableLink key={index} label={link.label} name={link.name} onClick={onClick} centered={centered} />
 		))}
-		<Button size="md" mt="sm">
-			Get started
-		</Button>
+		<Link href="/">
+			<Button size="md" mt="sm">
+				Get started
+			</Button>
+		</Link>
 	</>
 );
 
 const Navigation = () => {
 	const theme = useMantineTheme();
-	const { classes } = useStyles();
+	const { classes } = useStyles({});
 
 	const [opened, setOpened] = useState(false);
 
 	return (
 		<Header height={70} className={classes.container}>
-			<Logo />
+			<Link href="/">
+				<a>
+					<Logo />
+				</a>
+			</Link>
 			<MediaQuery smallerThan="sm" styles={{ display: "none" }}>
 				<Group>
 					<NavigationItems onClick={() => setOpened(false)} />
@@ -106,7 +126,7 @@ const Navigation = () => {
 						size="full">
 						<Center>
 							<Stack align="center" spacing="sm">
-								<NavigationItems onClick={() => setOpened(false)} />
+								<NavigationItems onClick={() => setOpened(false)} centered />
 							</Stack>
 						</Center>
 					</Drawer>

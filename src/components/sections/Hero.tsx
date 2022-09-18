@@ -3,6 +3,7 @@ import QuestionCard from "@components/cards/QuestionCard";
 import LiveBlocks from "@components/logo/LiveBlocks";
 import { Button, Container, Stack, createStyles, Text, Title } from "@mantine/core";
 import { Question } from "@prisma/client";
+import Link from "next/link";
 
 const useStyles = createStyles((theme) => ({
 	container: {
@@ -89,9 +90,11 @@ const Hero = ({ questions }: HeroProps) => {
 				</Text>
 				<Stack align="center" mt="sm" spacing="sm">
 					<Stack align="center" spacing="xxs">
-						<Button size="lg" className={classes.button}>
-							Get started
-						</Button>
+						<Link href="/interview" passHref>
+							<Button size="lg" className={classes.button}>
+								Get started
+							</Button>
+						</Link>
 						<Text align="center" color="blue" size="sm">
 							No account required
 						</Text>
