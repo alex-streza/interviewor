@@ -15,14 +15,14 @@ export default class _Document extends Document {
 				<Head>
 					<link
 						rel="preload"
-						href="/assets/fonts/ArgentumSans-Black.woff2"
+						href="/assets/fonts/onest/Onest-Black.woff2"
 						as="font"
 						type="font/woff2"
 						crossOrigin="anonymous"
 					/>
 					<link
 						rel="preload"
-						href="/assets/fonts/ArgentumSans-Medium.woff2"
+						href="/assets/fonts/onest/Onest-Medium.woff2"
 						as="font"
 						type="font/woff2"
 						crossOrigin="anonymous"

@@ -61,8 +61,10 @@ const GetStarted = () => {
 					Train for your next interview now
 				</Title>
 				<Text align="center" mt="xs" px="xs">
-					Train on over 1000 React, Node.JS, Javascript, CSS, HTML theory-based questions and answers. Share link with
-					your interviewer and start explaining concepts know.
+					{/* Train on over 1000 React, Node.JS, Javascript, CSS, HTML theory-based questions and answers. Share link with
+					your interviewer and start explaining concepts know. */}
+					Train on over 200 React theory-based questions and answers. Share link with your interviewer and start
+					explaining concepts know.
 				</Text>
 				<Stack mt="sm" align="center" spacing="xxs">
 					<Button size="lg">Get started</Button>

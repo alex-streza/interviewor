@@ -16,7 +16,7 @@ const MyApp: AppType = ({ Component, pageProps: { session, ...pageProps } }) => 
 						withGlobalStyles
 						withNormalizeCSS
 						theme={{
-							fontFamily: "Argentum Sans, sans-serif",
+							fontFamily: "Onest, sans-serif !important",
 							headings: {
 								sizes: {
 									h1: {

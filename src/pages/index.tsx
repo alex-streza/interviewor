@@ -89,9 +89,10 @@ const Home = () => {
 			</Section>
 			<Section
 				id="feature2"
-				title="Over 1000 questions"
+				// title="Over 1000 questions"
+				title="Over 200 questions"
 				subtitle="Never run out of questions"
-				description="Train on over 1000 React, Node.JS, Javascript, CSS, HTML questions and answers.">
+				description="Train on over 200 React questions and answers.">
 				<Group my="xs">
 					{categories.map((category) => (
 						<CategoryCard
@@ -138,29 +139,38 @@ const Home = () => {
 					loop>
 					<Carousel.Slide>
 						<TestimonialCard
-							name="John Doe"
+							name="Betty Blue"
 							avatar="https://avatars.githubusercontent.com/u/1443320?v=4"
 							tweet_url="https://twitter.com/JohnDoe/status/1361234567890"
-							username="johndoe"
+							username="@betty_xyz"
+							tweet="Interviewor is such a great idea! It makes theory based interviews so easy it’s unbelievable."
+						/>
+					</Carousel.Slide>
+					<Carousel.Slide>
+						<TestimonialCard
+							name="Jim Halpert"
+							avatar="https://avatars.githubusercontent.com/u/1143320?v=5"
+							tweet_url="https://twitter.com/JohnDoe/status/1361234567890"
+							username="@jim_office"
 							tweet="This is amazing! I was able to get a job at Google with the help of this app. Thank you so much!"
 						/>
 					</Carousel.Slide>
 					<Carousel.Slide>
 						<TestimonialCard
-							name="John Doe"
-							avatar="https://avatars.githubusercontent.com/u/1443320?v=4"
+							name="Jon Snow"
+							avatar="https://avatars.githubusercontent.com/u/1243320?v=4"
 							tweet_url="https://twitter.com/JohnDoe/status/1361234567890"
-							username="johndoe"
-							tweet="This is amazing! I was able to get a job at Google with the help of this app. Thank you so much!"
+							username="@jon_got"
+							tweet="Losing the love of my life to unbridled and ilogical madness spree led me to tech. Interviewor stood by my side when I needed a job."
 						/>
 					</Carousel.Slide>
 					<Carousel.Slide>
 						<TestimonialCard
-							name="John Doe"
-							avatar="https://avatars.githubusercontent.com/u/1443320?v=4"
+							name="Saul Goodman"
+							avatar="https://avatars.githubusercontent.com/u/143320?v=4"
 							tweet_url="https://twitter.com/JohnDoe/status/1361234567890"
-							username="johndoe"
-							tweet="This is amazing! I was able to get a job at Google with the help of this app. Thank you so much!"
+							username="@real_goodman"
+							tweet="@interviewor being completely free is simply marvelous. Love what you’re building @alex_streza."
 						/>
 					</Carousel.Slide>
 				</Carousel>

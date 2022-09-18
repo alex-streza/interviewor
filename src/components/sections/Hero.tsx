@@ -84,8 +84,8 @@ const Hero = ({ questions }: HeroProps) => {
 					Imagine your perfect tech interview
 				</Title>
 				<Text align="center" mt="xs" px="xs">
-					Train on over 1000 React, Node.JS, Javascript, CSS, HTML theory-based questions and answers. Share link with
-					your interviewer and start explaining concepts you expect in a collaborative environment.
+					Train & collaborate on over 200 React theory-based questions and answers.
+					{/* Train & collaborate on over 1000 React, Node.JS, Javascript, CSS, HTML theory-based questions and answers. */}
 				</Text>
 				<Stack align="center" mt="sm" spacing="sm">
 					<Stack align="center" spacing="xxs">

@@ -24,6 +24,10 @@ const useStyles = createStyles((theme, { index }: { index: number }) => ({
 		fontSize: 18,
 		marginBottom: 12,
 	},
+	answer: {
+		width: "260px",
+		overflowX: "auto",
+	},
 	button: {
 		padding: "0px",
 		marginTop: 12,
@@ -41,7 +45,7 @@ const QuestionCard = ({ title, answer, index, onPause }: QuestionCardProps) => {
 				{title}
 			</Title>
 			<Collapse in={shown}>
-				<div dangerouslySetInnerHTML={{ __html: answer }} />
+				<div className={classes.answer} dangerouslySetInnerHTML={{ __html: answer }} />
 			</Collapse>
 			{index === 0 && (
 				<Button

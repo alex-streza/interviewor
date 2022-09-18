@@ -10,19 +10,20 @@ interface CardsProps {
 	hasNavigation?: boolean;
 }
 
-const useStyles = createStyles(() => ({
+const useStyles = createStyles((theme, { hasNavigation, paused }: { paused?: boolean; hasNavigation?: boolean }) => ({
 	container: {
 		marginInline: "20px",
+		height: paused ? "100%" : hasNavigation ? "320px" : "200px",
 	},
 }));
 
 const MotionGroup = motion(Group);
 
 const Cards = ({ questions: initialQuestions, autoPlay, hasNavigation }: CardsProps) => {
-	const { classes } = useStyles();
-
 	const [questions, setQuestions] = useState<Question[]>(initialQuestions);
 	const [paused, setPaused] = useState(false);
+
+	const { classes } = useStyles({ hasNavigation, paused });
 
 	useEffect(() => {
 		setQuestions(initialQuestions);
@@ -41,9 +42,8 @@ const Cards = ({ questions: initialQuestions, autoPlay, hasNavigation }: CardsPr
 	}, [autoPlay, initialQuestions, paused]);
 
 	return (
-		<Stack>
+		<Stack className={classes.container}>
 			<MotionGroup
-				className={classes.container}
 				layout
 				transition={{
 					layout: { duration: 0.3 },
@@ -61,20 +61,22 @@ const Cards = ({ questions: initialQuestions, autoPlay, hasNavigation }: CardsPr
 							/>
 						))}
 			</MotionGroup>
-			{hasNavigation && (
-				<Group mx="auto">
+			{hasNavigation && questions.length > 0 && (
+				<Group mx="auto" mt="auto">
 					<Button
 						variant="light"
 						onClick={() => {
 							const [first, ...rest] = questions;
 							setQuestions([...rest, first] as any[]);
+							setPaused(false);
 						}}>
 						Previous
 					</Button>
 					<Button
 						onClick={() => {
-							const [last, ...rest] = questions.reverse();
-							setQuestions([last, ...rest] as any[]);
+							const last = questions.pop();
+							setQuestions([last, ...questions] as any[]);
+							setPaused(false);
 						}}>
 						Next
 					</Button>
