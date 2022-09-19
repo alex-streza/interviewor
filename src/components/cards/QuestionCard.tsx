@@ -1,12 +1,12 @@
 import { Box, Button, Collapse, createStyles, Title } from "@mantine/core";
 import { darken } from "color2k";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 interface QuestionCardProps {
-	title: string;
-	answer: string;
+	title?: string;
+	answer?: string;
 	index: number;
-	onPause: () => void;
+	onPause?: () => void;
 }
 
 const useStyles = createStyles((theme, { index }: { index: number }) => ({
@@ -16,9 +16,16 @@ const useStyles = createStyles((theme, { index }: { index: number }) => ({
 		padding: "20px",
 		scale: 100 - 10 * index + "%",
 		zIndex: 3 - index,
-		marginTop: index > 0 ? (index == 1 ? -80 : -60) : 0,
+		marginTop: index > 0 ? -140 : 0,
 		width: "100%",
+		minWidth: "300px",
+		maxWidth: "400px",
+		minHeight: "160px",
 		border: `1px solid ${theme.colors.blue[5]}`,
+		justifyContent: "space-between",
+		display: "flex",
+		alignItems: "left",
+		flexDirection: "column",
 		boxShadow: `4px 4px 12px 0px hsla(189, 75%, 75%, 0.25)`,
 	},
 	title: {
@@ -31,7 +38,7 @@ const useStyles = createStyles((theme, { index }: { index: number }) => ({
 	},
 	button: {
 		padding: "0px",
-		marginTop: 12,
+		width: "fit-content",
 	},
 }));
 
@@ -40,22 +47,21 @@ const QuestionCard = ({ title, answer, index, onPause }: QuestionCardProps) => {
 
 	const { classes } = useStyles({ index });
 
+	const handleShowAnswer = useCallback(() => {
+		setShown(!shown);
+		onPause && onPause();
+	}, [onPause, shown]);
+
 	return (
-		<Box className={classes.container}>
+		<Box className={classes.container} onClick={handleShowAnswer}>
 			<Title order={3} className={classes.title}>
 				{title}
 			</Title>
 			<Collapse in={shown}>
-				<div className={classes.answer} dangerouslySetInnerHTML={{ __html: answer }} />
+				<div className={classes.answer} dangerouslySetInnerHTML={{ __html: answer ?? "" }} />
 			</Collapse>
 			{index === 0 && (
-				<Button
-					variant="white"
-					className={classes.button}
-					onClick={() => {
-						setShown(!shown);
-						onPause();
-					}}>
+				<Button variant="white" className={classes.button} onClick={handleShowAnswer}>
 					{shown ? "Hide Answer" : "Show Answer"}
 				</Button>
 			)}

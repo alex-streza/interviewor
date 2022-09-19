@@ -31,7 +31,7 @@ const MyApp: AppType = ({ Component, pageProps: { session, ...pageProps } }) => 
 							},
 							colors: {
 								white: ["#FAFAFA"],
-								gray: ["#2F2F2F", "#131313"],
+								gray: ["#2F2F2F", "#131313", "#6B6B6B"],
 								blue: [
 									"#CAF0F8",
 									"#ADE8F4",

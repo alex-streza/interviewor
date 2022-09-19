@@ -11,10 +11,10 @@ interface CardsProps {
 	hasNavigation?: boolean;
 }
 
-const useStyles = createStyles((theme, { hasNavigation, paused }: { paused?: boolean; hasNavigation?: boolean }) => ({
+const useStyles = createStyles(() => ({
 	container: {
 		marginInline: "20px",
-		height: paused ? "100%" : hasNavigation ? "320px" : "200px",
+		height: "100%",
 	},
 }));
 
@@ -24,23 +24,23 @@ const Cards = ({ questions: initialQuestions, autoPlay, hasNavigation }: CardsPr
 	const [questions, setQuestions] = useState<Question[]>(initialQuestions);
 	const [paused, setPaused] = useState(false);
 
-	const { classes } = useStyles({ hasNavigation, paused });
+	const { classes } = useStyles();
 
 	useEffect(() => {
 		setQuestions(initialQuestions);
 	}, [initialQuestions]);
 
 	useEffect(() => {
-		if (autoPlay && !paused && initialQuestions.length > 0) {
+		if (autoPlay && !paused && questions.length > 0) {
 			const interval = setInterval(() => {
 				if (!paused) {
-					const [first, ...rest] = initialQuestions;
+					const [first, ...rest] = questions;
 					setQuestions([...rest, first] as any[]);
 				}
-			}, 5000);
+			}, 2500);
 			return () => clearInterval(interval);
 		}
-	}, [autoPlay, initialQuestions, paused]);
+	}, [autoPlay, questions, paused]);
 
 	return (
 		<Stack className={classes.container}>
@@ -49,18 +49,18 @@ const Cards = ({ questions: initialQuestions, autoPlay, hasNavigation }: CardsPr
 				transition={{
 					layout: { duration: 0.3 },
 				}}>
-				{questions.length > 0 &&
-					questions
-						.slice(0, 3)
-						.map((question, index) => (
-							<QuestionCard
-								key={question.id}
-								index={index}
-								title={question.text}
-								answer={question.answer}
-								onPause={() => setPaused(!paused)}
-							/>
-						))}
+				{questions.length > 0 && (
+					<>
+						<QuestionCard
+							index={0}
+							title={questions[0]?.text}
+							answer={questions[0]?.answer}
+							onPause={() => setPaused(!paused)}
+						/>
+						<QuestionCard index={1} title="" answer="" />
+						<QuestionCard index={2} title="" answer="" />
+					</>
+				)}
 			</MotionGroup>
 			{hasNavigation && questions.length > 0 && (
 				<Group mx="auto" mt="auto">

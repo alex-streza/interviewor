@@ -1,6 +1,6 @@
 import { Tuple, MantineNumberSize as MantineNumberSizeBase } from "@mantine/core";
 
-type CustomColors = "blue" | "white";
+type CustomColors = "blue" | "white" | "gray";
 type CustomSpacing = "xxs" | "auto" | "none" | MantineNumberSizeBase;
 
 declare module "@mantine/core" {

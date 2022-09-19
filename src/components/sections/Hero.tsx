@@ -1,7 +1,6 @@
 import Cards from "@components/cards/Cards";
-import QuestionCard from "@components/cards/QuestionCard";
 import LiveBlocks from "@components/logo/LiveBlocks";
-import { Button, Container, Stack, createStyles, Text, Title } from "@mantine/core";
+import { Button, Container, createStyles, Stack, Text, Title } from "@mantine/core";
 import { Question } from "@prisma/client";
 import Link from "next/link";
 

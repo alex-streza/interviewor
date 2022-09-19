@@ -2,8 +2,8 @@ import Cards from "@components/cards/Cards";
 import CategoryCard from "@components/cards/CategoryCard";
 import ReactIcon from "@components/icons/react.svg";
 import TypescriptIcon from "@components/icons/typescript.svg";
-import { Container, Group, Center, Button, createStyles, Grid, Text, Title, CopyButton } from "@mantine/core";
-import { ArrowRightIcon, CopyIcon, ShareAndroidIcon } from "@primer/octicons-react";
+import { Button, Popover, Center, Container, CopyButton, createStyles, Grid, Group, Text, Title } from "@mantine/core";
+import { ArrowLeftIcon, ArrowRightIcon, ShareAndroidIcon } from "@primer/octicons-react";
 import { dehydrate, useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -60,6 +60,14 @@ const useStyles = createStyles((theme) => ({
 		fontSize: 16,
 		borderColor: theme.colors.blue[4],
 		color: theme.colors.blue[4],
+
+		"&:disabled": {
+			backgroundColor: theme.colors.gray[2],
+		},
+	},
+	popover: {
+		padding: "8px",
+		width: "fit-content",
 	},
 }));
 
@@ -107,15 +115,22 @@ const Interview = () => {
 						onClick={() => {
 							setSelectedCategory(null);
 						}}>
+						<ArrowLeftIcon size={24} />
 						{selectedCategory.name}
-						{selectedCategory.icon}
 					</Button>
 					<CopyButton value={origin + router.asPath}>
-						{({ copied, copy }) => (
-							<Button size="lg" onClick={copy}>
-								{copied ? "Copied" : "Share"}
-								<CopyIcon size={24} />
-							</Button>
+						{({ copy }) => (
+							<Popover position="bottom" withArrow onOpen={copy}>
+								<Popover.Target>
+									<Button size="lg" onClick={copy}>
+										Share
+										<ShareAndroidIcon size={24} />
+									</Button>
+								</Popover.Target>
+								<Popover.Dropdown className={classes.popover}>
+									<Text size="sm">Copied</Text>
+								</Popover.Dropdown>
+							</Popover>
 						)}
 					</CopyButton>
 				</Group>
@@ -138,7 +153,6 @@ const Interview = () => {
 			{!selectedCategory && (
 				<Center>
 					<Button
-						variant={!tempSelectedCategory ? "white" : "primary"}
 						disabled={!tempSelectedCategory}
 						size="lg"
 						onClick={() => {

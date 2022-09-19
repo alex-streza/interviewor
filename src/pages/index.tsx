@@ -6,7 +6,7 @@ import TypescriptIcon from "@components/icons/typescript.svg";
 import GetStarted from "@components/sections/GetStarted";
 import Hero from "@components/sections/Hero";
 import Section from "@components/sections/Section";
-import { Button, Container, Group, useMantineTheme } from "@mantine/core";
+import { Button, Text, Container, Group, useMantineTheme } from "@mantine/core";
 import { BookIcon, CommandPaletteIcon, MarkGithubIcon, ShareAndroidIcon } from "@primer/octicons-react";
 import { dehydrate, useQuery } from "@tanstack/react-query";
 import { useRef, useState } from "react";
@@ -68,8 +68,9 @@ const Home = () => {
 					</>
 				}
 				subtitle="For interviewees & interviewers alike"
-				description="No need for multiple apps and years of video editing knowledge, content within clicks.">
-				<Carousel slideSize="248px" slideGap="sm" withControls={false} mt="sm">
+				description="No need for multiple apps and years of video editing knowledge, content within clicks."
+				fullWidth>
+				<Carousel slideSize="248px" slideGap="sm" withControls={false} mt="sm" px="xs" align="start">
 					<Carousel.Slide>
 						<FeatureCard title="Pick a topic & difficulty" icon={<BookIcon size={40} fill={theme.colors.blue[4]} />} />
 					</Carousel.Slide>
@@ -83,17 +84,18 @@ const Home = () => {
 						<FeatureCard
 							title="Share it with your interviewer"
 							icon={<ShareAndroidIcon size={40} fill={theme.colors.blue[4]} />}
+							hideSeparator
 						/>
 					</Carousel.Slide>
 				</Carousel>
 			</Section>
 			<Section
 				id="feature2"
-				// title="Over 1000 questions"
 				title="Over 200 questions"
 				subtitle="Never run out of questions"
 				description="Train on over 200 React questions and answers.">
-				<Group my="xs">
+				<Text mt="xxs">Pick category:</Text>
+				<Group mt="xs" mb="sm">
 					{categories.map((category) => (
 						<CategoryCard
 							key={category.name}
@@ -111,15 +113,15 @@ const Home = () => {
 				subtitle="Interviews are cool now"
 				description="Share link with your interviewer and start explaining concepts you know in realtime & collaboratively.">
 				<Group mt="xs">
-					<Button size="md">
+					<Button size="md" mb="xs">
 						<ShareAndroidIcon size={24} />
 						Share interview
 					</Button>
 					<Cards questions={questions} hasNavigation />
 				</Group>
 			</Section>
-			<Section id="testimonials" title="Testimonials" subtitle="Join the community">
-				<Group mb="sm">
+			<Section id="testimonials" title="Testimonials" subtitle="Join the community" fullWidth>
+				<Group mb="sm" px="xs">
 					<Button size="md" variant="light">
 						<MarkGithubIcon size={24} />
 						GitHub

@@ -16,7 +16,7 @@ const useStyles = createStyles((theme, { selected }: { selected: boolean }) => (
 		fontWeight: "bold",
 		backgroundColor: !selected ? theme.colors.white[0] : theme.colors.blue[0],
 		border: "2px solid",
-		borderColor: !selected ? theme.colors.white[0] : theme.colors.blue[4],
+		borderColor: !selected ? theme.colors.blue[2] : theme.colors.blue[4],
 		color: !selected ? theme.colors.gray[1] : theme.colors.blue[4],
 		borderRadius: "12px",
 		padding: "12px",

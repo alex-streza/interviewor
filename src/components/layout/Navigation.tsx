@@ -22,6 +22,7 @@ const useStyles = createStyles((theme, { centered }: { centered?: boolean }) => 
 		justifyContent: "space-between",
 		padding: "20px",
 		backgroundColor: theme.colors.blue[0],
+		border: "none",
 	},
 	drawer: {
 		top: "70px",
@@ -87,7 +88,7 @@ const NavigationItems = ({ onClick, centered }: { onClick: () => void; centered?
 		{links.map((link, index) => (
 			<ScrollableLink key={index} label={link.label} name={link.name} onClick={onClick} centered={centered} />
 		))}
-		<Link href="/">
+		<Link href="/interview">
 			<Button size="md" mt="sm">
 				Get started
 			</Button>
