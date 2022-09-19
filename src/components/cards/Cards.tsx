@@ -11,10 +11,15 @@ interface CardsProps {
 	hasNavigation?: boolean;
 }
 
-const useStyles = createStyles(() => ({
+const useStyles = createStyles((theme) => ({
 	container: {
 		marginInline: "20px",
 		height: "100%",
+		maxWidth: 400,
+
+		[`@media (min-width: ${theme.breakpoints.md}px)`]: {
+			marginInline: "auto",
+		},
 	},
 }));
 

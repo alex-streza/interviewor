@@ -31,7 +31,19 @@ const categories = [
 ];
 
 const useStyles = createStyles((theme) => ({
-	container: { paddingBlock: "40px" },
+	container: {
+		paddingBlock: "40px",
+
+		[`@media (min-width: ${theme.breakpoints.md}px)`]: {
+			paddingBlock: "100px",
+		},
+	},
+	innerContainer: {
+		maxWidth: "551px",
+		alignItems: "center",
+		justifyContent: "center",
+		flexDirection: "column",
+	},
 	shareContainer: {
 		display: "flex",
 		justifyContent: "center",
@@ -91,73 +103,75 @@ const Interview = () => {
 
 	return (
 		<Container m="none" px="xs" className={classes.container} fluid>
-			{!selectedCategory && (
-				<>
-					<Title order={1} className={classes.title} mb="xs">
-						Pick topic
-					</Title>
-					<Text className={classes.description}>
-						Train on over 1000 React, Node.JS, Javascript, CSS, HTML questions and answers.
-					</Text>
-				</>
-			)}
-			{selectedCategory && (
-				<Group className={classes.shareContainer}>
-					<Button
-						variant="light"
-						size="lg"
-						className={classes.button}
-						onClick={() => {
-							setSelectedCategory(null);
-						}}>
-						<ArrowLeftIcon size={24} />
-						{selectedCategory.name}
-					</Button>
-					<CopyButton value={origin + router.asPath}>
-						{({ copy }) => (
-							<Popover position="bottom" withArrow onOpen={copy}>
-								<Popover.Target>
-									<Button size="lg" onClick={copy}>
-										<ShareAndroidIcon size={24} />
-										Share
-									</Button>
-								</Popover.Target>
-								<Popover.Dropdown className={classes.popover}>
-									<Text size="sm">Copied</Text>
-								</Popover.Dropdown>
-							</Popover>
-						)}
-					</CopyButton>
-				</Group>
-			)}
-			{!selectedCategory && (
-				<Grid my="xs">
-					{categories.map((category) => (
-						<Grid.Col key={category.name} span={6}>
-							<CategoryCard
-								selected={category.name == tempSelectedCategory}
-								onSelect={() => setTempSelectedCategory(category.name)}>
-								{category.name}
-								{category.icon}
-							</CategoryCard>
-						</Grid.Col>
-					))}
-				</Grid>
-			)}
-			{selectedCategory && <Cards questions={questions} hasNavigation />}
-			{!selectedCategory && (
-				<Center>
-					<Button
-						disabled={!tempSelectedCategory}
-						size="lg"
-						onClick={() => {
-							setSelectedCategory(categories.find((category) => category.name == tempSelectedCategory));
-						}}>
-						Next
-						<ArrowRightIcon size={24} />
-					</Button>
-				</Center>
-			)}
+			<Container className={classes.innerContainer}>
+				{!selectedCategory && (
+					<>
+						<Title order={1} className={classes.title} mb="xs">
+							Pick topic
+						</Title>
+						<Text className={classes.description}>
+							Train on over 1000 React, Node.JS, Javascript, CSS, HTML questions and answers.
+						</Text>
+					</>
+				)}
+				{selectedCategory && (
+					<Group className={classes.shareContainer}>
+						<Button
+							variant="light"
+							size="lg"
+							className={classes.button}
+							onClick={() => {
+								setSelectedCategory(null);
+							}}>
+							<ArrowLeftIcon size={24} />
+							{selectedCategory.name}
+						</Button>
+						<CopyButton value={origin + router.asPath}>
+							{({ copy }) => (
+								<Popover position="bottom" withArrow onOpen={copy}>
+									<Popover.Target>
+										<Button size="lg" onClick={copy}>
+											<ShareAndroidIcon size={24} />
+											Share
+										</Button>
+									</Popover.Target>
+									<Popover.Dropdown className={classes.popover}>
+										<Text size="sm">Copied</Text>
+									</Popover.Dropdown>
+								</Popover>
+							)}
+						</CopyButton>
+					</Group>
+				)}
+				{!selectedCategory && (
+					<Grid my="xs">
+						{categories.map((category) => (
+							<Grid.Col key={category.name} span={6}>
+								<CategoryCard
+									selected={category.name == tempSelectedCategory}
+									onSelect={() => setTempSelectedCategory(category.name)}>
+									{category.name}
+									{category.icon}
+								</CategoryCard>
+							</Grid.Col>
+						))}
+					</Grid>
+				)}
+				{selectedCategory && <Cards questions={questions} hasNavigation />}
+				{!selectedCategory && (
+					<Center>
+						<Button
+							disabled={!tempSelectedCategory}
+							size="lg"
+							onClick={() => {
+								setSelectedCategory(categories.find((category) => category.name == tempSelectedCategory));
+							}}>
+							Next
+							<ArrowRightIcon size={24} />
+						</Button>
+					</Center>
+				)}
+			</Container>
 		</Container>
 	);
 };

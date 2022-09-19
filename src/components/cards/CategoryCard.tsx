@@ -20,6 +20,7 @@ const useStyles = createStyles((theme, { selected }: { selected: boolean }) => (
 		color: !selected ? theme.colors.gray[1] : theme.colors.blue[4],
 		borderRadius: "12px",
 		padding: "12px",
+		cursor: "pointer",
 		boxShadow: `4px 4px 12px 0px hsla(189, 75%, 75%, 0.25)`,
 	},
 }));

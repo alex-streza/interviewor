@@ -27,13 +27,14 @@ const useStyles = createStyles((theme, { index }: { index: number }) => ({
 		alignItems: "left",
 		flexDirection: "column",
 		boxShadow: `4px 4px 12px 0px hsla(189, 75%, 75%, 0.25)`,
+		cursor: "pointer",
 	},
 	title: {
 		fontSize: 18,
 		marginBottom: 12,
 	},
 	answer: {
-		width: "260px",
+		maxWidth: "320px",
 		overflowX: "auto",
 	},
 	button: {

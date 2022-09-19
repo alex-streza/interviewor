@@ -10,6 +10,10 @@ const useStyles = createStyles((theme) => ({
 		padding: "20px",
 		backgroundColor: theme.colors.blue[0],
 		border: "none",
+
+		[`@media (min-width: ${theme.breakpoints.md}px)`]: {
+			paddingInline: "180px",
+		},
 	},
 	link: {
 		padding: 0,

@@ -6,6 +6,10 @@ const useStyles = createStyles((theme, { fullWidth }: { fullWidth?: boolean }) =
 		marginBlock: "60px",
 		paddingInline: fullWidth ? 0 : 20,
 		overflow: "hidden",
+
+		[`@media (min-width: ${theme.breakpoints.md}px)`]: {
+			marginBlock: "120px",
+		},
 	},
 	textContainer: {
 		paddingInline: !fullWidth ? 0 : 20,
@@ -14,6 +18,8 @@ const useStyles = createStyles((theme, { fullWidth }: { fullWidth?: boolean }) =
 		fontSize: 28,
 		lineHeight: 1.2,
 		marginBottom: 12,
+		maxWidth: "550px",
+
 		[`@media (min-width: ${theme.breakpoints.md}px)`]: {
 			fontSize: 40,
 		},
@@ -22,8 +28,9 @@ const useStyles = createStyles((theme, { fullWidth }: { fullWidth?: boolean }) =
 		position: "relative",
 	},
 	text: {
+		maxWidth: "500px",
 		marginTop: "8px",
-		marginBottom: "40px",
+		marginBottom: "20px",
 	},
 }));
 
@@ -49,7 +56,7 @@ const Section = ({ id, title, subtitle, description, fullWidth, children }: Sect
 					<Title order={2} className={classes.title}>
 						{title}
 					</Title>
-					<Text align="left" color="dimmed">
+					<Text align="left" color="dimmed" className={classes.text}>
 						{description}
 					</Text>
 				</Container>

@@ -136,8 +136,8 @@ const Home = () => {
 							</Popover>
 						)}
 					</CopyButton>
-					<Cards questions={questions} hasNavigation />
 				</Group>
+				<Cards questions={questions} hasNavigation />
 			</Section>
 			<Section id="testimonials" title="Testimonials" subtitle="Join the community" fullWidth>
 				<Group mb="sm" px="xs">
@@ -157,6 +157,8 @@ const Home = () => {
 					onMouseEnter={autoplay.current.stop}
 					onMouseLeave={autoplay.current.reset}
 					withControls={false}
+					align="start"
+					px="sm"
 					loop>
 					<Carousel.Slide>
 						<TestimonialCard

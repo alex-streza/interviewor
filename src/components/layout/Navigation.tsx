@@ -23,6 +23,17 @@ const useStyles = createStyles((theme, { centered }: { centered?: boolean }) => 
 		padding: "20px",
 		backgroundColor: theme.colors.blue[0],
 		border: "none",
+
+		[`@media (min-width: ${theme.breakpoints.md}px)`]: {
+			paddingInline: "180px",
+		},
+	},
+	desktopItems: {
+		[`@media (min-width: ${theme.breakpoints.md}px)`]: {
+			flexDirection: "row",
+			alignItems: "center",
+			justifyContent: "center",
+		},
 	},
 	drawer: {
 		top: "70px",
@@ -33,10 +44,26 @@ const useStyles = createStyles((theme, { centered }: { centered?: boolean }) => 
 		fontWeight: 700,
 		alignItems: centered ? "center" : "right",
 		textAlign: centered ? "center" : "right",
+		width: "fit-content",
+
+		span: {
+			fontSize: 18,
+
+			[`@media (min-width: ${theme.breakpoints.md}px)`]: {
+				fontSize: 14,
+			},
+		},
 
 		"&:hover": {
 			background: "none",
 			color: theme.colors.blue[6],
+		},
+	},
+	cta: {
+		marginTop: "20px",
+
+		[`@media (min-width: ${theme.breakpoints.md}px)`]: {
+			marginTop: 0,
 		},
 	},
 }));
@@ -89,9 +116,7 @@ const NavigationItems = ({ onClick, centered }: { onClick: () => void; centered?
 			<ScrollableLink key={index} label={link.label} name={link.name} onClick={onClick} centered={centered} />
 		))}
 		<Link href="/interview">
-			<Button size="md" mt="sm">
-				Get started
-			</Button>
+			<Button size="md">Get started</Button>
 		</Link>
 	</>
 );
@@ -103,14 +128,14 @@ const Navigation = () => {
 	const [opened, setOpened] = useState(false);
 
 	return (
-		<Header height={70} className={classes.container}>
+		<Header className={classes.container}>
 			<Link href="/">
 				<a>
 					<Logo />
 				</a>
 			</Link>
 			<MediaQuery smallerThan="sm" styles={{ display: "none" }}>
-				<Group>
+				<Group className={classes.desktopItems}>
 					<NavigationItems onClick={() => setOpened(false)} />
 				</Group>
 			</MediaQuery>

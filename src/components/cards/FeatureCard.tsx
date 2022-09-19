@@ -42,7 +42,7 @@ const FeatureCard = ({ title, icon, hideSeparator }: FeatureCardProps) => {
 			<Title order={3} className={classes.title}>
 				{title}
 			</Title>
-			{hideSeparator && (
+			{!hideSeparator && (
 				<svg
 					className={classes.separator}
 					width="50"
