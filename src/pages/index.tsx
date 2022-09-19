@@ -6,7 +6,7 @@ import TypescriptIcon from "@components/icons/typescript.svg";
 import GetStarted from "@components/sections/GetStarted";
 import Hero from "@components/sections/Hero";
 import Section from "@components/sections/Section";
-import { Button, Text, Container, Group, useMantineTheme } from "@mantine/core";
+import { Button, Text, Container, Group, useMantineTheme, Popover, CopyButton, createStyles } from "@mantine/core";
 import { BookIcon, CommandPaletteIcon, MarkGithubIcon, ShareAndroidIcon } from "@primer/octicons-react";
 import { dehydrate, useQuery } from "@tanstack/react-query";
 import { useRef, useState } from "react";
@@ -15,6 +15,7 @@ import TestimonialCard from "@components/cards/TestimonialCard";
 import { Carousel } from "@mantine/carousel";
 import Autoplay from "embla-carousel-autoplay";
 import FeatureCard from "@components/cards/FeatureCard";
+import { useRouter } from "next/router";
 
 export async function getServerSideProps() {
 	await queryClient.prefetchQuery(["questionsByCategory"], () =>
@@ -35,16 +36,22 @@ const categories = [
 		name: "react",
 		icon: <ReactIcon />,
 	},
-	{
-		name: "typescript",
-		icon: <TypescriptIcon />,
-	},
 ];
+
+const useStyles = createStyles((theme) => ({
+	popover: {
+		padding: "8px",
+		width: "fit-content",
+	},
+}));
 
 const Home = () => {
 	const theme = useMantineTheme();
+	const { classes } = useStyles();
 
 	const autoplay = useRef(Autoplay({ delay: 2000 }));
+
+	const router = useRouter();
 
 	const [selectedCategory, setSelectedCategory] = useState("react");
 
@@ -55,6 +62,7 @@ const Home = () => {
 	);
 
 	const questions = (data?.questionsByCategory ?? []) as any[];
+	const origin = typeof window !== "undefined" && window.location.origin ? window.location.origin : "";
 
 	return (
 		<Container m="none" px="none" fluid>
@@ -113,10 +121,21 @@ const Home = () => {
 				subtitle="Interviews are cool now"
 				description="Share link with your interviewer and start explaining concepts you know in realtime & collaboratively.">
 				<Group mt="xs">
-					<Button size="md" mb="xs">
-						<ShareAndroidIcon size={24} />
-						Share interview
-					</Button>
+					<CopyButton value={origin + router.asPath}>
+						{({ copy }) => (
+							<Popover position="bottom" withArrow onOpen={copy}>
+								<Popover.Target>
+									<Button size="md" mb="xs" onClick={copy}>
+										<ShareAndroidIcon size={24} />
+										Share interview
+									</Button>
+								</Popover.Target>
+								<Popover.Dropdown className={classes.popover}>
+									<Text size="sm">Copied</Text>
+								</Popover.Dropdown>
+							</Popover>
+						)}
+					</CopyButton>
 					<Cards questions={questions} hasNavigation />
 				</Group>
 			</Section>

@@ -1,8 +1,7 @@
 import Cards from "@components/cards/Cards";
 import CategoryCard from "@components/cards/CategoryCard";
 import ReactIcon from "@components/icons/react.svg";
-import TypescriptIcon from "@components/icons/typescript.svg";
-import { Button, Popover, Center, Container, CopyButton, createStyles, Grid, Group, Text, Title } from "@mantine/core";
+import { Button, Center, Container, CopyButton, createStyles, Grid, Group, Popover, Text, Title } from "@mantine/core";
 import { ArrowLeftIcon, ArrowRightIcon, ShareAndroidIcon } from "@primer/octicons-react";
 import { dehydrate, useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
@@ -28,10 +27,6 @@ const categories = [
 	{
 		name: "React",
 		icon: <ReactIcon />,
-	},
-	{
-		name: "TypeScript",
-		icon: <TypescriptIcon />,
 	},
 ];
 
@@ -123,8 +118,8 @@ const Interview = () => {
 							<Popover position="bottom" withArrow onOpen={copy}>
 								<Popover.Target>
 									<Button size="lg" onClick={copy}>
-										Share
 										<ShareAndroidIcon size={24} />
+										Share
 									</Button>
 								</Popover.Target>
 								<Popover.Dropdown className={classes.popover}>
