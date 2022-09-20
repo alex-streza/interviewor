@@ -22,6 +22,7 @@ import { dehydrate, useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { getQuestionsByCategory, queryClient } from 'src/api'
+import CardsLoading from '@components/loading/CardsLoading'
 import { Maybe } from 'type-graphql'
 
 export async function getServerSideProps() {
@@ -112,10 +113,12 @@ const Interview = () => {
       ? window.location.origin
       : ''
 
-  const { data } = useQuery(['questionsByCategory', selectedCategory], () =>
-    getQuestionsByCategory({
-      category: (selectedCategory?.name ?? '').toLowerCase(),
-    }),
+  const { data, isLoading } = useQuery(
+    ['questionsByCategory', selectedCategory],
+    () =>
+      getQuestionsByCategory({
+        category: (selectedCategory?.name ?? '').toLowerCase(),
+      }),
   )
 
   const questions = (data?.questionsByCategory ?? []) as any[]
@@ -179,7 +182,12 @@ const Interview = () => {
             ))}
           </Grid>
         )}
-        {selectedCategory && <Cards questions={questions} hasNavigation />}
+        {selectedCategory &&
+          (isLoading ? (
+            <CardsLoading />
+          ) : (
+            <Cards questions={questions} hasNavigation />
+          ))}
         {!selectedCategory && (
           <Center>
             <Button

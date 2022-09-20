@@ -1,38 +1,36 @@
 import Cards from '@components/cards/Cards'
 import CategoryCard from '@components/cards/CategoryCard'
-import TwitterIcon from '@components/icons/twitter.svg'
+import FeatureCard from '@components/cards/FeatureCard'
 import ReactIcon from '@components/icons/react.svg'
-import TypescriptIcon from '@components/icons/typescript.svg'
+import CardsLoading from '@components/loading/CardsLoading'
 import GetStarted from '@components/sections/GetStarted'
 import Hero from '@components/sections/Hero'
 import Section from '@components/sections/Section'
+import Testimonials from '@components/sections/Testimonials'
+import { Carousel } from '@mantine/carousel'
 import {
   Button,
-  Text,
   Container,
-  Group,
-  useMantineTheme,
-  Popover,
   CopyButton,
   createStyles,
+  Group,
+  Popover,
+  Text,
+  useMantineTheme,
 } from '@mantine/core'
 import {
   BookIcon,
   CommandPaletteIcon,
-  MarkGithubIcon,
   ShareAndroidIcon,
 } from '@primer/octicons-react'
 import { dehydrate, useQuery } from '@tanstack/react-query'
-import { useRef, useState } from 'react'
-import { getQuestionsByCategory, queryClient } from 'src/api'
-import TestimonialCard from '@components/cards/TestimonialCard'
-import { Carousel } from '@mantine/carousel'
-import Autoplay from 'embla-carousel-autoplay'
-import FeatureCard from '@components/cards/FeatureCard'
+import { NextSeo } from 'next-seo'
 import { useRouter } from 'next/router'
+import { useState } from 'react'
+import { getQuestionsByCategory, queryClient } from 'src/api'
 
 export async function getServerSideProps() {
-  await queryClient.prefetchQuery(['questionsByCategory'], () =>
+  await queryClient.prefetchQuery(['questionsByCategory', 'react'], () =>
     getQuestionsByCategory({
       category: 'react',
     }),
@@ -63,18 +61,18 @@ const Home = () => {
   const theme = useMantineTheme()
   const { classes } = useStyles()
 
-  const autoplay = useRef(Autoplay({ delay: 2000 }))
-
   const router = useRouter()
 
   const [selectedCategory, setSelectedCategory] = useState('react')
 
-  const { data } = useQuery(['questionsByCategory', selectedCategory], () =>
-    getQuestionsByCategory({
-      category: selectedCategory,
-    }),
+  const { data, isLoading } = useQuery(
+    ['questionsByCategory', selectedCategory],
+    () =>
+      getQuestionsByCategory({
+        category: selectedCategory,
+      }),
+    {},
   )
-
   const questions = (data?.questionsByCategory ?? []) as any[]
   const origin =
     typeof window !== 'undefined' && window.location.origin
@@ -83,6 +81,30 @@ const Home = () => {
 
   return (
     <Container m="none" px="none" fluid>
+      <NextSeo
+        title="Interviewor | Tech interviews made easy"
+        description="Train & collaborate on over 200 React theory-based questions and answers."
+        canonical="https://www.interviewor.com/"
+        openGraph={{
+          url: 'https://www.interviewor.com/',
+          title: 'Interviewor | Tech interviews made easy',
+          description:
+            'Train & collaborate on over 200 React theory-based questions and answers.',
+          images: [
+            {
+              url: 'https://www.interviewor.com/assets/images/og.png',
+              alt: 'Tech interviews made easy | OG image',
+              type: 'image/jpeg',
+            },
+          ],
+          site_name: 'Interviewor',
+        }}
+        twitter={{
+          handle: '@interviewor',
+          site: '@interviewor',
+          cardType: 'summary_large_image',
+        }}
+      />
       <Hero questions={questions} />
       <Section
         id="feature1"
@@ -145,7 +167,11 @@ const Home = () => {
             </CategoryCard>
           ))}
         </Group>
-        <Cards questions={questions} hasNavigation />
+        {isLoading ? (
+          <CardsLoading />
+        ) : (
+          <Cards questions={questions} hasNavigation />
+        )}
       </Section>
       <Section
         id="feature3"
@@ -172,71 +198,7 @@ const Home = () => {
         </Group>
         <Cards questions={questions} hasNavigation />
       </Section>
-      <Section
-        id="testimonials"
-        title="Testimonials"
-        subtitle="Join the community"
-        fullWidth
-      >
-        <Group mb="sm" px="xs">
-          <Button size="md" variant="light">
-            <MarkGithubIcon size={24} />
-            GitHub
-          </Button>
-          <Button size="md" variant="light">
-            <TwitterIcon />
-            Twitter
-          </Button>
-        </Group>
-        <Carousel
-          slideSize="300px"
-          slideGap="sm"
-          plugins={[autoplay.current]}
-          onMouseEnter={autoplay.current.stop}
-          onMouseLeave={autoplay.current.reset}
-          withControls={false}
-          align="start"
-          px="sm"
-          loop
-        >
-          <Carousel.Slide>
-            <TestimonialCard
-              name="Betty Blue"
-              avatar="https://avatars.githubusercontent.com/u/1443320?v=4"
-              tweet_url="https://twitter.com/JohnDoe/status/1361234567890"
-              username="@betty_xyz"
-              tweet="Interviewor is such a great idea! It makes theory based interviews so easy it’s unbelievable."
-            />
-          </Carousel.Slide>
-          <Carousel.Slide>
-            <TestimonialCard
-              name="Jim Halpert"
-              avatar="https://avatars.githubusercontent.com/u/1143320?v=5"
-              tweet_url="https://twitter.com/JohnDoe/status/1361234567890"
-              username="@jim_office"
-              tweet="This is amazing! I was able to get a job at Google with the help of this app. Thank you so much!"
-            />
-          </Carousel.Slide>
-          <Carousel.Slide>
-            <TestimonialCard
-              name="Jon Snow"
-              avatar="https://avatars.githubusercontent.com/u/1243320?v=4"
-              tweet_url="https://twitter.com/JohnDoe/status/1361234567890"
-              username="@jon_got"
-              tweet="Losing the love of my life to unbridled and ilogical madness spree led me to tech. Interviewor stood by my side when I needed a job."
-            />
-          </Carousel.Slide>
-          <Carousel.Slide>
-            <TestimonialCard
-              name="Saul Goodman"
-              avatar="https://avatars.githubusercontent.com/u/143320?v=4"
-              tweet_url="https://twitter.com/JohnDoe/status/1361234567890"
-              username="@real_goodman"
-              tweet="@interviewor being completely free is simply marvelous. Love what you’re building @alex_streza."
-            />
-          </Carousel.Slide>
-        </Carousel>
-      </Section>
+      <Testimonials />
       <GetStarted />
     </Container>
   )

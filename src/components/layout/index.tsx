@@ -37,6 +37,32 @@ const Layout = ({ children }: LayoutProps) => {
             background: theme.colors.blue[3],
             color: theme.colors.white[0],
           },
+
+          '@keyframes shimmer': {
+            '100%': {
+              transform: 'translateX(100%)',
+            },
+          },
+
+          '.skeleton': {
+            display: 'inline-block',
+            position: 'relative',
+            overflow: 'hidden',
+
+            '&::after': {
+              position: 'absolute',
+              top: 0,
+              right: 0,
+              bottom: 0,
+              left: 0,
+              transform: 'translateX(-100%)',
+
+              background:
+                'linear-gradient(to right, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.3) 50%, rgba(255, 255, 255, 0) 100%)',
+              animation: 'shimmer 2s infinite',
+              content: "''",
+            },
+          },
         })}
       />
       <AppShell

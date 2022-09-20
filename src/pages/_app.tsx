@@ -5,7 +5,6 @@ import type { AppType } from 'next/dist/shared/lib/utils'
 import { queryClient } from 'src/api'
 import Layout from '@components/layout'
 import '@styles/fonts.css'
-import '@styles/globals.css'
 
 const MyApp: AppType = ({
   Component,

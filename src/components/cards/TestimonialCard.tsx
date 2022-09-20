@@ -47,7 +47,7 @@ const TestimonialCard = ({
   return (
     <Box className={classes.container}>
       <Group className={classes.avatarContainer}>
-        <Avatar src={avatar} size={48} radius="xl" />
+        <Avatar src={avatar} size={48} radius="xl" alt={name} />
         <Stack className={classes.nameContainer}>
           <Title order={5}>{name}</Title>
           <Text weight={700} size="sm" color="blue">
