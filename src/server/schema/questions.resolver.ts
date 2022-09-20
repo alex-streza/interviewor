@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client'
-import { Arg, Query, Resolver } from 'type-graphql'
+import { pageSize } from 'src/api'
+import { Arg, Int, Query, Resolver } from 'type-graphql'
 import { Question } from './questions'
 
 const prisma = new PrismaClient()
@@ -7,19 +8,28 @@ const prisma = new PrismaClient()
 @Resolver(Question)
 export class QuestionsResolver {
   @Query(() => [Question])
-  questionsByCategory(
-    @Arg('category', () => String) category: string,
+  async questionsByCategory(
+    @Arg('category_id', () => Int, { nullable: true }) category_id: number,
+    @Arg('page', () => Int, { nullable: true }) page?: number,
   ): Promise<Question[]> {
     return prisma.question.findMany({
       where: {
-        category: category,
+        category_id,
       },
-      take: 5,
+      include: {
+        category: true,
+      },
+      take: pageSize,
+      skip: ((page ?? 0) - 1) * pageSize,
     })
   }
 
   @Query(() => [Question])
-  questions(): Promise<Question[]> {
-    return prisma.question.findMany()
+  async questions(): Promise<Question[]> {
+    return prisma.question.findMany({
+      include: {
+        category: true,
+      },
+    })
   }
 }

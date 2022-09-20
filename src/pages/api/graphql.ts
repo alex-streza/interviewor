@@ -3,10 +3,11 @@ import { NextApiResponse } from 'next'
 import { NextApiRequest } from 'next'
 import { ApolloServer } from 'apollo-server-micro'
 import { QuestionsResolver } from '@server/schema/questions.resolver'
+import { CategoriesResolver } from '@server/schema/categories.resolver'
 import { buildSchema } from 'type-graphql'
 
 const schema = await buildSchema({
-  resolvers: [QuestionsResolver],
+  resolvers: [QuestionsResolver, CategoriesResolver],
 })
 
 const server = new ApolloServer({ schema })

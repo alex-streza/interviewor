@@ -1,7 +1,7 @@
 import Cards from '@components/cards/Cards'
 import CategoryCard from '@components/cards/CategoryCard'
 import FeatureCard from '@components/cards/FeatureCard'
-import ReactIcon from '@components/icons/react.svg'
+import { categoryIcons } from '@components/icons/categoryIcons'
 import CardsLoading from '@components/loading/CardsLoading'
 import GetStarted from '@components/sections/GetStarted'
 import Hero from '@components/sections/Hero'
@@ -27,14 +27,15 @@ import { dehydrate, useQuery } from '@tanstack/react-query'
 import { NextSeo } from 'next-seo'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
-import { getQuestionsByCategory, queryClient } from 'src/api'
+import { getQuestionsByCategory, getCategories, queryClient } from 'src/api'
 
 export async function getServerSideProps() {
-  await queryClient.prefetchQuery(['questionsByCategory', 'react'], () =>
+  await queryClient.prefetchQuery(['questionsByCategory', 1], () =>
     getQuestionsByCategory({
-      category: 'react',
+      category_id: 1,
     }),
   )
+  await queryClient.prefetchQuery(['categories'], () => getCategories())
 
   return {
     props: {
@@ -42,13 +43,6 @@ export async function getServerSideProps() {
     },
   }
 }
-
-const categories = [
-  {
-    name: 'react',
-    icon: <ReactIcon />,
-  },
-]
 
 const useStyles = createStyles((theme) => ({
   popover: {
@@ -63,17 +57,21 @@ const Home = () => {
 
   const router = useRouter()
 
-  const [selectedCategory, setSelectedCategory] = useState('react')
+  const [selectedCategory, setSelectedCategory] = useState(1)
 
   const { data, isLoading } = useQuery(
     ['questionsByCategory', selectedCategory],
     () =>
       getQuestionsByCategory({
-        category: selectedCategory,
+        category_id: selectedCategory,
       }),
-    {},
   )
-  const questions = (data?.questionsByCategory ?? []) as any[]
+  const { data: categoriesData } = useQuery(['categories'], () =>
+    getCategories(),
+  )
+  const categories = categoriesData?.categories ?? []
+  const questions = data?.questionsByCategory ?? []
+
   const origin =
     typeof window !== 'undefined' && window.location.origin
       ? window.location.origin
@@ -160,10 +158,10 @@ const Home = () => {
           {categories.map((category) => (
             <CategoryCard
               key={category.name}
-              selected={category.name === selectedCategory}
-              onSelect={() => setSelectedCategory(category.name)}
+              selected={category.id === selectedCategory + ''}
+              onSelect={() => setSelectedCategory(Number(category.id))}
             >
-              {category.icon}
+              {categoryIcons[category.name as keyof typeof categoryIcons]}
             </CategoryCard>
           ))}
         </Group>

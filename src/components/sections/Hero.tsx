@@ -8,10 +8,10 @@ import {
   Text,
   Title,
 } from '@mantine/core'
-import { Question } from '@prisma/client'
-import Question1 from '@components/icons/question-1.svg'
+
 import Separator from '@components/icons/separator.svg'
 import Link from 'next/link'
+import { Question } from 'src/types/models/questions'
 
 const useStyles = createStyles((theme) => ({
   container: {

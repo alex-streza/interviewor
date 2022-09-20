@@ -1,4 +1,5 @@
-import { Field, ID, ObjectType } from 'type-graphql'
+import { Category } from './categories'
+import { Field, ID, Int, ObjectType } from 'type-graphql'
 
 @ObjectType()
 export class Question {
@@ -11,8 +12,11 @@ export class Question {
   @Field()
   answer!: string
 
-  @Field()
-  category!: string
+  @Field(() => Int)
+  category_id!: number
+
+  @Field(() => Category)
+  category!: Category
 
   @Field()
   difficulty!: string

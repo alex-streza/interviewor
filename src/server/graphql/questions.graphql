@@ -1,8 +1,12 @@
 query getQuestions {
-	questions {
-		id
-		text
-		answer
-		category
-	}
+  questions {
+    id
+    text
+    answer
+    category_id
+    category {
+      name
+      value
+    }
+  }
 }

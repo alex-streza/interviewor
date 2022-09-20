@@ -1,14 +1,15 @@
 import { Button, createStyles, Group, Stack } from '@mantine/core'
 import { ArrowLeftIcon, ArrowRightIcon } from '@primer/octicons-react'
-import { Question } from '@prisma/client'
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
+import { Question } from 'src/types/models/questions'
 import QuestionCard from './QuestionCard'
 
 interface CardsProps {
   questions: Question[]
   autoPlay?: boolean
   hasNavigation?: boolean
+  onNavigate?: (direction: 'previous' | 'next') => void
 }
 
 const useStyles = createStyles((theme) => ({
@@ -29,6 +30,7 @@ const Cards = ({
   questions: initialQuestions,
   autoPlay,
   hasNavigation,
+  onNavigate,
 }: CardsProps) => {
   const [questions, setQuestions] = useState<Question[]>(initialQuestions)
   const [paused, setPaused] = useState(false)
@@ -53,12 +55,7 @@ const Cards = ({
 
   return (
     <Stack className={classes.container}>
-      <MotionGroup
-        layout
-        transition={{
-          layout: { duration: 0.3 },
-        }}
-      >
+      <MotionGroup>
         {questions.length > 0 && (
           <>
             <QuestionCard
@@ -67,8 +64,8 @@ const Cards = ({
               answer={questions[0]?.answer}
               onPause={() => setPaused(!paused)}
             />
-            <QuestionCard index={1} title="" answer="" />
-            <QuestionCard index={2} title="" answer="" />
+            <QuestionCard index={1} />
+            <QuestionCard index={2} />
           </>
         )}
       </MotionGroup>
@@ -80,6 +77,7 @@ const Cards = ({
               const [first, ...rest] = questions
               setQuestions([...rest, first] as any[])
               setPaused(false)
+              onNavigate && onNavigate('previous')
             }}
           >
             <ArrowLeftIcon />
@@ -90,6 +88,7 @@ const Cards = ({
               const last = questions.pop()
               setQuestions([last, ...questions] as any[])
               setPaused(false)
+              onNavigate && onNavigate('next')
             }}
           >
             Next

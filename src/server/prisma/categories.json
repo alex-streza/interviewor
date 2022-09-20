@@ -1,0 +1,26 @@
+[
+  {
+    "name": "react",
+    "value": "React"
+  },
+  {
+    "name": "next.js",
+    "value": "Next.JS"
+  },
+  {
+    "name": "javascript",
+    "value": "JavaScript"
+  },
+  {
+    "name": "typescript",
+    "value": "TypeScript"
+  },
+  {
+    "name": "html",
+    "value": "HTML"
+  },
+  {
+    "name": "css",
+    "value": "CSS"
+  }
+]

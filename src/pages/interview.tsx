@@ -1,6 +1,9 @@
 import Cards from '@components/cards/Cards'
 import CategoryCard from '@components/cards/CategoryCard'
+import { categoryIcons } from '@components/icons/categoryIcons'
 import ReactIcon from '@components/icons/react.svg'
+import CardsLoading from '@components/loading/CardsLoading'
+import NotFound from '@components/not-found'
 import {
   Button,
   Center,
@@ -20,17 +23,22 @@ import {
 } from '@primer/octicons-react'
 import { dehydrate, useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
-import { getQuestionsByCategory, queryClient } from 'src/api'
-import CardsLoading from '@components/loading/CardsLoading'
+import { useRef, useState } from 'react'
+import {
+  getCategories,
+  getQuestionsByCategory,
+  pageSize,
+  queryClient,
+} from 'src/api'
 import { Maybe } from 'type-graphql'
 
 export async function getServerSideProps() {
   await queryClient.prefetchQuery(['questionsByCategory'], () =>
     getQuestionsByCategory({
-      category: 'react',
+      category_id: 1,
     }),
   )
+  await queryClient.prefetchQuery(['categories'], () => getCategories())
 
   return {
     props: {
@@ -38,13 +46,6 @@ export async function getServerSideProps() {
     },
   }
 }
-
-const categories = [
-  {
-    name: 'React',
-    icon: <ReactIcon />,
-  },
-]
 
 const useStyles = createStyles((theme) => ({
   container: {
@@ -99,29 +100,36 @@ const Interview = () => {
 
   const router = useRouter()
 
-  const [selectedCategory, setSelectedCategory] = useState<
-    Maybe<{
-      name: string
-      icon: JSX.Element
-    }>
-  >(null)
+  const [selectedCategory, setSelectedCategory] = useState<Maybe<number>>(null)
   const [tempSelectedCategory, setTempSelectedCategory] =
-    useState<Maybe<string>>(null)
+    useState<Maybe<number>>(null)
+  const [page, setPage] = useState(1)
+  const indexRef = useRef(0)
 
   const origin =
     typeof window !== 'undefined' && window.location.origin
       ? window.location.origin
       : ''
 
+  const { data: categoriesData } = useQuery(['categories'], () =>
+    getCategories(),
+  )
   const { data, isLoading } = useQuery(
-    ['questionsByCategory', selectedCategory],
+    ['questionsByCategory', selectedCategory, page],
     () =>
       getQuestionsByCategory({
-        category: (selectedCategory?.name ?? '').toLowerCase(),
+        category_id: selectedCategory ?? 1,
+        page,
       }),
+    {
+      enabled: !!selectedCategory,
+    },
   )
 
-  const questions = (data?.questionsByCategory ?? []) as any[]
+  const categories = categoriesData?.categories ?? []
+  const questions = (data?.questionsByCategory ?? []).sort(
+    () => 0.5 - Math.random(),
+  )
 
   return (
     <Container m="none" px="xs" className={classes.container} fluid>
@@ -148,7 +156,11 @@ const Interview = () => {
               }}
             >
               <ArrowLeftIcon size={24} />
-              {selectedCategory.name}
+              {
+                categories.find(
+                  (category) => category.id === selectedCategory + '',
+                )?.value
+              }
             </Button>
             <CopyButton value={origin + router.asPath}>
               {({ copy }) => (
@@ -172,11 +184,11 @@ const Interview = () => {
             {categories.map((category) => (
               <Grid.Col key={category.name} span={6}>
                 <CategoryCard
-                  selected={category.name == tempSelectedCategory}
-                  onSelect={() => setTempSelectedCategory(category.name)}
+                  selected={category.id == tempSelectedCategory + ''}
+                  onSelect={() => setTempSelectedCategory(Number(category.id))}
                 >
-                  {category.name}
-                  {category.icon}
+                  {categoryIcons[category.name as keyof typeof categoryIcons]}
+                  {category.value}
                 </CategoryCard>
               </Grid.Col>
             ))}
@@ -185,21 +197,35 @@ const Interview = () => {
         {selectedCategory &&
           (isLoading ? (
             <CardsLoading />
+          ) : questions.length > 0 ? (
+            <Cards
+              questions={questions}
+              onNavigate={(direction) => {
+                indexRef.current =
+                  indexRef.current + (direction === 'next' ? 1 : -1)
+                if (indexRef.current == pageSize - 1) {
+                  setPage(page + 1)
+                  indexRef.current = 0
+                } else if (indexRef.current == -1) {
+                  setPage(page - 1)
+                  indexRef.current = 0
+                }
+              }}
+              hasNavigation
+            />
           ) : (
-            <Cards questions={questions} hasNavigation />
+            <NotFound
+              title="No questions found"
+              description="We are working on adding more questions to this category. Please check back later."
+              hideButton
+            />
           ))}
         {!selectedCategory && (
           <Center>
             <Button
               disabled={!tempSelectedCategory}
               size="lg"
-              onClick={() => {
-                setSelectedCategory(
-                  categories.find(
-                    (category) => category.name == tempSelectedCategory,
-                  ),
-                )
-              }}
+              onClick={() => setSelectedCategory(tempSelectedCategory)}
             >
               Next
               <ArrowRightIcon size={24} />

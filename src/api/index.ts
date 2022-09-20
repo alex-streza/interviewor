@@ -5,7 +5,10 @@ import { getSdk } from '../types/generated/graphql'
 const gqlClient = new GraphQLClient(
   process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3000/api/graphql',
 )
-export const { getQuestions, getQuestionsByCategory } = getSdk(gqlClient)
+export const { getQuestions, getQuestionsByCategory, getCategories } =
+  getSdk(gqlClient)
+
+export const pageSize = 50
 
 export const queryClient = new QueryClient({
   defaultOptions: {

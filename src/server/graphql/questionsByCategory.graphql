@@ -1,8 +1,8 @@
-query getQuestionsByCategory($category: String!) {
-	questionsByCategory(category: $category) {
-		id
-		text
-		answer
-		category
-	}
+query getQuestionsByCategory($category_id: Int!, $page: Int) {
+  questionsByCategory(category_id: $category_id, page: $page) {
+    id
+    text
+    answer
+    category_id
+  }
 }
