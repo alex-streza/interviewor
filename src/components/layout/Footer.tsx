@@ -1,4 +1,4 @@
-import { Footer, Group, Stack, Text, NavLink, createStyles } from "@mantine/core";
+import { Footer, Group, Stack, Text, createStyles } from "@mantine/core";
 import Logo from "@components/logo";
 import { ScrollableLink } from "./Navigation";
 
@@ -9,6 +9,11 @@ const useStyles = createStyles((theme) => ({
 		position: "relative",
 		padding: "20px",
 		backgroundColor: theme.colors.blue[0],
+		border: "none",
+
+		[`@media (min-width: ${theme.breakpoints.md}px)`]: {
+			paddingInline: "180px",
+		},
 	},
 	link: {
 		padding: 0,

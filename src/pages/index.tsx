@@ -6,7 +6,7 @@ import TypescriptIcon from "@components/icons/typescript.svg";
 import GetStarted from "@components/sections/GetStarted";
 import Hero from "@components/sections/Hero";
 import Section from "@components/sections/Section";
-import { Button, Container, Group, useMantineTheme } from "@mantine/core";
+import { Button, Text, Container, Group, useMantineTheme, Popover, CopyButton, createStyles } from "@mantine/core";
 import { BookIcon, CommandPaletteIcon, MarkGithubIcon, ShareAndroidIcon } from "@primer/octicons-react";
 import { dehydrate, useQuery } from "@tanstack/react-query";
 import { useRef, useState } from "react";
@@ -15,6 +15,7 @@ import TestimonialCard from "@components/cards/TestimonialCard";
 import { Carousel } from "@mantine/carousel";
 import Autoplay from "embla-carousel-autoplay";
 import FeatureCard from "@components/cards/FeatureCard";
+import { useRouter } from "next/router";
 
 export async function getServerSideProps() {
 	await queryClient.prefetchQuery(["questionsByCategory"], () =>
@@ -35,16 +36,22 @@ const categories = [
 		name: "react",
 		icon: <ReactIcon />,
 	},
-	{
-		name: "typescript",
-		icon: <TypescriptIcon />,
-	},
 ];
+
+const useStyles = createStyles((theme) => ({
+	popover: {
+		padding: "8px",
+		width: "fit-content",
+	},
+}));
 
 const Home = () => {
 	const theme = useMantineTheme();
+	const { classes } = useStyles();
 
 	const autoplay = useRef(Autoplay({ delay: 2000 }));
+
+	const router = useRouter();
 
 	const [selectedCategory, setSelectedCategory] = useState("react");
 
@@ -55,6 +62,7 @@ const Home = () => {
 	);
 
 	const questions = (data?.questionsByCategory ?? []) as any[];
+	const origin = typeof window !== "undefined" && window.location.origin ? window.location.origin : "";
 
 	return (
 		<Container m="none" px="none" fluid>
@@ -68,8 +76,9 @@ const Home = () => {
 					</>
 				}
 				subtitle="For interviewees & interviewers alike"
-				description="No need for multiple apps and years of video editing knowledge, content within clicks.">
-				<Carousel slideSize="248px" slideGap="sm" withControls={false} mt="sm">
+				description="No need for multiple apps and years of video editing knowledge, content within clicks."
+				fullWidth>
+				<Carousel slideSize="248px" slideGap="sm" withControls={false} mt="sm" px="xs" align="start">
 					<Carousel.Slide>
 						<FeatureCard title="Pick a topic & difficulty" icon={<BookIcon size={40} fill={theme.colors.blue[4]} />} />
 					</Carousel.Slide>
@@ -83,17 +92,18 @@ const Home = () => {
 						<FeatureCard
 							title="Share it with your interviewer"
 							icon={<ShareAndroidIcon size={40} fill={theme.colors.blue[4]} />}
+							hideSeparator
 						/>
 					</Carousel.Slide>
 				</Carousel>
 			</Section>
 			<Section
 				id="feature2"
-				// title="Over 1000 questions"
 				title="Over 200 questions"
 				subtitle="Never run out of questions"
 				description="Train on over 200 React questions and answers.">
-				<Group my="xs">
+				<Text mt="xxs">Pick category:</Text>
+				<Group mt="xs" mb="sm">
 					{categories.map((category) => (
 						<CategoryCard
 							key={category.name}
@@ -111,15 +121,26 @@ const Home = () => {
 				subtitle="Interviews are cool now"
 				description="Share link with your interviewer and start explaining concepts you know in realtime & collaboratively.">
 				<Group mt="xs">
-					<Button size="md">
-						<ShareAndroidIcon size={24} />
-						Share interview
-					</Button>
-					<Cards questions={questions} hasNavigation />
+					<CopyButton value={origin + router.asPath}>
+						{({ copy }) => (
+							<Popover position="bottom" withArrow onOpen={copy}>
+								<Popover.Target>
+									<Button size="md" mb="xs" onClick={copy}>
+										<ShareAndroidIcon size={24} />
+										Share interview
+									</Button>
+								</Popover.Target>
+								<Popover.Dropdown className={classes.popover}>
+									<Text size="sm">Copied</Text>
+								</Popover.Dropdown>
+							</Popover>
+						)}
+					</CopyButton>
 				</Group>
+				<Cards questions={questions} hasNavigation />
 			</Section>
-			<Section id="testimonials" title="Testimonials" subtitle="Join the community">
-				<Group mb="sm">
+			<Section id="testimonials" title="Testimonials" subtitle="Join the community" fullWidth>
+				<Group mb="sm" px="xs">
 					<Button size="md" variant="light">
 						<MarkGithubIcon size={24} />
 						GitHub
@@ -136,6 +157,8 @@ const Home = () => {
 					onMouseEnter={autoplay.current.stop}
 					onMouseLeave={autoplay.current.reset}
 					withControls={false}
+					align="start"
+					px="sm"
 					loop>
 					<Carousel.Slide>
 						<TestimonialCard
