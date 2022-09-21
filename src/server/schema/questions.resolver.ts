@@ -20,7 +20,7 @@ export class QuestionsResolver {
         category: true,
       },
       take: pageSize,
-      skip: ((page ?? 0) - 1) * pageSize,
+      skip: ((page ?? 1) - 1) * pageSize,
     })
   }
 

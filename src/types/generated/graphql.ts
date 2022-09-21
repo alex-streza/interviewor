@@ -25,6 +25,7 @@ export type Category = {
 export type Query = {
   __typename?: 'Query';
   categories: Array<Category>;
+  getNewRoomId: Scalars['String'];
   questions: Array<Question>;
   questionsByCategory: Array<Question>;
 };
@@ -64,6 +65,11 @@ export type GetQuestionsByCategoryQueryVariables = Exact<{
 
 export type GetQuestionsByCategoryQuery = { __typename?: 'Query', questionsByCategory: Array<{ __typename?: 'Question', id: string, text: string, answer: string, category_id: number }> };
 
+export type GetNewRoomIdQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetNewRoomIdQuery = { __typename?: 'Query', getNewRoomId: string };
+
 
 export const GetCategoriesDocument = gql`
     query getCategories {
@@ -98,6 +104,11 @@ export const GetQuestionsByCategoryDocument = gql`
   }
 }
     `;
+export const GetNewRoomIdDocument = gql`
+    query getNewRoomId {
+  getNewRoomId
+}
+    `;
 
 export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string, operationType?: string) => Promise<T>;
 
@@ -114,6 +125,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     getQuestionsByCategory(variables: GetQuestionsByCategoryQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetQuestionsByCategoryQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetQuestionsByCategoryQuery>(GetQuestionsByCategoryDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getQuestionsByCategory', 'query');
+    },
+    getNewRoomId(variables?: GetNewRoomIdQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetNewRoomIdQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetNewRoomIdQuery>(GetNewRoomIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getNewRoomId', 'query');
     }
   };
 }

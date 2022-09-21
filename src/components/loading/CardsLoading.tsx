@@ -1,7 +1,10 @@
-import { createStyles, Center, Group } from '@mantine/core'
+import { createStyles, Center, Group, Container } from '@mantine/core'
 import { darken } from 'color2k'
 
 const useStyles = createStyles((theme, { index = 0 }: { index?: number }) => ({
+  container: {
+    maxWidth: 400,
+  },
   card: {
     backgroundColor: `${darken('#F2F2F2', index * 0.05)} !important`,
     borderRadius: '12px',
@@ -32,7 +35,7 @@ const CardsLoading = () => {
   const { classes } = useStyles({})
 
   return (
-    <>
+    <Container className={classes.container}>
       <LoadingCard index={0} />
       <LoadingCard index={1} />
       <LoadingCard index={2} />
@@ -42,7 +45,7 @@ const CardsLoading = () => {
           <div className={`${classes.button} skeleton`} />
         </Group>
       </Center>
-    </>
+    </Container>
   )
 }
 

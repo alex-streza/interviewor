@@ -20,6 +20,8 @@
   "dependencies": {
     "@emotion/react": "^11.10.4",
     "@emotion/server": "^11.10.0",
+    "@liveblocks/client": "^0.18.1",
+    "@liveblocks/react": "^0.18.1",
     "@mantine/carousel": "^5.3.3",
     "@mantine/core": "^5.3.0",
     "@mantine/form": "^5.3.0",

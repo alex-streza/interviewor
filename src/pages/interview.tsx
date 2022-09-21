@@ -1,7 +1,7 @@
 import Cards from '@components/cards/Cards'
 import CategoryCard from '@components/cards/CategoryCard'
 import { categoryIcons } from '@components/icons/categoryIcons'
-import ReactIcon from '@components/icons/react.svg'
+import Live from '@components/live'
 import CardsLoading from '@components/loading/CardsLoading'
 import NotFound from '@components/not-found'
 import {
@@ -22,28 +22,44 @@ import {
   ShareAndroidIcon,
 } from '@primer/octicons-react'
 import { dehydrate, useQuery } from '@tanstack/react-query'
+import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
 import { useRef, useState } from 'react'
 import {
   getCategories,
+  getNewRoomId,
   getQuestionsByCategory,
   pageSize,
   queryClient,
 } from 'src/api'
+import { RoomProvider } from 'src/api/liveblock.config'
 import { Maybe } from 'type-graphql'
 
-export async function getServerSideProps() {
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   await queryClient.prefetchQuery(['questionsByCategory'], () =>
     getQuestionsByCategory({
       category_id: 1,
     }),
   )
   await queryClient.prefetchQuery(['categories'], () => getCategories())
+  await queryClient.prefetchQuery(['roomId'], () => getNewRoomId())
+
+  const dehydratedState = dehydrate(queryClient)
+  const roomId = dehydratedState.queries[2]?.state?.data?.getNewRoomId
+  const options = query.roomId
+    ? {}
+    : {
+        redirect: {
+          permanent: false,
+          destination: '?roomId=' + roomId,
+        },
+      }
 
   return {
     props: {
-      dehydratedState: dehydrate(queryClient),
+      dehydratedState,
     },
+    ...options,
   }
 }
 
@@ -114,6 +130,7 @@ const Interview = () => {
   const { data: categoriesData } = useQuery(['categories'], () =>
     getCategories(),
   )
+
   const { data, isLoading } = useQuery(
     ['questionsByCategory', selectedCategory, page],
     () =>
@@ -134,6 +151,9 @@ const Interview = () => {
   return (
     <Container m="none" px="xs" className={classes.container} fluid>
       <Container className={classes.innerContainer}>
+        <RoomProvider id={router.query.roomId as string} initialPresence={{}}>
+          <Live />
+        </RoomProvider>
         {!selectedCategory && (
           <>
             <Title order={1} className={classes.title} mb="xs">
@@ -225,7 +245,9 @@ const Interview = () => {
             <Button
               disabled={!tempSelectedCategory}
               size="lg"
-              onClick={() => setSelectedCategory(tempSelectedCategory)}
+              onClick={() => {
+                setSelectedCategory(tempSelectedCategory)
+              }}
             >
               Next
               <ArrowRightIcon size={24} />
