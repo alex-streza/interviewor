@@ -7,32 +7,32 @@
  * @constraint {{import('next').NextConfig}}
  */
 function defineNextConfig(config) {
-	return config;
+  return config
 }
 
 export default defineNextConfig({
-	reactStrictMode: true,
-	swcMinify: true,
-	typescript: {
-		// TODO REMOVEEEE
-		ignoreBuildErrors: true,
-	},
-	// Next.js i18n docs: https://nextjs.org/docs/advanced-features/i18n-routing
-	i18n: {
-		locales: ["en"],
-		defaultLocale: "en",
-	},
-	webpack: (config) => {
-		if (!config.experiments) {
-			config.experiments = {};
-		}
-		config.experiments.topLevelAwait = true;
+  reactStrictMode: true,
+  swcMinify: true,
+  typescript: {
+    // TODO REMOVEEEE
+    ignoreBuildErrors: true,
+  },
+  // Next.js i18n docs: https://nextjs.org/docs/advanced-features/i18n-routing
+  i18n: {
+    locales: ['en'],
+    defaultLocale: 'en',
+  },
+  webpack: (config) => {
+    if (!config.experiments) {
+      config.experiments = {}
+    }
+    config.experiments.topLevelAwait = true
 
-		config.module.rules.push({
-			test: /\.svg$/,
-			use: ["@svgr/webpack"],
-		});
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: ['@svgr/webpack'],
+    })
 
-		return config;
-	},
-});
+    return config
+  },
+})

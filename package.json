@@ -15,7 +15,8 @@
     "prettier:format": "prettier --write \"./src/**/*.{ts,tsx,js,jsx,md}\"",
     "seed": "ts-node ./src/server/prisma/seed.ts",
     "scrape": "ts-node ./scraper/index.ts",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "postinstall": "prisma generate || true"
   },
   "dependencies": {
     "@emotion/react": "^11.10.4",
