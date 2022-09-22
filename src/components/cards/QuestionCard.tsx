@@ -1,12 +1,22 @@
-import { Box, Button, Collapse, createStyles, Title } from '@mantine/core'
+import {
+  Box,
+  Group,
+  Button,
+  Collapse,
+  createStyles,
+  Title,
+} from '@mantine/core'
 import { darken } from 'color2k'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
+import useTimer from '@utils/useTimer'
 
 interface QuestionCardProps {
   title?: string
   answer?: string
+  shown?: boolean
   index: number
   onPause?: () => void
+  onShowAnswer?: () => void
 }
 
 const useStyles = createStyles((theme, { index }: { index: number }) => ({
@@ -37,21 +47,40 @@ const useStyles = createStyles((theme, { index }: { index: number }) => ({
     maxWidth: '320px',
     overflowX: 'auto',
   },
+  actionsContainer: {
+    justifyContent: 'space-between',
+  },
   button: {
     padding: '0px',
     width: 'fit-content',
   },
 }))
 
-const QuestionCard = ({ title, answer, index, onPause }: QuestionCardProps) => {
+const QuestionCard = ({
+  title,
+  answer,
+  index,
+  onPause,
+  onShowAnswer,
+  shown: initialShown = false,
+}: QuestionCardProps) => {
   const [shown, setShown] = useState(false)
 
   const { classes } = useStyles({ index })
+  const { time } = useTimer({ reset: title, pause: !title })
 
   const handleShowAnswer = useCallback(() => {
-    setShown(!shown)
+    if (onShowAnswer) {
+      onShowAnswer()
+    } else {
+      setShown(!shown)
+    }
     onPause && onPause()
-  }, [onPause, shown])
+  }, [onPause, onShowAnswer, shown])
+
+  useEffect(() => {
+    setShown(initialShown)
+  }, [initialShown])
 
   return (
     <Box className={classes.container} onClick={handleShowAnswer}>
@@ -65,13 +94,16 @@ const QuestionCard = ({ title, answer, index, onPause }: QuestionCardProps) => {
         />
       </Collapse>
       {index === 0 && (
-        <Button
-          variant="white"
-          className={classes.button}
-          onClick={handleShowAnswer}
-        >
-          {shown ? 'Hide Answer' : 'Show Answer'}
-        </Button>
+        <Group className={classes.actionsContainer}>
+          <Button
+            variant="white"
+            className={classes.button}
+            onClick={handleShowAnswer}
+          >
+            {shown ? 'Hide Answer' : 'Show Answer'}
+          </Button>
+          {time}
+        </Group>
       )}
     </Box>
   )

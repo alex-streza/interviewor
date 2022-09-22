@@ -1,4 +1,4 @@
-import { useOthers, useMyPresence } from 'src/api/liveblock.config'
+import { useOthers, useMyPresence } from '@api/liveblock.config'
 import { Avatar, Center, Group } from '@mantine/core'
 import Cursor from './Cursor'
 import { useCallback, useEffect } from 'react'

@@ -9,6 +9,10 @@ interface CardsProps {
   questions: Question[]
   autoPlay?: boolean
   hasNavigation?: boolean
+  controlled?: boolean
+  shown?: boolean
+  index?: number
+  showAnswer?: () => void
   onNavigate?: (direction: 'previous' | 'next') => void
 }
 
@@ -31,6 +35,10 @@ const Cards = ({
   autoPlay,
   hasNavigation,
   onNavigate,
+  controlled,
+  showAnswer,
+  shown,
+  index = 0,
 }: CardsProps) => {
   const [questions, setQuestions] = useState<Question[]>(initialQuestions)
   const [paused, setPaused] = useState(false)
@@ -38,8 +46,8 @@ const Cards = ({
   const { classes } = useStyles()
 
   useEffect(() => {
-    setQuestions(initialQuestions)
-  }, [initialQuestions])
+    if (controlled) setQuestions(initialQuestions)
+  }, [initialQuestions, controlled])
 
   useEffect(() => {
     if (autoPlay && !paused && questions.length > 0) {
@@ -63,6 +71,8 @@ const Cards = ({
               title={questions[0]?.text}
               answer={questions[0]?.answer}
               onPause={() => setPaused(!paused)}
+              onShowAnswer={showAnswer}
+              shown={shown}
             />
             <QuestionCard index={1} />
             <QuestionCard index={2} />
@@ -71,22 +81,28 @@ const Cards = ({
       </MotionGroup>
       {hasNavigation && questions.length > 0 && (
         <Group mx="auto" mt="auto">
+          {index > 0 && (
+            <Button
+              variant="light"
+              onClick={() => {
+                if (!controlled) {
+                  const [first, ...rest] = questions
+                  setQuestions([...rest, first] as any[])
+                }
+                setPaused(false)
+                onNavigate && onNavigate('previous')
+              }}
+            >
+              <ArrowLeftIcon />
+              Previous
+            </Button>
+          )}
           <Button
-            variant="light"
             onClick={() => {
-              const [first, ...rest] = questions
-              setQuestions([...rest, first] as any[])
-              setPaused(false)
-              onNavigate && onNavigate('previous')
-            }}
-          >
-            <ArrowLeftIcon />
-            Previous
-          </Button>
-          <Button
-            onClick={() => {
-              const last = questions.pop()
-              setQuestions([last, ...questions] as any[])
+              if (!controlled) {
+                const last = questions.pop()
+                setQuestions([last, ...questions] as any[])
+              }
               setPaused(false)
               onNavigate && onNavigate('next')
             }}

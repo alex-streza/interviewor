@@ -12,7 +12,7 @@ export const {
   getNewRoomId,
 } = getSdk(gqlClient)
 
-export const pageSize = 50
+export const pageSize = 2
 
 export const queryClient = new QueryClient({
   defaultOptions: {

@@ -1,6 +1,7 @@
 import { createClient } from '@liveblocks/client'
 import { createRoomContext } from '@liveblocks/react'
 import { clientEnv } from 'src/env/schema.mjs'
+import { Question } from 'src/types/models/questions'
 
 const client = createClient({
   publicApiKey: clientEnv.NEXT_PUBLIC_LIVEBLOCKS_PUBLIC_KEY ?? '',
@@ -20,8 +21,9 @@ type Presence = {
 // LiveList, LiveMap, LiveObject instances, for which updates are
 // automatically persisted and synced to all connected clients.
 type Storage = {
-  // animals: LiveList<string>,
-  // ...
+  questions: Question[]
+  category: number | null
+  shown?: boolean
 }
 
 // Optionally, UserMeta represents static/readonly metadata on each User, as
@@ -39,6 +41,8 @@ type Storage = {
 export const {
   RoomProvider,
   useOthers,
+  useStorage,
+  useMutation,
   useMyPresence,
   /* ...all the other hooks you’re using... */
 } = createRoomContext<Presence, Storage /* UserMeta, RoomEvent */>(client)

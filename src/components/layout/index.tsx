@@ -1,7 +1,7 @@
 import { AppShell, Global, useMantineTheme } from '@mantine/core'
 import NextNProgress from 'nextjs-progressbar'
 import { ReactNode } from 'react'
-import { RoomProvider } from 'src/api/liveblock.config'
+import { RoomProvider } from '@api/liveblock.config'
 import Footer from './Footer'
 import Navigation from './Navigation'
 
