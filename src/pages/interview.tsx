@@ -51,7 +51,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     : {
         redirect: {
           permanent: false,
-          destination: '?roomId=' + roomId,
+          destination: '/interview?roomId=' + roomId,
         },
       }
 

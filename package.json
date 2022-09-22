@@ -43,7 +43,7 @@
     "graphql": "^15.3.0",
     "graphql-request": "^5.0.0",
     "micro": "^9.4.1",
-    "next": "12.2.5",
+    "next": "^12.3.1",
     "next-auth": "^4.10.3",
     "next-seo": "^5.5.0",
     "nextjs-progressbar": "^0.0.14",
