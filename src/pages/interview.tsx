@@ -45,11 +45,10 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   await queryClient.prefetchQuery(['roomId'], () => getNewRoomId())
 
   const dehydratedState = dehydrate(queryClient)
-  const roomId = dehydratedState.queries[0]?.state?.data?.getNewRoomId
-  console.log(
-    'dehydratedState.queries[2]?.state?.data',
-    dehydratedState.queries,
-  )
+  const roomId = dehydratedState.queries
+    .map((query) => query.state?.data?.getNewRoomId)
+    .filter((data) => data)[0]
+
   const options = query.roomId
     ? {}
     : {
