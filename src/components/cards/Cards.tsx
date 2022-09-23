@@ -83,7 +83,7 @@ const Cards = ({
       </MotionGroup>
       {hasNavigation && questions.length > 0 && (
         <Group mx="auto" mt="auto">
-          {index > 0 && (
+          {(!controlled || index > 0) && (
             <Button
               variant="light"
               onClick={() => {
@@ -99,9 +99,11 @@ const Cards = ({
               Previous
             </Button>
           )}
-          <Text weight={900}>
-            {index + 1}/{totalCount}
-          </Text>
+          {totalCount && (
+            <Text weight={900}>
+              {index + 1}/{totalCount}
+            </Text>
+          )}
           <Button
             onClick={() => {
               if (!controlled) {

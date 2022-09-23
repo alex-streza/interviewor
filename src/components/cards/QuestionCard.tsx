@@ -51,6 +51,7 @@ const useStyles = createStyles((theme, { index }: { index: number }) => ({
     justifyContent: 'space-between',
   },
   button: {
+    background: 'none',
     padding: '0px',
     width: 'fit-content',
   },

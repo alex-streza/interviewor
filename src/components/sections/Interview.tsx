@@ -190,7 +190,7 @@ const Interview = () => {
         {!selectedCategory && (
           <Grid my="xs">
             {categories
-              .sort((a, b) => (!a.active ? 1 : -1))
+              .sort((a) => (!a.active ? 1 : -1))
               .map((category) => (
                 <Grid.Col key={category.name} span={6}>
                   <CategoryCard

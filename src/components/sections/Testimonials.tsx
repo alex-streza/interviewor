@@ -18,14 +18,26 @@ const Testimonials = () => {
       fullWidth
     >
       <Group mb="sm" px="xs">
-        <Button size="md" variant="light">
-          <MarkGithubIcon size={24} />
-          GitHub
-        </Button>
-        <Button size="md" variant="light">
-          <TwitterIcon />
-          Twitter
-        </Button>
+        <a
+          href="https://github.com/alex-streza/interviewor"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Button size="md" variant="light">
+            <MarkGithubIcon size={24} />
+            GitHub
+          </Button>
+        </a>
+        <a
+          href="https://twitter.com/alex_streza"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Button size="md" variant="light">
+            <TwitterIcon />
+            Twitter
+          </Button>
+        </a>
       </Group>
       <Carousel
         slideSize="300px"

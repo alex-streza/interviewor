@@ -153,15 +153,18 @@ const Home = () => {
       >
         <Text mt="xxs">Pick category:</Text>
         <Group mt="xs" mb="sm">
-          {categories.map((category) => (
-            <CategoryCard
-              key={category.name}
-              selected={category.id === selectedCategory + ''}
-              onSelect={() => setSelectedCategory(Number(category.id))}
-            >
-              {categoryIcons[category.name as keyof typeof categoryIcons]}
-            </CategoryCard>
-          ))}
+          {categories
+            .sort((a) => (!a.active ? 1 : -1))
+            .map((category) => (
+              <CategoryCard
+                key={category.name}
+                selected={category.id === selectedCategory + ''}
+                onSelect={() => setSelectedCategory(Number(category.id))}
+                inactive={!category.active}
+              >
+                {categoryIcons[category.name as keyof typeof categoryIcons]}
+              </CategoryCard>
+            ))}
         </Group>
         {isLoading ? (
           <CardsLoading />
