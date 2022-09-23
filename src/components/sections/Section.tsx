@@ -1,5 +1,7 @@
 import { Container, createStyles, Text, Title } from '@mantine/core'
-import { ReactNode } from 'react'
+import { motion, useAnimation } from 'framer-motion'
+import { ReactNode, useEffect } from 'react'
+import { useInView } from 'react-intersection-observer'
 
 const useStyles = createStyles(
   (theme, { fullWidth }: { fullWidth?: boolean }) => ({
@@ -45,6 +47,28 @@ interface SectionProps {
   children?: ReactNode
 }
 
+const container = {
+  hidden: {},
+  show: {
+    transition: {
+      delayChildren: 0.5,
+      staggerChildren: 0.1,
+    },
+  },
+}
+const item = {
+  hidden: {
+    opacity: 0,
+    y: -8,
+  },
+  show: {
+    opacity: 1,
+    y: 0,
+  },
+}
+
+const MotionTitle = motion(Title)
+
 const Section = ({
   id,
   title,
@@ -54,24 +78,42 @@ const Section = ({
   children,
 }: SectionProps) => {
   const { classes } = useStyles({ fullWidth })
+  const controls = useAnimation()
+  const [ref, inView] = useInView()
+
+  useEffect(() => {
+    if (inView) {
+      controls.start('show')
+    }
+  }, [controls, inView])
 
   return (
-    <section id={id}>
+    <motion.section
+      ref={ref}
+      animate={controls}
+      initial="hidden"
+      variants={container}
+      id={id}
+    >
       <Container className={classes.container}>
         <Container className={classes.textContainer}>
-          <Text color="blue" weight={600} size="sm">
-            {subtitle}
-          </Text>
-          <Title order={2} className={classes.title}>
+          <motion.span variants={item}>
+            <Text color="blue" weight={600} size="sm">
+              {subtitle}
+            </Text>
+          </motion.span>
+          <MotionTitle variants={item} order={2} className={classes.title}>
             {title}
-          </Title>
-          <Text align="left" color="dimmed" className={classes.text}>
-            {description}
-          </Text>
+          </MotionTitle>
+          <motion.span variants={item}>
+            <Text align="left" color="dimmed" className={classes.text}>
+              {description}
+            </Text>
+          </motion.span>
         </Container>
-        {children}
+        <motion.div variants={item}>{children}</motion.div>
       </Container>
-    </section>
+    </motion.section>
   )
 }
 

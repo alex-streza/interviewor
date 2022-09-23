@@ -9,6 +9,7 @@ import {
 import { darken } from 'color2k'
 import { useCallback, useEffect, useState } from 'react'
 import useTimer from '@utils/useTimer'
+import { motion } from 'framer-motion'
 
 interface QuestionCardProps {
   title?: string
@@ -57,6 +58,17 @@ const useStyles = createStyles((theme, { index }: { index: number }) => ({
   },
 }))
 
+const item = {
+  hidden: {
+    opacity: 0,
+    y: -8,
+  },
+  show: {
+    opacity: 1,
+    y: 0,
+  },
+}
+
 const QuestionCard = ({
   title,
   answer,
@@ -84,7 +96,11 @@ const QuestionCard = ({
   }, [initialShown])
 
   return (
-    <Box className={classes.container} onClick={handleShowAnswer}>
+    <motion.div
+      variants={item}
+      className={classes.container}
+      onClick={handleShowAnswer}
+    >
       <Title order={3} className={classes.title}>
         {title}
       </Title>
@@ -106,7 +122,7 @@ const QuestionCard = ({
           {time}
         </Group>
       )}
-    </Box>
+    </motion.div>
   )
 }
 

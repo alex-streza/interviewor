@@ -1,3 +1,4 @@
+import Separator from '@components/icons/separator.svg'
 import {
   Button,
   Container,
@@ -6,8 +7,10 @@ import {
   Text,
   Title,
 } from '@mantine/core'
+import { motion, useAnimation } from 'framer-motion'
 import Link from 'next/link'
-import Separator from '@components/icons/separator.svg'
+import { useEffect } from 'react'
+import { useInView } from 'react-intersection-observer'
 
 const useStyles = createStyles((theme) => ({
   container: {
@@ -58,34 +61,79 @@ const useStyles = createStyles((theme) => ({
   },
 }))
 
+const container = {
+  hidden: {},
+  show: {
+    transition: {
+      delayChildren: 0.5,
+      staggerChildren: 0.1,
+    },
+  },
+}
+
+const item = {
+  hidden: {
+    opacity: 0,
+    y: -8,
+  },
+  show: {
+    opacity: 1,
+    y: 0,
+  },
+}
+const MotionTitle = motion(Title)
+
 const GetStarted = () => {
   const { classes } = useStyles()
+  const controls = useAnimation()
+  const [ref, inView] = useInView()
+
+  useEffect(() => {
+    if (inView) {
+      controls.start('show')
+    }
+  }, [controls, inView])
 
   return (
-    <section id="get_started">
-      <div className={classes.separator}>
+    <motion.section
+      ref={ref}
+      animate={controls}
+      initial="hidden"
+      variants={container}
+      id="get_started"
+    >
+      <motion.div variants={item} className={classes.separator}>
         <Separator />
-      </div>
+      </motion.div>
       <Container className={classes.container} fluid>
-        <Title order={2} align="center" className={classes.title}>
+        <MotionTitle
+          variants={item}
+          order={2}
+          align="center"
+          className={classes.title}
+        >
           Train for your next interview now
-        </Title>
-        <Text align="center" mt="xs" px="xs" className={classes.text}>
-          {/* Train on over 1000 React, Node.JS, Javascript, CSS, HTML theory-based questions and answers. Share link with
-					your interviewer and start explaining concepts know. */}
-          Train on over 200 React theory-based questions and answers. Share link
-          with your interviewer and start explaining concepts know.
-        </Text>
-        <Stack mt="sm" align="center" spacing="xxs">
-          <Link href="/interview" passHref>
-            <Button size="lg">Get started</Button>
-          </Link>
-          <Text align="center" color="blue" size="sm">
-            No account required
+        </MotionTitle>
+        <motion.span variants={item}>
+          <Text align="center" mt="xs" px="xs" className={classes.text}>
+            Train on over 200 React theory-based questions and answers. Share
+            link with your interviewer and start explaining concepts know.
           </Text>
+        </motion.span>
+        <Stack mt="sm" align="center" spacing="xxs">
+          <motion.div variants={item}>
+            <Link href="/interview" passHref>
+              <Button size="lg">Get started</Button>
+            </Link>
+          </motion.div>
+          <motion.span variants={item}>
+            <Text align="center" color="blue" size="sm">
+              No account required
+            </Text>
+          </motion.span>
         </Stack>
       </Container>
-    </section>
+    </motion.section>
   )
 }
 

@@ -1,6 +1,20 @@
+import { motion } from 'framer-motion'
+
+const item = {
+  hidden: {
+    opacity: 0,
+    y: 8,
+  },
+  show: {
+    opacity: 1,
+    y: 0,
+  },
+}
+
 const LiveBlocks = () => {
   return (
-    <svg
+    <motion.svg
+      variants={item}
       width="152"
       height="36"
       viewBox="0 0 152 36"
@@ -35,7 +49,7 @@ const LiveBlocks = () => {
           <stop offset="1" stopColor="#FF7A00" />
         </radialGradient>
       </defs>
-    </svg>
+    </motion.svg>
   )
 }
 

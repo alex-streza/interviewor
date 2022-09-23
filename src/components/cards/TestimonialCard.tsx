@@ -1,14 +1,14 @@
+import TwitterIcon from '@components/icons/twitter.svg'
 import {
-  Box,
+  Avatar,
+  Button,
   createStyles,
   Group,
-  Avatar,
   Stack,
   Text,
   Title,
-  Button,
 } from '@mantine/core'
-import TwitterIcon from '@components/icons/twitter.svg'
+import { motion } from 'framer-motion'
 
 interface TestimonialCardProps {
   name: string
@@ -42,6 +42,17 @@ const useStyles = createStyles((theme) => ({
   },
 }))
 
+const item = {
+  hidden: {
+    opacity: 0,
+    y: -8,
+  },
+  show: {
+    opacity: 1,
+    y: 0,
+  },
+}
+
 const TestimonialCard = ({
   name,
   username,
@@ -51,7 +62,7 @@ const TestimonialCard = ({
   const { classes } = useStyles()
 
   return (
-    <Box className={classes.container}>
+    <motion.div variants={item} className={classes.container}>
       <Group className={classes.avatarContainer}>
         <Avatar
           src={avatar}
@@ -73,7 +84,7 @@ const TestimonialCard = ({
         </Button>
       </Group>
       <Text>{tweet}</Text>
-    </Box>
+    </motion.div>
   )
 }
 

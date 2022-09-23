@@ -1,11 +1,23 @@
 import TestimonialCard from '@components/cards/TestimonialCard'
-import { Carousel } from '@mantine/carousel'
-import { Group, Button } from '@mantine/core'
-import { MarkGithubIcon } from '@primer/octicons-react'
-import React, { useRef } from 'react'
-import Section from './Section'
-import Autoplay from 'embla-carousel-autoplay'
 import TwitterIcon from '@components/icons/twitter.svg'
+import { Carousel } from '@mantine/carousel'
+import { Button, Group } from '@mantine/core'
+import { MarkGithubIcon } from '@primer/octicons-react'
+import Autoplay from 'embla-carousel-autoplay'
+import { motion } from 'framer-motion'
+import { useRef } from 'react'
+import Section from './Section'
+
+const item = {
+  hidden: {
+    opacity: 0,
+    y: -8,
+  },
+  show: {
+    opacity: 1,
+    y: 0,
+  },
+}
 
 const Testimonials = () => {
   const autoplay = useRef(Autoplay({ delay: 2000 }))
@@ -18,7 +30,8 @@ const Testimonials = () => {
       fullWidth
     >
       <Group mb="sm" px="xs">
-        <a
+        <motion.a
+          variants={item}
           href="https://github.com/alex-streza/interviewor"
           target="_blank"
           rel="noopener noreferrer"
@@ -27,8 +40,9 @@ const Testimonials = () => {
             <MarkGithubIcon size={24} />
             GitHub
           </Button>
-        </a>
-        <a
+        </motion.a>
+        <motion.a
+          variants={item}
           href="https://twitter.com/alex_streza"
           target="_blank"
           rel="noopener noreferrer"
@@ -37,7 +51,7 @@ const Testimonials = () => {
             <TwitterIcon />
             Twitter
           </Button>
-        </a>
+        </motion.a>
       </Group>
       <Carousel
         slideSize="300px"

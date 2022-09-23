@@ -1,5 +1,6 @@
-import { Box, createStyles, Title } from '@mantine/core'
-import { ReactNode, useState } from 'react'
+import { createStyles, Title } from '@mantine/core'
+import { motion } from 'framer-motion'
+import { ReactNode } from 'react'
 
 interface FeatureCardProps {
   title: string
@@ -33,11 +34,22 @@ const useStyles = createStyles((theme) => ({
   },
 }))
 
+const item = {
+  hidden: {
+    opacity: 0,
+    y: -8,
+  },
+  show: {
+    opacity: 1,
+    y: 0,
+  },
+}
+
 const FeatureCard = ({ title, icon, hideSeparator }: FeatureCardProps) => {
   const { classes } = useStyles()
 
   return (
-    <Box className={classes.container}>
+    <motion.div variants={item} className={classes.container}>
       {icon}
       <Title order={3} className={classes.title}>
         {title}
@@ -73,7 +85,7 @@ const FeatureCard = ({ title, icon, hideSeparator }: FeatureCardProps) => {
           </defs>
         </svg>
       )}
-    </Box>
+    </motion.div>
   )
 }
 

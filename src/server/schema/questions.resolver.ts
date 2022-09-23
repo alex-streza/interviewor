@@ -4,10 +4,6 @@ import { Arg, Int, Query, Resolver } from 'type-graphql'
 import { Question } from './questions'
 
 const prisma = new PrismaClient()
-const headers = {
-  'Content-Type': 'application/json',
-  Authorization: `Bearer ${process.env.LIVEBLOCKS_SECRET_KEY}`,
-}
 @Resolver(Question)
 export class QuestionsResolver {
   @Query(() => [Question])
@@ -36,5 +32,11 @@ export class QuestionsResolver {
         category: true,
       },
     })
+  }
+
+  @Query(() => String)
+  async totalCount(): Promise<string> {
+    const count = await prisma.question.count()
+    return '+' + Math.floor(count / 10) * 10
   }
 }

@@ -10,6 +10,7 @@ export const {
   getQuestionsByCategory,
   getCategories,
   getNewRoomId,
+  getTotalCount,
 } = getSdk(gqlClient)
 
 export const pageSize = 25

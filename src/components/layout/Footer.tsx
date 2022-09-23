@@ -1,5 +1,8 @@
-import { Footer, Group, Stack, Text, createStyles } from '@mantine/core'
 import Logo from '@components/logo'
+import { createStyles, Footer, Group, Stack, Text } from '@mantine/core'
+import { motion, useAnimation } from 'framer-motion'
+import { useEffect } from 'react'
+import { useInView } from 'react-intersection-observer'
 import { ScrollableLink } from './Navigation'
 
 const useStyles = createStyles((theme) => ({
@@ -15,8 +18,15 @@ const useStyles = createStyles((theme) => ({
       paddingInline: '180px',
     },
   },
-  link: {
-    padding: 0,
+  linksContainer: {
+    alignItems: 'end',
+    gap: 4,
+    span: {
+      fontSize: '12px',
+    },
+    button: {
+      padding: 4,
+    },
   },
 }))
 
@@ -35,23 +45,67 @@ const links = [
   },
 ]
 
+const container = {
+  hidden: {},
+  show: {
+    transition: {
+      delayChildren: 0.5,
+      staggerChildren: 0.1,
+    },
+  },
+}
+
+const item = {
+  hidden: {
+    opacity: 0,
+    y: -8,
+  },
+  show: {
+    opacity: 1,
+    y: 0,
+  },
+}
+
+const MotionFooter = motion(Footer)
+
 const AppFooter = () => {
   const { classes } = useStyles()
+  const controls = useAnimation()
+  const [ref, inView] = useInView()
+
+  useEffect(() => {
+    if (inView) {
+      controls.start('show')
+    }
+  }, [controls, inView])
 
   return (
-    <Footer height="auto" className={classes.container}>
+    <MotionFooter
+      ref={ref}
+      animate={controls}
+      initial="hidden"
+      variants={container}
+      className={classes.container}
+      height="auto"
+    >
       <Stack spacing="xxs">
-        <Logo />
-        <Text size="xs">Tech interviews were never easier</Text>
+        <motion.span variants={item}>
+          <Logo />
+        </motion.span>
+        <motion.span variants={item}>
+          <Text size="xs">Tech interviews were never easier</Text>
+        </motion.span>
       </Stack>
       <Group position="left">
-        <Stack spacing="xxs">
+        <Stack spacing="xxs" className={classes.linksContainer}>
           {links.map((link, index) => (
-            <ScrollableLink key={index} label={link.label} name={link.name} />
+            <motion.span key={index} variants={item}>
+              <ScrollableLink label={link.label} name={link.name} />
+            </motion.span>
           ))}
         </Stack>
       </Group>
-    </Footer>
+    </MotionFooter>
   )
 }
 

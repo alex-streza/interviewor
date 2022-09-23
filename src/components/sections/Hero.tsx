@@ -10,8 +10,11 @@ import {
 } from '@mantine/core'
 
 import Separator from '@components/icons/separator.svg'
+import { motion, useAnimation } from 'framer-motion'
 import Link from 'next/link'
 import { Question } from 'src/types/models/questions'
+import { useInView } from 'react-intersection-observer'
+import { useEffect } from 'react'
 
 const useStyles = createStyles((theme) => ({
   container: {
@@ -126,41 +129,89 @@ const useStyles = createStyles((theme) => ({
 
 interface HeroProps {
   questions: Question[]
+  totalCount?: string
 }
 
-const Hero = ({ questions }: HeroProps) => {
+const MotionTitle = motion(Title)
+
+const container = {
+  hidden: {},
+  show: {
+    transition: {
+      delayChildren: 0.5,
+      staggerChildren: 0.1,
+    },
+  },
+}
+
+const item = {
+  hidden: {
+    opacity: 0,
+    y: -8,
+  },
+  show: {
+    opacity: 1,
+    y: 0,
+  },
+}
+
+const Hero = ({ questions, totalCount }: HeroProps) => {
   const { classes } = useStyles()
+  const controls = useAnimation()
+  const [ref, inView] = useInView()
+
+  useEffect(() => {
+    if (inView) {
+      controls.start('show')
+    }
+  }, [controls, inView])
 
   return (
-    <section id="hero">
+    <motion.section
+      ref={ref}
+      animate={controls}
+      initial="hidden"
+      variants={container}
+      id="hero"
+    >
       <Container className={classes.container} fluid>
-        <Title order={1} align="center" className={classes.title}>
+        <MotionTitle
+          order={1}
+          align="center"
+          variants={item}
+          className={classes.title}
+        >
           Imagine your perfect tech interview
-        </Title>
-        <Text align="center" mt="xs" px="xs">
-          Train & collaborate on over 200 React theory-based questions and
-          answers.
-          {/* Train & collaborate on over 1000 React, Node.JS, Javascript, CSS, HTML theory-based questions and answers. */}
-        </Text>
+        </MotionTitle>
+        <motion.span variants={item}>
+          <Text align="center" mt="xs" px="xs">
+            Train & collaborate on over {totalCount} React theory-based
+            questions and answers.
+          </Text>
+        </motion.span>
         <Stack align="center" mt="sm" spacing="sm">
           <Stack align="center" spacing="xxs">
             <Link href="/interview" passHref>
-              <Button size="lg" className={classes.button}>
-                Get started
-              </Button>
+              <motion.div variants={item}>
+                <Button size="lg" className={classes.button}>
+                  Get started
+                </Button>
+              </motion.div>
             </Link>
-            <Text align="center" color="blue" size="sm">
-              No account required
-            </Text>
+            <motion.span variants={item}>
+              <Text align="center" color="blue" size="sm">
+                No account required
+              </Text>
+            </motion.span>
           </Stack>
           <Cards questions={questions} autoPlay />
           <LiveBlocks />
         </Stack>
       </Container>
-      <div className={classes.separator}>
+      <motion.div variants={item} className={classes.separator}>
         <Separator />
-      </div>
-    </section>
+      </motion.div>
+    </motion.section>
   )
 }
 

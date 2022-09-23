@@ -45,6 +45,10 @@ const Layout = ({ children }: LayoutProps) => {
             },
           },
 
+          html: {
+            scrollBehavior: 'smooth',
+          },
+
           '.skeleton': {
             display: 'inline-block',
             position: 'relative',

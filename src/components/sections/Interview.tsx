@@ -192,7 +192,7 @@ const Interview = () => {
             {categories
               .sort((a) => (!a.active ? 1 : -1))
               .map((category) => (
-                <Grid.Col key={category.name} span={6}>
+                <Grid.Col key={category.id} span={6}>
                   <CategoryCard
                     selected={category.id == tempSelectedCategory + ''}
                     onSelect={() =>

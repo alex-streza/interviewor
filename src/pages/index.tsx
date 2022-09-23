@@ -25,10 +25,16 @@ import {
 } from '@primer/octicons-react'
 import { dehydrate, useQuery } from '@tanstack/react-query'
 import { useOrigin } from '@utils/useOrigin'
+import { motion } from 'framer-motion'
 import { NextSeo } from 'next-seo'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
-import { getQuestionsByCategory, getCategories, queryClient } from 'src/api'
+import {
+  getCategories,
+  getQuestionsByCategory,
+  getTotalCount,
+  queryClient,
+} from 'src/api'
 
 export async function getServerSideProps() {
   await queryClient.prefetchQuery(['questionsByCategory', 1], () =>
@@ -37,6 +43,7 @@ export async function getServerSideProps() {
     }),
   )
   await queryClient.prefetchQuery(['categories'], () => getCategories())
+  await queryClient.prefetchQuery(['totalCount'], () => getTotalCount())
 
   return {
     props: {
@@ -60,6 +67,10 @@ const Home = () => {
 
   const [selectedCategory, setSelectedCategory] = useState(1)
 
+  const { data: dataCount } = useQuery(['totalCount'], () => {
+    return getTotalCount()
+  })
+
   const { data, isLoading } = useQuery(
     ['questionsByCategory', selectedCategory],
     () =>
@@ -72,6 +83,7 @@ const Home = () => {
   )
   const categories = categoriesData?.categories ?? []
   const questions = data?.questionsByCategory ?? []
+  const totalCount = dataCount?.totalCount
 
   const origin = useOrigin()
 
@@ -79,13 +91,12 @@ const Home = () => {
     <Container m="none" px="none" fluid>
       <NextSeo
         title="Interviewor | Tech interviews made easy"
-        description="Train & collaborate on over 200 React theory-based questions and answers."
+        description={`Train & collaborate on over ${totalCount} React theory-based questions and answers.`}
         canonical="https://www.interviewor.com/"
         openGraph={{
           url: 'https://www.interviewor.com/',
           title: 'Interviewor | Tech interviews made easy',
-          description:
-            'Train & collaborate on over 200 React theory-based questions and answers.',
+          description: `Train & collaborate on over ${totalCount} React theory-based questions and answers.`,
           images: [
             {
               url: 'https://www.interviewor.com/assets/images/og.png',
@@ -101,7 +112,7 @@ const Home = () => {
           cardType: 'summary_large_image',
         }}
       />
-      <Hero questions={questions} />
+      <Hero questions={questions} totalCount={totalCount} />
       <Section
         id="feature1"
         title={
@@ -147,17 +158,17 @@ const Home = () => {
       </Section>
       <Section
         id="feature2"
-        title="Over 200 questions"
+        title={`Over ${totalCount} questions`}
         subtitle="Never run out of questions"
-        description="Train on over 200 React questions and answers."
+        description={`Train on over ${totalCount} tech questions and answers.`}
       >
-        <Text mt="xxs">Pick category:</Text>
+        {/* <Text mt="xxs">Pick category:</Text> */}
         <Group mt="xs" mb="sm">
           {categories
             .sort((a) => (!a.active ? 1 : -1))
             .map((category) => (
               <CategoryCard
-                key={category.name}
+                key={category.id}
                 selected={category.id === selectedCategory + ''}
                 onSelect={() => setSelectedCategory(Number(category.id))}
                 inactive={!category.active}
