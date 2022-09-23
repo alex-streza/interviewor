@@ -24,6 +24,7 @@ import {
   ShareAndroidIcon,
 } from '@primer/octicons-react'
 import { dehydrate, useQuery } from '@tanstack/react-query'
+import { useOrigin } from '@utils/useOrigin'
 import { NextSeo } from 'next-seo'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
@@ -72,10 +73,7 @@ const Home = () => {
   const categories = categoriesData?.categories ?? []
   const questions = data?.questionsByCategory ?? []
 
-  const origin =
-    typeof window !== 'undefined' && window.location.origin
-      ? window.location.origin
-      : ''
+  const origin = useOrigin()
 
   return (
     <Container m="none" px="none" fluid>

@@ -10,7 +10,7 @@
     "generate": "npm -s run generate:prisma && npm -s run generate:types",
     "generate:prisma": "prisma generate",
     "generate:types": "graphql-codegen --config codegen.ts",
-    "migrate:dev": "prisma migrate dev --name init",
+    "migrate:dev": "prisma migrate dev --name",
     "prettier:check": "prettier --check \"./src/**/*.{ts,tsx,js,jsx,md}\"",
     "prettier:format": "prettier --write \"./src/**/*.{ts,tsx,js,jsx,md}\"",
     "seed": "ts-node ./src/server/prisma/seed.ts",

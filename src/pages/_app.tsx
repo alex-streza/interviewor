@@ -33,7 +33,7 @@ const MyApp: AppType = ({
               },
               colors: {
                 white: ['#FAFAFA'],
-                gray: ['#2F2F2F', '#131313', '#6B6B6B'],
+                gray: ['#2F2F2F', '#131313', '#6B6B6B', '#E9E9E9'],
                 blue: [
                   '#CAF0F8',
                   '#ADE8F4',

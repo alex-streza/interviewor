@@ -1,26 +1,32 @@
 [
   {
     "name": "react",
-    "value": "React"
+    "value": "React",
+    "active": true
   },
   {
     "name": "next.js",
-    "value": "Next.JS"
+    "value": "Next.JS",
+    "active": false
   },
   {
     "name": "javascript",
-    "value": "JavaScript"
+    "value": "JavaScript",
+    "active": true
   },
   {
     "name": "typescript",
-    "value": "TypeScript"
+    "value": "TypeScript",
+    "active": true
   },
   {
     "name": "html",
-    "value": "HTML"
+    "value": "HTML",
+    "active": true
   },
   {
     "name": "css",
-    "value": "CSS"
+    "value": "CSS",
+    "active": true
   }
 ]

@@ -1,4 +1,4 @@
-import { Button, createStyles, Group, Stack } from '@mantine/core'
+import { Button, Text, createStyles, Group, Stack } from '@mantine/core'
 import { ArrowLeftIcon, ArrowRightIcon } from '@primer/octicons-react'
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
@@ -12,6 +12,7 @@ interface CardsProps {
   controlled?: boolean
   shown?: boolean
   index?: number
+  totalCount?: number
   showAnswer?: () => void
   onNavigate?: (direction: 'previous' | 'next') => void
 }
@@ -38,6 +39,7 @@ const Cards = ({
   controlled,
   showAnswer,
   shown,
+  totalCount,
   index = 0,
 }: CardsProps) => {
   const [questions, setQuestions] = useState<Question[]>(initialQuestions)
@@ -97,6 +99,9 @@ const Cards = ({
               Previous
             </Button>
           )}
+          <Text weight={900}>
+            {index + 1}/{totalCount}
+          </Text>
           <Button
             onClick={() => {
               if (!controlled) {

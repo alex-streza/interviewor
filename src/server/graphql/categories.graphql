@@ -3,5 +3,6 @@ query getCategories {
     id
     name
     value
+    active
   }
 }

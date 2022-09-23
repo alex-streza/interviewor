@@ -4,21 +4,37 @@ import { ReactNode } from 'react'
 interface CategoryCardProps {
   children: ReactNode
   selected: boolean
+  inactive?: boolean
   onSelect: () => void
 }
 
 const useStyles = createStyles(
-  (theme, { selected }: { selected: boolean }) => ({
+  (
+    theme,
+    { selected, inactive }: { selected: boolean; inactive?: boolean },
+  ) => ({
     container: {
       display: 'flex',
       gap: 8,
       alignItems: 'center',
       justifyContent: 'start',
       fontWeight: 'bold',
-      backgroundColor: !selected ? theme.colors.white[0] : theme.colors.blue[0],
+      backgroundColor: inactive
+        ? theme.colors.gray[3]
+        : !selected
+        ? theme.colors.white[0]
+        : theme.colors.blue[0],
       border: '2px solid',
-      borderColor: !selected ? theme.colors.blue[2] : theme.colors.blue[4],
-      color: !selected ? theme.colors.gray[1] : theme.colors.blue[4],
+      borderColor: inactive
+        ? theme.colors.gray[2]
+        : !selected
+        ? theme.colors.blue[2]
+        : theme.colors.blue[4],
+      color: inactive
+        ? theme.colors.gray[2]
+        : !selected
+        ? theme.colors.gray[1]
+        : theme.colors.blue[4],
       borderRadius: '12px',
       padding: '12px',
       cursor: 'pointer',
@@ -29,11 +45,16 @@ const useStyles = createStyles(
   }),
 )
 
-const CategoryCard = ({ children, selected, onSelect }: CategoryCardProps) => {
-  const { classes } = useStyles({ selected })
+const CategoryCard = ({
+  children,
+  selected,
+  onSelect,
+  inactive,
+}: CategoryCardProps) => {
+  const { classes } = useStyles({ selected, inactive })
 
   return (
-    <Box onClick={onSelect} className={classes.container}>
+    <Box onClick={() => !inactive && onSelect()} className={classes.container}>
       {children}
     </Box>
   )

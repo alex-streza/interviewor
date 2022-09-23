@@ -41,27 +41,28 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     )
     const room = await responseCreateRoom.json()
 
-    const responseInitializeRoom = await fetch(
-      `https://api.liveblocks.io/v2/rooms/${newRoomId}/storage`,
-      {
-        body: JSON.stringify({
-          liveblocksType: 'LiveObject',
-          data: {
-            questions: {
-              liveblocksType: 'LiveList',
-              data: questions,
+    if (!room.error) {
+      const responseInitializeRoom = await fetch(
+        `https://api.liveblocks.io/v2/rooms/${newRoomId}/storage`,
+        {
+          body: JSON.stringify({
+            liveblocksType: 'LiveObject',
+            data: {
+              questions: {
+                liveblocksType: 'LiveList',
+                data: questions,
+              },
             },
+          }),
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${process.env.LIVEBLOCKS_SECRET_KEY}`,
           },
-        }),
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${process.env.LIVEBLOCKS_SECRET_KEY}`,
         },
-      },
-    )
-    const storage = await responseInitializeRoom.json()
-
+      )
+      await responseInitializeRoom.json()
+    }
     options = {
       redirect: {
         permanent: false,

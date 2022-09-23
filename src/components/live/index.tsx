@@ -5,7 +5,7 @@ import { useCallback, useEffect } from 'react'
 import { darken } from 'color2k'
 
 const Live = () => {
-  const [myPresence, updateMyPresence] = useMyPresence()
+  const [, updateMyPresence] = useMyPresence()
   const others = useOthers()
 
   const handleUpdateCursor = useCallback(

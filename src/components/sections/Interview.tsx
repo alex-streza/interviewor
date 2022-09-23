@@ -23,8 +23,9 @@ import {
   ShareAndroidIcon,
 } from '@primer/octicons-react'
 import { useQuery } from '@tanstack/react-query'
+import { useOrigin } from '@utils/useOrigin'
 import { useRouter } from 'next/router'
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import { getCategories, getQuestionsByCategory, pageSize } from 'src/api'
 import { Question } from 'src/types/models/questions'
 import { Maybe } from 'type-graphql'
@@ -87,41 +88,18 @@ const Interview = () => {
   const [page, setPage] = useState(1)
   const [index, setIndex] = useState(0)
 
-  const origin =
-    typeof window !== 'undefined' && window.location.origin
-      ? window.location.origin
-      : ''
+  const origin = useOrigin()
 
   const questions = useStorage((root) => root.questions) ?? []
   const selectedCategory = useStorage((root) => root.category)
   const shown = useStorage((root) => root.shown) ?? false
 
-  const { data: categoriesData } = useQuery(['categories'], () =>
-    getCategories(),
-  )
-
-  const { data, isLoading } = useQuery(
-    ['questionsByCategory', selectedCategory, page],
-    () =>
-      getQuestionsByCategory({
-        category_id: selectedCategory ?? 1,
-        page,
-      }),
-    {
-      enabled: !!selectedCategory,
-    },
-  )
-
   const selectCategory = useMutation(
-    ({ storage }, category: number | null) => {
-      storage.set('category', category)
-    },
+    ({ storage }, category: number | null) => storage.set('category', category),
     [tempSelectedCategory],
   )
   const showAnswer = useMutation(
-    ({ storage }) => {
-      storage.set('shown', !shown)
-    },
+    ({ storage }) => storage.set('shown', !shown),
     [shown],
   )
   const navigateQuestions = useMutation(
@@ -136,19 +114,26 @@ const Interview = () => {
     },
     [questions],
   )
-  const updateQuestions = useMutation(
-    ({ storage }) => {
-      const questions = data?.questionsByCategory ?? []
-      storage.set('questions', questions)
-    },
-    [data],
+  const updateQuestions = useMutation(({ storage }, questions: Question[]) => {
+    storage.set('questions', questions)
+  }, [])
+
+  const { data: categoriesData } = useQuery(['categories'], () =>
+    getCategories(),
   )
 
-  useEffect(() => {
-    if (selectedCategory) {
-      updateQuestions()
-    }
-  }, [selectedCategory, page, isLoading, data, updateQuestions])
+  const { isLoading } = useQuery(
+    ['questionsByCategory', selectedCategory, page],
+    () =>
+      getQuestionsByCategory({
+        category_id: selectedCategory ?? 1,
+        page,
+      }),
+    {
+      enabled: !!selectedCategory,
+      onSuccess: (data) => updateQuestions(data.questionsByCategory),
+    },
+  )
 
   const categories = categoriesData?.categories ?? []
 
@@ -174,6 +159,7 @@ const Interview = () => {
               size="lg"
               className={classes.button}
               onClick={() => {
+                shown && showAnswer()
                 selectCategory(null)
               }}
             >
@@ -203,17 +189,22 @@ const Interview = () => {
         )}
         {!selectedCategory && (
           <Grid my="xs">
-            {categories.map((category) => (
-              <Grid.Col key={category.name} span={6}>
-                <CategoryCard
-                  selected={category.id == tempSelectedCategory + ''}
-                  onSelect={() => setTempSelectedCategory(Number(category.id))}
-                >
-                  {categoryIcons[category.name as keyof typeof categoryIcons]}
-                  {category.value}
-                </CategoryCard>
-              </Grid.Col>
-            ))}
+            {categories
+              .sort((a, b) => (!a.active ? 1 : -1))
+              .map((category) => (
+                <Grid.Col key={category.name} span={6}>
+                  <CategoryCard
+                    selected={category.id == tempSelectedCategory + ''}
+                    onSelect={() =>
+                      setTempSelectedCategory(Number(category.id))
+                    }
+                    inactive={!category.active}
+                  >
+                    {categoryIcons[category.name as keyof typeof categoryIcons]}
+                    {category.value}
+                  </CategoryCard>
+                </Grid.Col>
+              ))}
           </Grid>
         )}
         {selectedCategory &&
@@ -223,21 +214,22 @@ const Interview = () => {
             <Cards
               questions={questions}
               onNavigate={(direction) => {
-                const idx = index + (direction === 'next' ? 1 : -1)
-                if (index == pageSize - 1) {
+                const val = direction === 'next' ? 1 : -1
+                if (index == questions.length - 1 && val > 0) {
                   setPage(page + 1)
                   setIndex(0)
-                } else if (index == -1) {
+                } else if (index == 0 && val < 0 && page > 1) {
                   setPage(page - 1)
                   setIndex(0)
                 } else {
-                  setIndex(idx)
+                  setIndex(index + val)
                 }
                 navigateQuestions(direction)
               }}
               shown={shown}
               showAnswer={showAnswer}
-              index={page == 1 && index == 0 ? 0 : 1}
+              index={page == 1 && index == 0 ? 0 : index}
+              totalCount={questions.length}
               hasNavigation
               controlled
             />

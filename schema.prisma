@@ -13,7 +13,6 @@ model Question {
   answer      String
   category_id Int
   category    Category @relation(fields: [category_id], references: [id])
-  difficulty  String
   source      String
 }
 
@@ -21,5 +20,6 @@ model Category {
   id       Int        @id @default(autoincrement())
   name     String
   value    String
+  active    Boolean
   Question Question[]
 }

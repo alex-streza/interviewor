@@ -23,6 +23,7 @@ export type Scalars = {
 
 export type Category = {
   __typename?: 'Category'
+  active: Scalars['Boolean']
   id: Scalars['ID']
   name: Scalars['String']
   value: Scalars['String']
@@ -46,7 +47,6 @@ export type Question = {
   answer: Scalars['String']
   category: Category
   category_id: Scalars['Int']
-  difficulty: Scalars['String']
   id: Scalars['ID']
   source: Scalars['String']
   text: Scalars['String']
@@ -61,6 +61,7 @@ export type GetCategoriesQuery = {
     id: string
     name: string
     value: string
+    active: boolean
   }>
 }
 
@@ -104,6 +105,7 @@ export const GetCategoriesDocument = gql`
       id
       name
       value
+      active
     }
   }
 `

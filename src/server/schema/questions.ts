@@ -19,8 +19,5 @@ export class Question {
   category!: Category
 
   @Field()
-  difficulty!: string
-
-  @Field()
   source!: string
 }
