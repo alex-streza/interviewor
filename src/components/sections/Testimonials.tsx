@@ -52,38 +52,26 @@ const Testimonials = () => {
       >
         <Carousel.Slide>
           <TestimonialCard
-            name="Betty Blue"
-            avatar="https://avatars.githubusercontent.com/u/1443320?v=4"
-            tweet_url="https://twitter.com/JohnDoe/status/1361234567890"
-            username="@betty_xyz"
-            tweet="Interviewor is such a great idea! It makes theory based interviews so easy it’s unbelievable."
+            name="Your Name"
+            tweet_url="https://twitter.com/alex_streza"
+            username="@your_handle"
+            tweet="Interviews are simple now with interviewor."
           />
         </Carousel.Slide>
         <Carousel.Slide>
           <TestimonialCard
-            name="Jim Halpert"
-            avatar="https://avatars.githubusercontent.com/u/1143320?v=5"
-            tweet_url="https://twitter.com/JohnDoe/status/1361234567890"
-            username="@jim_office"
-            tweet="This is amazing! I was able to get a job at Google with the help of this app. Thank you so much!"
+            name="Your Name"
+            tweet_url="https://twitter.com/alex_streza"
+            username="@your_handle"
+            tweet="Interviewor is cool tbh."
           />
         </Carousel.Slide>
         <Carousel.Slide>
           <TestimonialCard
-            name="Jon Snow"
-            avatar="https://avatars.githubusercontent.com/u/1243320?v=4"
-            tweet_url="https://twitter.com/JohnDoe/status/1361234567890"
-            username="@jon_got"
-            tweet="Losing the love of my life to unbridled and ilogical madness spree led me to tech. Interviewor stood by my side when I needed a job."
-          />
-        </Carousel.Slide>
-        <Carousel.Slide>
-          <TestimonialCard
-            name="Saul Goodman"
-            avatar="https://avatars.githubusercontent.com/u/143320?v=4"
-            tweet_url="https://twitter.com/JohnDoe/status/1361234567890"
-            username="@real_goodman"
-            tweet="@interviewor being completely free is simply marvelous. Love what you’re building @alex_streza."
+            name="Your Name"
+            tweet_url="https://twitter.com/alex_streza"
+            username="@your_handle"
+            tweet="Tech concepts you can learn in seconds."
           />
         </Carousel.Slide>
       </Carousel>

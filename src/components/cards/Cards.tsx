@@ -83,16 +83,17 @@ const Cards = ({
       </MotionGroup>
       {hasNavigation && questions.length > 0 && (
         <Group mx="auto" mt="auto">
-          {(!controlled || index > 0) && (
+          {index > 0 && (
             <Button
               variant="light"
               onClick={() => {
-                if (!controlled) {
+                if (onNavigate) {
+                  onNavigate('previous')
+                } else {
                   const [first, ...rest] = questions
                   setQuestions([...rest, first] as any[])
                 }
                 setPaused(false)
-                onNavigate && onNavigate('previous')
               }}
             >
               <ArrowLeftIcon />
@@ -106,12 +107,12 @@ const Cards = ({
           )}
           <Button
             onClick={() => {
-              if (!controlled) {
+              if (onNavigate) {
+                onNavigate('next')
+              } else {
                 const last = questions.pop()
                 setQuestions([last, ...questions] as any[])
               }
-              setPaused(false)
-              onNavigate && onNavigate('next')
             }}
           >
             Next

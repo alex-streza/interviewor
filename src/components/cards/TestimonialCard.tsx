@@ -15,7 +15,7 @@ interface TestimonialCardProps {
   username: string
   tweet: string
   tweet_url: string
-  avatar: string
+  avatar?: string
 }
 
 const useStyles = createStyles((theme) => ({
@@ -34,6 +34,12 @@ const useStyles = createStyles((theme) => ({
   avatarContainer: {
     marginBottom: '12px',
   },
+  avatar: {
+    div: {
+      backgroundColor: theme.colors.blue[2],
+      color: theme.colors.blue[6],
+    },
+  },
 }))
 
 const TestimonialCard = ({
@@ -47,7 +53,15 @@ const TestimonialCard = ({
   return (
     <Box className={classes.container}>
       <Group className={classes.avatarContainer}>
-        <Avatar src={avatar} size={48} radius="xl" alt={name} />
+        <Avatar
+          src={avatar}
+          size={48}
+          radius="xl"
+          className={classes.avatar}
+          alt={name}
+        >
+          {name[0]}
+        </Avatar>
         <Stack className={classes.nameContainer}>
           <Title order={5}>{name}</Title>
           <Text weight={700} size="sm" color="blue">

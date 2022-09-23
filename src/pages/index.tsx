@@ -169,7 +169,7 @@ const Home = () => {
         {isLoading ? (
           <CardsLoading />
         ) : (
-          <Cards questions={questions} hasNavigation />
+          <Cards questions={questions} index={1} hasNavigation controlled />
         )}
       </Section>
       <Section
@@ -195,7 +195,11 @@ const Home = () => {
             )}
           </CopyButton>
         </Group>
-        <Cards questions={questions} hasNavigation />
+        {isLoading ? (
+          <CardsLoading />
+        ) : (
+          <Cards questions={questions} index={1} hasNavigation controlled />
+        )}
       </Section>
       <Testimonials />
       <GetStarted />
