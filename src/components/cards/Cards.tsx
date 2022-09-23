@@ -29,7 +29,29 @@ const useStyles = createStyles((theme) => ({
   },
 }))
 
+const MotionStack = motion(Stack)
 const MotionGroup = motion(Group)
+
+const container = {
+  hidden: {},
+  show: {
+    transition: {
+      delayChildren: 0.5,
+      staggerChildren: 0.1,
+    },
+  },
+}
+
+const item = {
+  hidden: {
+    opacity: 0,
+    y: -8,
+  },
+  show: {
+    opacity: 1,
+    y: 0,
+  },
+}
 
 const Cards = ({
   questions: initialQuestions,
@@ -64,8 +86,13 @@ const Cards = ({
   }, [autoPlay, questions, paused])
 
   return (
-    <Stack className={classes.container}>
-      <MotionGroup>
+    <MotionStack
+      variants={container}
+      initial="hidden"
+      animate="show"
+      className={classes.container}
+    >
+      <Group>
         {questions.length > 0 && (
           <>
             <QuestionCard
@@ -80,9 +107,9 @@ const Cards = ({
             <QuestionCard index={2} />
           </>
         )}
-      </MotionGroup>
+      </Group>
       {hasNavigation && questions.length > 0 && (
-        <Group mx="auto" mt="auto">
+        <MotionGroup variants={item} mx="auto" mt="auto">
           {index > 0 && (
             <Button
               variant="light"
@@ -118,9 +145,9 @@ const Cards = ({
             Next
             <ArrowRightIcon />
           </Button>
-        </Group>
+        </MotionGroup>
       )}
-    </Stack>
+    </MotionStack>
   )
 }
 

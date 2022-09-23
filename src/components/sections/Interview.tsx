@@ -24,6 +24,7 @@ import {
 } from '@primer/octicons-react'
 import { useQuery } from '@tanstack/react-query'
 import { useOrigin } from '@utils/useOrigin'
+import { motion } from 'framer-motion'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { getCategories, getQuestionsByCategory, pageSize } from 'src/api'
@@ -77,6 +78,31 @@ const useStyles = createStyles((theme) => ({
     width: 'fit-content',
   },
 }))
+
+const MotionTitle = motion(Title)
+const MotionContainer = motion(Container)
+const MotionCol = motion(Grid.Col)
+
+const container = {
+  hidden: {},
+  show: {
+    transition: {
+      delayChildren: 0.5,
+      staggerChildren: 0.1,
+    },
+  },
+}
+
+const item = {
+  hidden: {
+    opacity: 0,
+    y: -8,
+  },
+  show: {
+    opacity: 1,
+    y: 0,
+  },
+}
 
 const Interview = () => {
   const { classes } = useStyles()
@@ -138,61 +164,78 @@ const Interview = () => {
   const categories = categoriesData?.categories ?? []
 
   return (
-    <Container m="none" px="xs" className={classes.container} fluid>
+    <MotionContainer
+      variants={container}
+      initial="hidden"
+      animate="show"
+      m="none"
+      px="xs"
+      className={classes.container}
+      fluid
+    >
       <Container className={classes.innerContainer}>
         <Live />
         {!selectedCategory && (
           <>
-            <Title order={1} className={classes.title} mb="xs">
+            <MotionTitle
+              variants={item}
+              order={1}
+              className={classes.title}
+              mb="xs"
+            >
               Pick topic
-            </Title>
-            <Text className={classes.description}>
-              Train on over 1000 React, Node.JS, Javascript, CSS, HTML questions
-              and answers.
-            </Text>
+            </MotionTitle>
+            <motion.span variants={item}>
+              <Text className={classes.description}>
+                Train on over 1000 React, Node.JS, Javascript, CSS, HTML
+                questions and answers.
+              </Text>
+            </motion.span>
           </>
         )}
         {selectedCategory && (
-          <Group className={classes.shareContainer}>
-            <Button
-              variant="light"
-              size="lg"
-              className={classes.button}
-              onClick={() => {
-                shown && showAnswer()
-                selectCategory(null)
-              }}
-            >
-              <ArrowLeftIcon size={24} />
-              {
-                categories.find(
-                  (category) => category.id === selectedCategory + '',
-                )?.value
-              }
-            </Button>
-            <CopyButton value={origin + router.asPath}>
-              {({ copy }) => (
-                <Popover position="bottom" withArrow onOpen={copy}>
-                  <Popover.Target>
-                    <Button size="lg" onClick={copy}>
-                      <ShareAndroidIcon size={24} />
-                      Share
-                    </Button>
-                  </Popover.Target>
-                  <Popover.Dropdown className={classes.popover}>
-                    <Text size="sm">Copied</Text>
-                  </Popover.Dropdown>
-                </Popover>
-              )}
-            </CopyButton>
-          </Group>
+          <motion.div variants={item}>
+            <Group className={classes.shareContainer}>
+              <Button
+                variant="light"
+                size="lg"
+                className={classes.button}
+                onClick={() => {
+                  shown && showAnswer()
+                  selectCategory(null)
+                }}
+              >
+                <ArrowLeftIcon size={24} />
+                {
+                  categories.find(
+                    (category) => category.id === selectedCategory + '',
+                  )?.value
+                }
+              </Button>
+              <CopyButton value={origin + router.asPath}>
+                {({ copy }) => (
+                  <Popover position="bottom" withArrow onOpen={copy}>
+                    <Popover.Target>
+                      <Button size="lg" onClick={copy}>
+                        <ShareAndroidIcon size={24} />
+                        Share
+                      </Button>
+                    </Popover.Target>
+                    <Popover.Dropdown className={classes.popover}>
+                      <Text size="sm">Copied</Text>
+                    </Popover.Dropdown>
+                  </Popover>
+                )}
+              </CopyButton>
+            </Group>
+          </motion.div>
         )}
         {!selectedCategory && (
           <Grid my="xs">
             {categories
               .sort((a) => (!a.active ? 1 : -1))
               .map((category) => (
-                <Grid.Col key={category.id} span={6}>
+                <MotionCol variants={item} key={category.id} span={6}>
                   <CategoryCard
                     selected={category.id == tempSelectedCategory + ''}
                     onSelect={() =>
@@ -203,7 +246,7 @@ const Interview = () => {
                     {categoryIcons[category.name as keyof typeof categoryIcons]}
                     {category.value}
                   </CategoryCard>
-                </Grid.Col>
+                </MotionCol>
               ))}
           </Grid>
         )}
@@ -242,20 +285,22 @@ const Interview = () => {
           ))}
         {!selectedCategory && (
           <Center>
-            <Button
-              disabled={!tempSelectedCategory}
-              size="lg"
-              onClick={() => {
-                selectCategory(tempSelectedCategory ?? 1)
-              }}
-            >
-              Next
-              <ArrowRightIcon size={24} />
-            </Button>
+            <motion.div variants={item}>
+              <Button
+                disabled={!tempSelectedCategory}
+                size="lg"
+                onClick={() => {
+                  selectCategory(tempSelectedCategory ?? 1)
+                }}
+              >
+                Next
+                <ArrowRightIcon size={24} />
+              </Button>
+            </motion.div>
           </Center>
         )}
       </Container>
-    </Container>
+    </MotionContainer>
   )
 }
 

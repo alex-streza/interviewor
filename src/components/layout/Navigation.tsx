@@ -12,6 +12,7 @@ import {
   Stack,
   useMantineTheme,
 } from '@mantine/core'
+import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { useState } from 'react'
 
@@ -126,19 +127,46 @@ const NavigationItems = ({
 }) => (
   <>
     {links.map((link, index) => (
-      <ScrollableLink
-        key={index}
-        label={link.label}
-        name={link.name}
-        onClick={onClick}
-        centered={centered}
-      />
+      <motion.span key={index} variants={item}>
+        <ScrollableLink
+          label={link.label}
+          name={link.name}
+          onClick={onClick}
+          centered={centered}
+        />
+      </motion.span>
     ))}
     <Link href="/interview">
-      <Button size="md">Get started</Button>
+      <motion.a variants={item}>
+        <Button size="md">Get started</Button>
+      </motion.a>
     </Link>
   </>
 )
+
+const MotionHeader = motion(Header)
+const MotionBurger = motion(Burger)
+
+const container = {
+  hidden: {},
+  show: {
+    transition: {
+      delayChildren: 0.5,
+      staggerChildren: 0.1,
+    },
+  },
+}
+
+const item = {
+  hidden: {
+    opacity: 0,
+    x: -8,
+  },
+  show: {
+    opacity: 1,
+    x: 0,
+  },
+}
 
 const Navigation = () => {
   const theme = useMantineTheme()
@@ -147,11 +175,17 @@ const Navigation = () => {
   const [opened, setOpened] = useState(false)
 
   return (
-    <Header className={classes.container}>
+    <MotionHeader
+      initial="hidden"
+      variants={container}
+      animate="show"
+      height="auto"
+      className={classes.container}
+    >
       <Link href="/">
-        <a>
+        <motion.a variants={item}>
           <Logo />
-        </a>
+        </motion.a>
       </Link>
       <MediaQuery smallerThan="sm" styles={{ display: 'none' }}>
         <Group className={classes.desktopItems}>
@@ -160,7 +194,8 @@ const Navigation = () => {
       </MediaQuery>
       <MediaQuery largerThan="sm" styles={{ display: 'none' }}>
         <Group>
-          <Burger
+          <MotionBurger
+            variants={item}
             opened={opened}
             onClick={() => setOpened((o) => !o)}
             size="sm"
@@ -183,7 +218,7 @@ const Navigation = () => {
           </Drawer>
         </Group>
       </MediaQuery>
-    </Header>
+    </MotionHeader>
   )
 }
 
