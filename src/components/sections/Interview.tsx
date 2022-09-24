@@ -27,7 +27,7 @@ import { useOrigin } from '@utils/useOrigin'
 import { motion } from 'framer-motion'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
-import { getCategories, getQuestionsByCategory, pageSize } from 'src/api'
+import { getQuestionsByCategory } from 'src/api'
 import { Question } from 'src/types/models/questions'
 import { Maybe } from 'type-graphql'
 
@@ -104,7 +104,7 @@ const item = {
   },
 }
 
-const Interview = () => {
+const Interview = ({ categories }: { categories: Category[] }) => {
   const { classes } = useStyles()
 
   const router = useRouter()
@@ -144,10 +144,6 @@ const Interview = () => {
     storage.set('questions', questions)
   }, [])
 
-  const { data: categoriesData } = useQuery(['categories'], () =>
-    getCategories(),
-  )
-
   const { isLoading } = useQuery(
     ['questionsByCategory', selectedCategory, page],
     () =>
@@ -160,8 +156,6 @@ const Interview = () => {
       onSuccess: (data) => updateQuestions(data.questionsByCategory),
     },
   )
-
-  const categories = categoriesData?.categories ?? []
 
   return (
     <MotionContainer

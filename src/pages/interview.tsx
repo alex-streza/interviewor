@@ -1,5 +1,6 @@
 import { RoomProvider } from '@api/liveblock.config'
 import InterviewSection from '@components/sections/Interview'
+import { Category } from '@prisma/client'
 import { dehydrate } from '@tanstack/react-query'
 import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
@@ -19,6 +20,10 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     .map((query) => query.state?.data?.questionsByCategory)
     .filter((data) => data)[0]
     .sort(() => 0.5 - Math.random())
+  const categories = dehydratedState.queries
+    .map((query) => query.state?.data?.categories)
+    .filter((data) => data)[0]
+    .sort((a) => (!a.active ? 1 : -1))
 
   const isRoomSelected = query.roomId
   const newRoomId = Date.now() + '-' + Math.floor(Math.random() * 10000)
@@ -73,17 +78,18 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
 
   return {
     props: {
+      categories,
       dehydratedState,
     },
     ...options,
   }
 }
-const Interview = () => {
+const Interview = ({ categories }: { categories: Category[] }) => {
   const router = useRouter()
 
   return (
     <RoomProvider id={router.query.roomId as string} initialPresence={{}}>
-      <InterviewSection />
+      <InterviewSection categories={categories} />
     </RoomProvider>
   )
 }

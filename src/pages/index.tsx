@@ -23,9 +23,9 @@ import {
   CommandPaletteIcon,
   ShareAndroidIcon,
 } from '@primer/octicons-react'
+import { Category } from '@server/schema/categories'
 import { dehydrate, useQuery } from '@tanstack/react-query'
 import { useOrigin } from '@utils/useOrigin'
-import { motion } from 'framer-motion'
 import { NextSeo } from 'next-seo'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
@@ -45,8 +45,15 @@ export async function getServerSideProps() {
   await queryClient.prefetchQuery(['categories'], () => getCategories())
   await queryClient.prefetchQuery(['totalCount'], () => getTotalCount())
 
+  const dehydratedState = dehydrate(queryClient)
+  const categories = dehydratedState.queries
+    .map((query) => query.state?.data?.categories)
+    .filter((data) => data)[0]
+    .sort((a) => (!a.active ? 1 : -1))
+
   return {
     props: {
+      categories: categories ?? [],
       dehydratedState: dehydrate(queryClient),
     },
   }
@@ -59,7 +66,7 @@ const useStyles = createStyles((theme) => ({
   },
 }))
 
-const Home = () => {
+const Home = ({ categories }: { categories: Category[] }) => {
   const theme = useMantineTheme()
   const { classes } = useStyles()
 
@@ -70,7 +77,7 @@ const Home = () => {
   const { data: dataCount } = useQuery(['totalCount'], () => {
     return getTotalCount()
   })
-
+  console.log('selectedCategory', selectedCategory)
   const { data, isLoading } = useQuery(
     ['questionsByCategory', selectedCategory],
     () =>
@@ -78,10 +85,7 @@ const Home = () => {
         category_id: selectedCategory,
       }),
   )
-  const { data: categoriesData } = useQuery(['categories'], () =>
-    getCategories(),
-  )
-  const categories = categoriesData?.categories ?? []
+
   const questions = data?.questionsByCategory ?? []
   const totalCount = dataCount?.totalCount
 
@@ -164,18 +168,16 @@ const Home = () => {
       >
         {/* <Text mt="xxs">Pick category:</Text> */}
         <Group mt="xs" mb="sm">
-          {categories
-            .sort((a) => (!a.active ? 1 : -1))
-            .map((category) => (
-              <CategoryCard
-                key={category.id}
-                selected={category.id === selectedCategory + ''}
-                onSelect={() => setSelectedCategory(Number(category.id))}
-                inactive={!category.active}
-              >
-                {categoryIcons[category.name as keyof typeof categoryIcons]}
-              </CategoryCard>
-            ))}
+          {categories.map((category) => (
+            <CategoryCard
+              key={category.id}
+              selected={category.id === selectedCategory + ''}
+              onSelect={() => setSelectedCategory(Number(category.id))}
+              inactive={!category.active}
+            >
+              {categoryIcons[category.name as keyof typeof categoryIcons]}
+            </CategoryCard>
+          ))}
         </Group>
         {isLoading ? (
           <CardsLoading />

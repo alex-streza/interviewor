@@ -5,6 +5,7 @@ import type { AppType } from 'next/dist/shared/lib/utils'
 import { queryClient } from 'src/api'
 import Layout from '@components/layout'
 import '@styles/fonts.css'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
 const MyApp: AppType = ({
   Component,
@@ -12,6 +13,7 @@ const MyApp: AppType = ({
 }) => {
   return (
     <QueryClientProvider client={queryClient}>
+      <ReactQueryDevtools initialIsOpen={false} />
       <Hydrate state={pageProps.dehydratedState}>
         <SessionProvider session={session}>
           <MantineProvider
