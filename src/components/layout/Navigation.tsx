@@ -12,6 +12,7 @@ import {
   Stack,
   useMantineTheme,
 } from '@mantine/core'
+import { container } from '@utils/variants'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { useState } from 'react'
@@ -146,16 +147,6 @@ const NavigationItems = ({
 
 const MotionHeader = motion(Header)
 const MotionBurger = motion(Burger)
-
-const container = {
-  hidden: {},
-  show: {
-    transition: {
-      delayChildren: 0.5,
-      staggerChildren: 0.1,
-    },
-  },
-}
 
 const item = {
   hidden: {

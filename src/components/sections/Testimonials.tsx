@@ -3,21 +3,11 @@ import TwitterIcon from '@components/icons/twitter.svg'
 import { Carousel } from '@mantine/carousel'
 import { Button, Group } from '@mantine/core'
 import { MarkGithubIcon } from '@primer/octicons-react'
+import { item } from '@utils/variants'
 import Autoplay from 'embla-carousel-autoplay'
 import { motion } from 'framer-motion'
 import { useRef } from 'react'
 import Section from './Section'
-
-const item = {
-  hidden: {
-    opacity: 0,
-    y: -8,
-  },
-  show: {
-    opacity: 1,
-    y: 0,
-  },
-}
 
 const Testimonials = () => {
   const autoplay = useRef(Autoplay({ delay: 2000 }))

@@ -8,6 +8,7 @@ import {
   Text,
   Title,
 } from '@mantine/core'
+import { item } from '@utils/variants'
 import { motion } from 'framer-motion'
 
 interface TestimonialCardProps {
@@ -41,17 +42,6 @@ const useStyles = createStyles((theme) => ({
     },
   },
 }))
-
-const item = {
-  hidden: {
-    opacity: 0,
-    y: -8,
-  },
-  show: {
-    opacity: 1,
-    y: 0,
-  },
-}
 
 const TestimonialCard = ({
   name,

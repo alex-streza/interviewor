@@ -1,4 +1,5 @@
 import { createStyles, Title } from '@mantine/core'
+import { item } from '@utils/variants'
 import { motion } from 'framer-motion'
 import { ReactNode } from 'react'
 
@@ -33,17 +34,6 @@ const useStyles = createStyles((theme) => ({
     zIndex: -1,
   },
 }))
-
-const item = {
-  hidden: {
-    opacity: 0,
-    y: -8,
-  },
-  show: {
-    opacity: 1,
-    y: 0,
-  },
-}
 
 const FeatureCard = ({ title, icon, hideSeparator }: FeatureCardProps) => {
   const { classes } = useStyles()

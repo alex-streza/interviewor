@@ -22,8 +22,10 @@ import {
   ArrowRightIcon,
   ShareAndroidIcon,
 } from '@primer/octicons-react'
+import { Category } from '@prisma/client'
 import { useQuery } from '@tanstack/react-query'
 import { useOrigin } from '@utils/useOrigin'
+import { container, item } from '@utils/variants'
 import { motion } from 'framer-motion'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
@@ -82,27 +84,6 @@ const useStyles = createStyles((theme) => ({
 const MotionTitle = motion(Title)
 const MotionContainer = motion(Container)
 const MotionCol = motion(Grid.Col)
-
-const container = {
-  hidden: {},
-  show: {
-    transition: {
-      delayChildren: 0.5,
-      staggerChildren: 0.1,
-    },
-  },
-}
-
-const item = {
-  hidden: {
-    opacity: 0,
-    y: -8,
-  },
-  show: {
-    opacity: 1,
-    y: 0,
-  },
-}
 
 const Interview = ({ categories }: { categories: Category[] }) => {
   const { classes } = useStyles()
@@ -202,7 +183,7 @@ const Interview = ({ categories }: { categories: Category[] }) => {
                 <ArrowLeftIcon size={24} />
                 {
                   categories.find(
-                    (category) => category.id === selectedCategory + '',
+                    (category) => category.id === selectedCategory,
                   )?.value
                 }
               </Button>
@@ -226,22 +207,18 @@ const Interview = ({ categories }: { categories: Category[] }) => {
         )}
         {!selectedCategory && (
           <Grid my="xs">
-            {categories
-              .sort((a) => (!a.active ? 1 : -1))
-              .map((category) => (
-                <MotionCol variants={item} key={category.id} span={6}>
-                  <CategoryCard
-                    selected={category.id == tempSelectedCategory + ''}
-                    onSelect={() =>
-                      setTempSelectedCategory(Number(category.id))
-                    }
-                    inactive={!category.active}
-                  >
-                    {categoryIcons[category.name as keyof typeof categoryIcons]}
-                    {category.value}
-                  </CategoryCard>
-                </MotionCol>
-              ))}
+            {categories.map((category) => (
+              <MotionCol variants={item} key={category.id} span={6}>
+                <CategoryCard
+                  selected={category.id === tempSelectedCategory}
+                  onSelect={() => setTempSelectedCategory(Number(category.id))}
+                  inactive={!category.active}
+                >
+                  {categoryIcons[category.name as keyof typeof categoryIcons]}
+                  {category.value}
+                </CategoryCard>
+              </MotionCol>
+            ))}
           </Grid>
         )}
         {selectedCategory &&

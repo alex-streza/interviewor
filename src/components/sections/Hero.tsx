@@ -15,6 +15,7 @@ import Link from 'next/link'
 import { Question } from 'src/types/models/questions'
 import { useInView } from 'react-intersection-observer'
 import { useEffect } from 'react'
+import { container, item, MotionTitle } from '@utils/variants'
 
 const useStyles = createStyles((theme) => ({
   container: {
@@ -130,29 +131,6 @@ const useStyles = createStyles((theme) => ({
 interface HeroProps {
   questions: Question[]
   totalCount?: string
-}
-
-const MotionTitle = motion(Title)
-
-const container = {
-  hidden: {},
-  show: {
-    transition: {
-      delayChildren: 0.5,
-      staggerChildren: 0.1,
-    },
-  },
-}
-
-const item = {
-  hidden: {
-    opacity: 0,
-    y: -8,
-  },
-  show: {
-    opacity: 1,
-    y: 0,
-  },
 }
 
 const Hero = ({ questions, totalCount }: HeroProps) => {

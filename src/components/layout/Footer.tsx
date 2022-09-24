@@ -1,5 +1,6 @@
 import Logo from '@components/logo'
 import { createStyles, Footer, Group, Stack, Text } from '@mantine/core'
+import { container, item } from '@utils/variants'
 import { motion, useAnimation } from 'framer-motion'
 import { useEffect } from 'react'
 import { useInView } from 'react-intersection-observer'
@@ -44,27 +45,6 @@ const links = [
     name: 'testimonials',
   },
 ]
-
-const container = {
-  hidden: {},
-  show: {
-    transition: {
-      delayChildren: 0.5,
-      staggerChildren: 0.1,
-    },
-  },
-}
-
-const item = {
-  hidden: {
-    opacity: 0,
-    y: -8,
-  },
-  show: {
-    opacity: 1,
-    y: 0,
-  },
-}
 
 const MotionFooter = motion(Footer)
 

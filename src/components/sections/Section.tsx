@@ -1,4 +1,5 @@
 import { Container, createStyles, Text, Title } from '@mantine/core'
+import { container, item, MotionTitle } from '@utils/variants'
 import { motion, useAnimation } from 'framer-motion'
 import { ReactNode, useEffect } from 'react'
 import { useInView } from 'react-intersection-observer'
@@ -46,28 +47,6 @@ interface SectionProps {
   fullWidth?: boolean
   children?: ReactNode
 }
-
-const container = {
-  hidden: {},
-  show: {
-    transition: {
-      delayChildren: 0.5,
-      staggerChildren: 0.1,
-    },
-  },
-}
-const item = {
-  hidden: {
-    opacity: 0,
-    y: -8,
-  },
-  show: {
-    opacity: 1,
-    y: 0,
-  },
-}
-
-const MotionTitle = motion(Title)
 
 const Section = ({
   id,

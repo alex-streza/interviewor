@@ -1,15 +1,9 @@
-import {
-  Box,
-  Group,
-  Button,
-  Collapse,
-  createStyles,
-  Title,
-} from '@mantine/core'
-import { darken } from 'color2k'
-import { useCallback, useEffect, useState } from 'react'
+import { Button, Collapse, createStyles, Group, Title } from '@mantine/core'
 import useTimer from '@utils/useTimer'
+import { item } from '@utils/variants'
+import { darken } from 'color2k'
 import { motion } from 'framer-motion'
+import { useCallback, useEffect, useState } from 'react'
 
 interface QuestionCardProps {
   title?: string
@@ -57,17 +51,6 @@ const useStyles = createStyles((theme, { index }: { index: number }) => ({
     width: 'fit-content',
   },
 }))
-
-const item = {
-  hidden: {
-    opacity: 0,
-    y: -8,
-  },
-  show: {
-    opacity: 1,
-    y: 0,
-  },
-}
 
 const QuestionCard = ({
   title,

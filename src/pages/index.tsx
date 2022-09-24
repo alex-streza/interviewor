@@ -171,7 +171,7 @@ const Home = ({ categories }: { categories: Category[] }) => {
           {categories.map((category) => (
             <CategoryCard
               key={category.id}
-              selected={category.id === selectedCategory + ''}
+              selected={category.id === selectedCategory}
               onSelect={() => setSelectedCategory(Number(category.id))}
               inactive={!category.active}
             >
