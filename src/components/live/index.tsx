@@ -1,5 +1,5 @@
 import { useOthers, useMyPresence } from '@api/liveblock.config'
-import { Avatar, Center, Group } from '@mantine/core'
+import { Avatar, Center, createStyles, Group } from '@mantine/core'
 import Cursor from './Cursor'
 import { useCallback, useEffect } from 'react'
 import { darken } from 'color2k'
@@ -8,9 +8,23 @@ import { container, item } from '@utils/variants'
 
 const MotionGroup = motion(Group)
 
+const useStyles = createStyles((theme, count: number) => ({
+  avatar: {
+    marginLeft: -8,
+
+    div: {
+      backgroundColor: theme.colors.blue[2],
+      color: theme.colors.blue[6],
+      border: `1px solid ${darken('#00B4D8', count * 0.05)}`,
+    },
+  },
+}))
+
 const Live = () => {
-  const [, updateMyPresence] = useMyPresence()
+  const [myPresence, updateMyPresence] = useMyPresence()
   const others = useOthers()
+
+  const { classes } = useStyles(others.length)
 
   const handleUpdateCursor = useCallback(
     (event: MouseEvent) => {
@@ -37,11 +51,17 @@ const Live = () => {
   )
 
   useEffect(() => {
-    updateMyPresence({
-      color: darken('#00B4D8', others.length * 0.05),
-      name: 'User ' + (others.length + 1),
-    })
-    document.body.addEventListener('mousemove', handleUpdateCursor)
+    if (!myPresence.name) {
+      updateMyPresence({
+        color: darken('#00B4D8', others.length * 0.05),
+        name: 'User ' + (others.length + 1),
+      })
+      document.body.addEventListener('mousemove', handleUpdateCursor)
+
+      return () => {
+        document.body.removeEventListener('mousemove', handleUpdateCursor)
+      }
+    }
   }, [handleUpdateCursor, others.length, updateMyPresence])
 
   return (
@@ -50,17 +70,7 @@ const Live = () => {
         <MotionGroup style={{ gap: '0' }} variants={container}>
           {others.map((other) => (
             <motion.span key={other.id} variants={item} animate="show">
-              <Avatar
-                style={{
-                  marginLeft: -8,
-                  border: `1px solid ${darken(
-                    '#00B4D8',
-                    others.length * 0.05,
-                  )}`,
-                }}
-                color="blue"
-                radius="xl"
-              >
+              <Avatar className={classes.avatar} radius="xl">
                 {other.presence?.name[0]}
                 {other.presence?.name.split(' ')[1][0]}
               </Avatar>

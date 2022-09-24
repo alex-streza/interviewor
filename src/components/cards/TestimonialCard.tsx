@@ -62,7 +62,7 @@ const TestimonialCard = ({
           className={classes.avatar}
           alt={name}
         >
-          {name[0]}
+          {name.split(' ').map((word) => word[0])}
         </Avatar>
         <Stack className={classes.nameContainer}>
           <Title order={5}>{name}</Title>
