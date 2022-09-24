@@ -93,13 +93,17 @@ const Interview = ({ categories }: { categories: Category[] }) => {
   const [tempSelectedCategory, setTempSelectedCategory] =
     useState<Maybe<number>>(null)
   const [page, setPage] = useState(1)
-  const [index, setIndex] = useState(0)
 
   const origin = useOrigin()
 
-  const questions = useStorage((root) => root.questions) ?? []
+  const questions =
+    useStorage((root) => {
+      const questions = root.questions ?? []
+      return questions
+    }) ?? []
   const selectedCategory = useStorage((root) => root.category)
   const shown = useStorage((root) => root.shown) ?? false
+  const index = useStorage((root) => root.index) ?? 0
 
   const selectCategory = useMutation(
     ({ storage }, category: number | null) => storage.set('category', category),
@@ -109,17 +113,9 @@ const Interview = ({ categories }: { categories: Category[] }) => {
     ({ storage }) => storage.set('shown', !shown),
     [shown],
   )
-  const navigateQuestions = useMutation(
-    ({ storage }, direction: 'next' | 'previous') => {
-      if (direction === 'next') {
-        const [first, ...rest] = questions
-        storage.set('questions', [...rest, first as Question])
-      } else {
-        const last = questions.pop()
-        storage.set('questions', [last as Question, ...questions])
-      }
-    },
-    [questions],
+  const setIndex = useMutation(
+    ({ storage }, index: number) => storage.set('index', index),
+    [],
   )
   const updateQuestions = useMutation(({ storage }, questions: Question[]) => {
     storage.set('questions', questions)
@@ -134,7 +130,8 @@ const Interview = ({ categories }: { categories: Category[] }) => {
       }),
     {
       enabled: !!selectedCategory,
-      onSuccess: (data) => updateQuestions(data.questionsByCategory),
+      onSuccess: (data) =>
+        index === 0 && updateQuestions(data.questionsByCategory),
     },
   )
 
@@ -178,13 +175,13 @@ const Interview = ({ categories }: { categories: Category[] }) => {
                 onClick={() => {
                   shown && showAnswer()
                   selectCategory(null)
+                  setIndex(0)
                 }}
               >
                 <ArrowLeftIcon size={24} />
                 {
-                  categories.find(
-                    (category) => category.id === selectedCategory,
-                  )?.value
+                  categories.find((category) => category.id == selectedCategory)
+                    ?.value
                 }
               </Button>
               <CopyButton value={origin + router.asPath}>
@@ -210,7 +207,7 @@ const Interview = ({ categories }: { categories: Category[] }) => {
             {categories.map((category) => (
               <MotionCol variants={item} key={category.id} span={6}>
                 <CategoryCard
-                  selected={category.id === tempSelectedCategory}
+                  selected={category.id == tempSelectedCategory}
                   onSelect={() => setTempSelectedCategory(Number(category.id))}
                   inactive={!category.active}
                 >
@@ -227,25 +224,28 @@ const Interview = ({ categories }: { categories: Category[] }) => {
           ) : questions.length > 0 ? (
             <Cards
               questions={questions}
-              onNavigate={(direction) => {
-                const val = direction === 'next' ? 1 : -1
-                if (index == questions.length - 1 && val > 0) {
+              onNext={() => {
+                if (index === questions.length - 1) {
                   setPage(page + 1)
                   setIndex(0)
-                } else if (index == 0 && val < 0 && page > 1) {
+                } else {
+                  setIndex(index + 1)
+                }
+              }}
+              onPrevious={() => {
+                if (index == 0) {
                   setPage(page - 1)
                   setIndex(0)
                 } else {
-                  setIndex(index + val)
+                  setIndex(index - 1)
                 }
-                navigateQuestions(direction)
               }}
               shown={shown}
               showAnswer={showAnswer}
-              index={page == 1 && index == 0 ? 0 : index}
-              totalCount={questions.length}
+              index={index}
+              page={page}
+              totalCount={(page - 1) * 25 + questions.length}
               hasNavigation
-              controlled
             />
           ) : (
             <NotFound

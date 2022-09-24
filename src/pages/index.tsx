@@ -72,14 +72,16 @@ const Home = ({ categories }: { categories: Category[] }) => {
 
   const router = useRouter()
 
+  const origin = useOrigin()
+
   const [selectedCategory, setSelectedCategory] = useState(1)
+  const [index, setIndex] = useState(0)
 
   const { data: dataCount } = useQuery(['totalCount'], () => {
     return getTotalCount()
   })
-  console.log('selectedCategory', selectedCategory)
   const { data, isLoading } = useQuery(
-    ['questionsByCategory', selectedCategory],
+    ['questionsByCategory', selectedCategory + ''],
     () =>
       getQuestionsByCategory({
         category_id: selectedCategory,
@@ -89,18 +91,16 @@ const Home = ({ categories }: { categories: Category[] }) => {
   const questions = data?.questionsByCategory ?? []
   const totalCount = dataCount?.totalCount
 
-  const origin = useOrigin()
-
   return (
     <Container m="none" px="none" fluid>
       <NextSeo
         title="Interviewor | Tech interviews made easy"
-        description={`Train & collaborate on over ${totalCount} React theory-based questions and answers.`}
+        description={`Train & collaborate on over ${totalCount} web development, theory-based questions and answers.`}
         canonical="https://www.interviewor.com/"
         openGraph={{
           url: 'https://www.interviewor.com/',
           title: 'Interviewor | Tech interviews made easy',
-          description: `Train & collaborate on over ${totalCount} React theory-based questions and answers.`,
+          description: `Train & collaborate on over ${totalCount} web development theory-based questions and answers.`,
           images: [
             {
               url: 'https://www.interviewor.com/assets/images/og.png',
@@ -171,8 +171,11 @@ const Home = ({ categories }: { categories: Category[] }) => {
           {categories.map((category) => (
             <CategoryCard
               key={category.id}
-              selected={category.id === selectedCategory}
-              onSelect={() => setSelectedCategory(Number(category.id))}
+              selected={category.id == selectedCategory}
+              onSelect={() => {
+                setSelectedCategory(Number(category.id))
+                setIndex(0)
+              }}
               inactive={!category.active}
             >
               {categoryIcons[category.name as keyof typeof categoryIcons]}
@@ -182,7 +185,13 @@ const Home = ({ categories }: { categories: Category[] }) => {
         {isLoading ? (
           <CardsLoading />
         ) : (
-          <Cards questions={questions} index={1} hasNavigation controlled />
+          <Cards
+            questions={questions}
+            index={index}
+            onNext={() => setIndex(index + 1)}
+            onPrevious={() => setIndex(index - 1)}
+            hasNavigation
+          />
         )}
       </Section>
       <Section
@@ -211,7 +220,13 @@ const Home = ({ categories }: { categories: Category[] }) => {
         {isLoading ? (
           <CardsLoading />
         ) : (
-          <Cards questions={questions} index={1} hasNavigation controlled />
+          <Cards
+            questions={questions}
+            index={index}
+            onNext={() => setIndex(index + 1)}
+            onPrevious={() => setIndex(index - 1)}
+            hasNavigation
+          />
         )}
       </Section>
       <Testimonials />

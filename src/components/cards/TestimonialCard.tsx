@@ -48,6 +48,7 @@ const TestimonialCard = ({
   username,
   tweet,
   avatar,
+  tweet_url,
 }: TestimonialCardProps) => {
   const { classes } = useStyles()
 
@@ -69,9 +70,16 @@ const TestimonialCard = ({
             {username}
           </Text>
         </Stack>
-        <Button size="md" variant="white" ml="auto" p="none">
-          <TwitterIcon />
-        </Button>
+        <a
+          href={tweet_url}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ marginLeft: 'auto' }}
+        >
+          <Button size="md" variant="white" p="none">
+            <TwitterIcon />
+          </Button>
+        </a>
       </Group>
       <Text>{tweet}</Text>
     </motion.div>

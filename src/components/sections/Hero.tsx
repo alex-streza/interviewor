@@ -14,7 +14,7 @@ import { motion, useAnimation } from 'framer-motion'
 import Link from 'next/link'
 import { Question } from 'src/types/models/questions'
 import { useInView } from 'react-intersection-observer'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { container, item, MotionTitle } from '@utils/variants'
 
 const useStyles = createStyles((theme) => ({
@@ -137,6 +137,7 @@ const Hero = ({ questions, totalCount }: HeroProps) => {
   const { classes } = useStyles()
   const controls = useAnimation()
   const [ref, inView] = useInView()
+  const [index, setIndex] = useState(0)
 
   useEffect(() => {
     if (inView) {
@@ -163,8 +164,8 @@ const Hero = ({ questions, totalCount }: HeroProps) => {
         </MotionTitle>
         <motion.span variants={item}>
           <Text align="center" mt="xs" px="xs">
-            Train & collaborate on over {totalCount} React theory-based
-            questions and answers.
+            Train & collaborate on over {totalCount} web development,
+            theory-based questions and answers.
           </Text>
         </motion.span>
         <Stack align="center" mt="sm" spacing="sm">
@@ -182,7 +183,13 @@ const Hero = ({ questions, totalCount }: HeroProps) => {
               </Text>
             </motion.span>
           </Stack>
-          <Cards questions={questions} autoPlay />
+          <Cards
+            questions={questions}
+            index={index}
+            onNext={() => setIndex(index + 1)}
+            onPrevious={() => setIndex(index - 1)}
+            autoPlay
+          />
           <LiveBlocks />
         </Stack>
       </Container>

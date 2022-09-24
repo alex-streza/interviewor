@@ -24,6 +24,7 @@ type Storage = {
   questions: Question[]
   category: number | null
   shown?: boolean
+  index?: number
 }
 
 // Optionally, UserMeta represents static/readonly metadata on each User, as

@@ -9,12 +9,13 @@ interface CardsProps {
   questions: Question[]
   autoPlay?: boolean
   hasNavigation?: boolean
-  controlled?: boolean
   shown?: boolean
+  onNext?: () => void
+  onPrevious?: () => void
   index?: number
+  page?: number
   totalCount?: number
   showAnswer?: () => void
-  onNavigate?: (direction: 'previous' | 'next') => void
 }
 
 const useStyles = createStyles((theme) => ({
@@ -54,36 +55,31 @@ const item = {
 }
 
 const Cards = ({
-  questions: initialQuestions,
+  questions,
   autoPlay,
   hasNavigation,
-  onNavigate,
-  controlled,
+  onNext,
+  onPrevious,
   showAnswer,
   shown,
   totalCount,
+  page = 0,
   index = 0,
 }: CardsProps) => {
-  const [questions, setQuestions] = useState<Question[]>(initialQuestions)
   const [paused, setPaused] = useState(false)
 
   const { classes } = useStyles()
 
   useEffect(() => {
-    if (controlled) setQuestions(initialQuestions)
-  }, [initialQuestions, controlled])
-
-  useEffect(() => {
     if (autoPlay && !paused && questions.length > 0) {
       const interval = setInterval(() => {
-        if (!paused) {
-          const [first, ...rest] = questions
-          setQuestions([...rest, first] as any[])
+        if (!paused && onNext) {
+          onNext()
         }
       }, 2500)
       return () => clearInterval(interval)
     }
-  }, [autoPlay, questions, paused])
+  }, [autoPlay, questions, paused, onNext])
 
   return (
     <MotionStack
@@ -97,8 +93,8 @@ const Cards = ({
           <>
             <QuestionCard
               index={0}
-              title={questions[0]?.text}
-              answer={questions[0]?.answer}
+              title={questions[index]?.text}
+              answer={questions[index]?.answer}
               onPause={() => setPaused(!paused)}
               onShowAnswer={showAnswer}
               shown={shown}
@@ -110,38 +106,18 @@ const Cards = ({
       </Group>
       {hasNavigation && questions.length > 0 && (
         <MotionGroup variants={item} mx="auto" mt="auto">
-          {index > 0 && (
-            <Button
-              variant="light"
-              onClick={() => {
-                if (onNavigate) {
-                  onNavigate('previous')
-                } else {
-                  const [first, ...rest] = questions
-                  setQuestions([...rest, first] as any[])
-                }
-                setPaused(false)
-              }}
-            >
+          {(page > 0 || index > 0) && (
+            <Button variant="light" onClick={onPrevious}>
               <ArrowLeftIcon />
               Previous
             </Button>
           )}
           {totalCount && (
-            <Text weight={900}>
-              {index + 1}/{totalCount}
+            <Text size="sm" weight={900}>
+              {(page - 1) * 25 + index + 1}/{totalCount}
             </Text>
           )}
-          <Button
-            onClick={() => {
-              if (onNavigate) {
-                onNavigate('next')
-              } else {
-                const last = questions.pop()
-                setQuestions([last, ...questions] as any[])
-              }
-            }}
-          >
+          <Button onClick={onNext}>
             Next
             <ArrowRightIcon />
           </Button>

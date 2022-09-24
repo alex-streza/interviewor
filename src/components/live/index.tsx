@@ -3,6 +3,10 @@ import { Avatar, Center, Group } from '@mantine/core'
 import Cursor from './Cursor'
 import { useCallback, useEffect } from 'react'
 import { darken } from 'color2k'
+import { motion } from 'framer-motion'
+import { container, item } from '@utils/variants'
+
+const MotionGroup = motion(Group)
 
 const Live = () => {
   const [, updateMyPresence] = useMyPresence()
@@ -43,21 +47,26 @@ const Live = () => {
   return (
     <>
       <Center mb="xs">
-        <Group style={{ gap: '0' }}>
+        <MotionGroup style={{ gap: '0' }} variants={container}>
           {others.map((other) => (
-            <Avatar
-              style={{
-                marginLeft: -8,
-              }}
-              key={other.id}
-              color="blue"
-              radius="xl"
-            >
-              {other.presence?.name[0]}
-              {other.presence?.name.split(' ')[1][0]}
-            </Avatar>
+            <motion.span key={other.id} variants={item} animate="show">
+              <Avatar
+                style={{
+                  marginLeft: -8,
+                  border: `1px solid ${darken(
+                    '#00B4D8',
+                    others.length * 0.05,
+                  )}`,
+                }}
+                color="blue"
+                radius="xl"
+              >
+                {other.presence?.name[0]}
+                {other.presence?.name.split(' ')[1][0]}
+              </Avatar>
+            </motion.span>
           ))}
-        </Group>
+        </MotionGroup>
       </Center>
       {others.map((other) => (
         <Cursor
