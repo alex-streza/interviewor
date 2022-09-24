@@ -6,11 +6,20 @@ import { queryClient } from 'src/api'
 import Layout from '@components/layout'
 import '@styles/fonts.css'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { useEffect } from 'react'
+import splitbee from '@splitbee/web'
 
 const MyApp: AppType = ({
   Component,
   pageProps: { session, ...pageProps },
 }) => {
+  useEffect(() => {
+    splitbee.init({
+      scriptUrl: '/assets/scripts/bee.js',
+      apiUrl: '/_hive',
+    })
+  }, [])
+
   return (
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools initialIsOpen={false} />
