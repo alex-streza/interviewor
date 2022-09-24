@@ -1,9 +1,9 @@
 import puppeteer from 'puppeteer'
 import fs from 'fs'
 
-// const source = 'https://learning-zone.github.io/html-interview-questions/'
-const source = 'https://learning-zone.github.io/css-interview-questions/'
-const category = 'css'
+const source =
+  'https://github.com/sudheerj/javascript-interview-questions/blob/master/README.md'
+const category = 'javascript'
 
 ;(async () => {
   const browser = await puppeteer.launch({
@@ -12,73 +12,34 @@ const category = 'css'
   const page = await browser.newPage()
   await page.goto(source)
 
-  await page.waitForSelector('main')
+  await page.waitForSelector('#readme')
 
   const questions = await page.evaluate(() => {
-    function getHTMLNodesBetween<T extends HTMLElement | ChildNode>(
-      rootNode: T,
-      startNode: T,
-      endNode: T,
-    ) {
-      let pastStartNode = false,
-        reachedEndNode = false
-
-      const htmlNodes: T[] = []
-
-      function getHTMLNodes(node: T) {
-        if (node == startNode) {
-          pastStartNode = true
-        } else if (node == endNode) {
-          reachedEndNode = true
-        } else if (node.nodeType == 3) {
-          if (
-            pastStartNode &&
-            !reachedEndNode &&
-            !/^\s*$/.test(node.nodeValue ?? '')
-          ) {
-            htmlNodes.push(node)
-          }
-        } else {
-          for (
-            let i = 0, len = node.childNodes.length;
-            !reachedEndNode && i < len;
-            ++i
-          ) {
-            getHTMLNodes(node.childNodes[i] as T)
-          }
-        }
-      }
-
-      getHTMLNodes(rootNode)
-      return htmlNodes
-    }
-
-    let questions = Array.from(document.querySelectorAll('h2'))
-    questions = questions.slice(2, questions.length - 1)
-    const separators = Array.from(
-      document.querySelectorAll('#content > div > b > a'),
+    const questions = Array.from(
+      document.querySelectorAll('article > ol > li > h3'),
     )
-    const answers: any = []
+    let answers = Array.from(document.querySelectorAll('article > ol > li'))
+    answers = answers.slice(3, answers.length)
 
-    questions.forEach((question, i) => {
-      const answer = getHTMLNodesBetween(
-        document.querySelector('#content') as any,
-        question,
-        separators[i],
+    answers.forEach((answer) => {
+      answer.innerHTML = answer.innerHTML.replace(/<h3 dir="auto">.*<\/h3>/, '')
+      answer.innerHTML = answer.innerHTML.replace(
+        `<p dir="auto"><strong><a href="#table-of-contents"><g-emoji class="g-emoji" alias="arrow_up" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/2b06.png">⬆</g-emoji> Back to Top</a></strong></p>`,
+        '',
       )
-      answers.push(
-        answer
-          .map((node) => node.nodeValue)
-          .join(' ')
-          .replace(/\s\s+/g, ' '),
+      // remove <div class=\"zeroclipboard-container position-absolute right-0 top-0\">*<\/div>
+      answer.innerHTML = answer.innerHTML.replace(
+        /<div class=\"zeroclipboard-container position-absolute right-0 top-0\">.*<\/div>/gs,
+        '',
       )
     })
 
     const questionsArray = questions.map((question, index) => ({
       text: question.textContent,
-      answer: answers[index],
-      category_id: 6,
-      source: 'https://learning-zone.github.io/css-interview-questions/',
+      answer: answers[index]?.innerHTML,
+      category_id: 3,
+      source:
+        'https://github.com/sudheerj/javascript-interview-questions/blob/master/README.md',
     }))
 
     return questionsArray

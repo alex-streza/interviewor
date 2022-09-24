@@ -4,18 +4,26 @@ import reactQuestions from './questions/react.json'
 import javascriptQuestions from './questions/javascript.json'
 import htmlQuestions from './questions/html.json'
 import cssQuestions from './questions/css.json'
+import typescriptQuestions from './questions/typescript.json'
 import categories from './categories.json'
 
 const prisma = new PrismaClient()
 const questions = [
-  // ...javascriptQuestions,
-  // ...reactQuestions,
+  ...javascriptQuestions,
+  ...reactQuestions,
+  ...typescriptQuestions,
   ...htmlQuestions,
   ...cssQuestions,
 ]
 
 async function main() {
   console.log(`Start seeding ...`)
+  // await prisma.question.deleteMany({
+  //   where: {
+  //     category_id: 3,
+  //   },
+  // })
+  // await prisma.$executeRawUnsafe('DROP TABLE "Question" CASCADE')
   // await prisma.question.deleteMany()
   // await prisma.category.deleteMany()
 

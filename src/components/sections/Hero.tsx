@@ -186,7 +186,9 @@ const Hero = ({ questions, totalCount }: HeroProps) => {
           <Cards
             questions={questions}
             index={index}
-            onNext={() => setIndex(index + 1)}
+            onNext={() =>
+              setIndex(index < questions.length - 1 ? index + 1 : 0)
+            }
             onPrevious={() => setIndex(index - 1)}
             autoPlay
           />
