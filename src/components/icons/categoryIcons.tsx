@@ -4,6 +4,7 @@ import JavaScriptIcon from '@components/icons/javascript.svg'
 import TypeSriptIcon from '@components/icons/typescript.svg'
 import HTMLIcon from '@components/icons/html5.svg'
 import CSSIcon from '@components/icons/css3.svg'
+import NodeJSIcon from '@components/icons/nodejs.svg'
 
 export const categoryIcons = {
   react: <ReactIcon width="32" />,
@@ -12,4 +13,5 @@ export const categoryIcons = {
   typescript: <TypeSriptIcon width="32" />,
   html: <HTMLIcon width="32" />,
   css: <CSSIcon width="32" />,
+  'node.js': <NodeJSIcon width="32" />,
 }

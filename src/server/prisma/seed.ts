@@ -5,15 +5,17 @@ import javascriptQuestions from './questions/javascript.json'
 import htmlQuestions from './questions/html.json'
 import cssQuestions from './questions/css.json'
 import typescriptQuestions from './questions/typescript.json'
+import nodejsQuestions from './questions/nodejs.json'
 import categories from './categories.json'
 
 const prisma = new PrismaClient()
 const questions = [
-  ...javascriptQuestions,
-  ...reactQuestions,
-  ...typescriptQuestions,
-  ...htmlQuestions,
-  ...cssQuestions,
+  // ...javascriptQuestions,
+  // ...reactQuestions,
+  // ...typescriptQuestions,
+  // ...htmlQuestions,
+  // ...cssQuestions,
+  ...nodejsQuestions,
 ]
 
 async function main() {
