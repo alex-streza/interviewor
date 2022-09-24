@@ -1,25 +1,16 @@
+import Layout from '@components/layout'
 import { MantineProvider } from '@mantine/core'
+import '@styles/fonts.css'
 import { Hydrate, QueryClientProvider } from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { SessionProvider } from 'next-auth/react'
 import type { AppType } from 'next/dist/shared/lib/utils'
 import { queryClient } from 'src/api'
-import Layout from '@components/layout'
-import '@styles/fonts.css'
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import { useEffect } from 'react'
-import splitbee from '@splitbee/web'
 
 const MyApp: AppType = ({
   Component,
   pageProps: { session, ...pageProps },
 }) => {
-  useEffect(() => {
-    splitbee.init({
-      scriptUrl: '/assets/scripts/bee.js',
-      apiUrl: '/_hive',
-    })
-  }, [])
-
   return (
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools initialIsOpen={false} />

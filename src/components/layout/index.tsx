@@ -1,7 +1,7 @@
 import { AppShell, Global, useMantineTheme } from '@mantine/core'
+import PlausibleProvider from 'next-plausible'
 import NextNProgress from 'nextjs-progressbar'
 import { ReactNode } from 'react'
-import { RoomProvider } from '@api/liveblock.config'
 import Footer from './Footer'
 import Navigation from './Navigation'
 
@@ -13,7 +13,7 @@ const Layout = ({ children }: LayoutProps) => {
   const theme = useMantineTheme()
 
   return (
-    <>
+    <PlausibleProvider domain="interviewor.com">
       <NextNProgress color="#48CAE4" startPosition={0.3} height={4} />
       <Global
         styles={(theme) => ({
@@ -88,7 +88,7 @@ const Layout = ({ children }: LayoutProps) => {
       >
         {children}
       </AppShell>
-    </>
+    </PlausibleProvider>
   )
 }
 
