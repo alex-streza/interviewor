@@ -5,7 +5,7 @@ import { Hydrate, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { SessionProvider } from 'next-auth/react'
 import type { AppType } from 'next/dist/shared/lib/utils'
-import { queryClient } from 'src/api'
+import { queryClient } from '@api/index'
 
 const MyApp: AppType = ({
   Component,

@@ -212,7 +212,7 @@ const Interview = ({ categories }: { categories: Category[] }) => {
                   inactive={!category.active}
                 >
                   {categoryIcons[category.name as keyof typeof categoryIcons]}
-                  {category.value}
+                  {category.value} ({category.count})
                 </CategoryCard>
               </MotionCol>
             ))}

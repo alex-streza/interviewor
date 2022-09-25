@@ -127,8 +127,8 @@ const useStyles = createStyles((theme) => ({
     marginBottom: '40px',
   },
   textButton: {
-    color: theme.colors.blue[5],
-    fontWeight: 500,
+    color: theme.colors.blue[4],
+    fontWeight: 600,
   },
 }))
 

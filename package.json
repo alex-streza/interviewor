@@ -15,6 +15,7 @@
     "prettier:format": "prettier --write \"./src/**/*.{ts,tsx,js,jsx,md}\"",
     "seed": "ts-node ./src/server/prisma/seed.ts",
     "scrape": "ts-node ./scraper/index.ts",
+    "cypress:open": "cypress open",
     "prepare": "husky install",
     "postinstall": "prisma generate || true"
   },
@@ -71,6 +72,8 @@
     "@typescript-eslint/eslint-plugin": "^5.33.0",
     "@typescript-eslint/parser": "^5.33.0",
     "autoprefixer": "^10.4.10",
+    "cli-progress": "^3.11.2",
+    "cypress": "^10.8.0",
     "eslint": "8.22.0",
     "eslint-config-next": "12.2.5",
     "husky": "^8.0.1",

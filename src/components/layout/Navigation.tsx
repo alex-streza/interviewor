@@ -173,7 +173,7 @@ const Navigation = () => {
       height="auto"
       className={classes.container}
     >
-      <Link href="/">
+      <Link href="/" passHref>
         <motion.a variants={item}>
           <Logo />
         </motion.a>

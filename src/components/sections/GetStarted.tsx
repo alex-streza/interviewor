@@ -60,8 +60,8 @@ const useStyles = createStyles((theme) => ({
     maxWidth: 570,
   },
   textButton: {
-    color: theme.colors.blue[5],
-    fontWeight: 500,
+    color: theme.colors.blue[4],
+    fontWeight: 600,
   },
 }))
 

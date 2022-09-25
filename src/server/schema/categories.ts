@@ -1,4 +1,4 @@
-import { Field, ID, ObjectType } from 'type-graphql'
+import { Field, ID, Int, ObjectType } from 'type-graphql'
 
 @ObjectType()
 export class Category {
@@ -13,4 +13,7 @@ export class Category {
 
   @Field()
   active!: boolean
+
+  @Field(() => Int)
+  count: number | undefined
 }

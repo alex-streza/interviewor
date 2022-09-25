@@ -18,6 +18,7 @@ const LiveBlocks = () => {
       href="https://liveblocks.io/"
       target="_blank"
       rel="noopener noreferrer"
+      aria-label="View LiveBlocks.io"
     >
       <svg
         width="152"

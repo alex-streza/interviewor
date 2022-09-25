@@ -4,5 +4,6 @@ query getCategories {
     name
     value
     active
+    count
   }
 }

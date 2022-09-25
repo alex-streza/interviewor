@@ -65,7 +65,7 @@ const TestimonialCard = ({
           {name.split(' ').map((word) => word[0])}
         </Avatar>
         <Stack className={classes.nameContainer}>
-          <Title order={5}>{name}</Title>
+          <Title order={4}>{name}</Title>
           <Text weight={700} size="sm" color="blue">
             {username}
           </Text>

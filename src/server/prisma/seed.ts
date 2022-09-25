@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client'
+import { SingleBar, Presets } from 'cli-progress'
 
 import reactQuestions from './questions/react.json'
 import javascriptQuestions from './questions/javascript.json'
@@ -10,11 +11,11 @@ import categories from './categories.json'
 
 const prisma = new PrismaClient()
 const questions = [
-  // ...javascriptQuestions,
-  // ...reactQuestions,
-  // ...typescriptQuestions,
-  // ...htmlQuestions,
-  // ...cssQuestions,
+  ...javascriptQuestions,
+  ...reactQuestions,
+  ...typescriptQuestions,
+  ...htmlQuestions,
+  ...cssQuestions,
   ...nodejsQuestions,
 ]
 
@@ -38,12 +39,15 @@ async function main() {
   // }
 
   console.log(`Seeding ${questions.length} questions...`)
+  const questionsBar = new SingleBar({}, Presets.shades_classic)
+  questionsBar.start(questions.length, 0)
   for (const q of questions) {
     const question = await prisma.question.create({
       data: q,
     })
-    console.log(`Created question with id: ${question.id}`)
+    questionsBar.increment()
   }
+  questionsBar.stop()
   console.log(`Seeding finished.`)
 }
 
