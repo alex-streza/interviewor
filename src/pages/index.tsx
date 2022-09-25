@@ -36,7 +36,7 @@ import {
   queryClient,
 } from 'src/api'
 
-export async function getServerSideProps() {
+export async function getStaticProps() {
   await queryClient.prefetchQuery(['questionsByCategory', 1], () =>
     getQuestionsByCategory({
       category_id: 1,

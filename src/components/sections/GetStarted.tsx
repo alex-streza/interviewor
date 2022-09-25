@@ -56,9 +56,12 @@ const useStyles = createStyles((theme) => ({
       },
     },
   },
-
   text: {
     maxWidth: 570,
+  },
+  textButton: {
+    color: theme.colors.blue[5],
+    fontWeight: 500,
   },
 }))
 
@@ -106,7 +109,12 @@ const GetStarted = () => {
             </Link>
           </motion.div>
           <motion.span variants={item}>
-            <Text align="center" color="blue" size="sm">
+            <Text
+              align="center"
+              color="blue"
+              size="sm"
+              className={classes.textButton}
+            >
               No account required
             </Text>
           </motion.span>

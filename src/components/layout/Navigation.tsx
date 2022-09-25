@@ -191,6 +191,7 @@ const Navigation = () => {
             onClick={() => setOpened((o) => !o)}
             size="sm"
             color={theme.colors.gray[6]}
+            aria-label="search"
           />
           <Drawer
             className={classes.drawer}

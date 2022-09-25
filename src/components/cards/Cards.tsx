@@ -23,6 +23,7 @@ const useStyles = createStyles((theme) => ({
     marginInline: '20px',
     height: '100%',
     maxWidth: 400,
+    minHeight: 242,
 
     [`@media (min-width: ${theme.breakpoints.md}px)`]: {
       marginInline: 'auto',

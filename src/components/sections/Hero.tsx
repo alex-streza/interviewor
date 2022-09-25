@@ -126,6 +126,10 @@ const useStyles = createStyles((theme) => ({
     marginTop: '8px',
     marginBottom: '40px',
   },
+  textButton: {
+    color: theme.colors.blue[5],
+    fontWeight: 500,
+  },
 }))
 
 interface HeroProps {
@@ -178,7 +182,7 @@ const Hero = ({ questions, totalCount }: HeroProps) => {
               </motion.div>
             </Link>
             <motion.span variants={item}>
-              <Text align="center" color="blue" size="sm">
+              <Text align="center" className={classes.textButton} size="sm">
                 No account required
               </Text>
             </motion.span>

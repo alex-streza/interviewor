@@ -74,9 +74,15 @@ const TestimonialCard = ({
           href={tweet_url}
           target="_blank"
           rel="noopener noreferrer"
+          aria-label={`View ${name}'s tweet`}
           style={{ marginLeft: 'auto' }}
         >
-          <Button size="md" variant="white" p="none">
+          <Button
+            size="md"
+            variant="white"
+            p="none"
+            aria-label={`View ${name}'s tweet`}
+          >
             <TwitterIcon />
           </Button>
         </a>
