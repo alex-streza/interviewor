@@ -1,5 +1,6 @@
 import { AppShell, Global, useMantineTheme } from '@mantine/core'
 import PlausibleProvider from 'next-plausible'
+import Script from 'next/script'
 import NextNProgress from 'nextjs-progressbar'
 import { ReactNode } from 'react'
 import Footer from './Footer'
@@ -88,6 +89,7 @@ const Layout = ({ children }: LayoutProps) => {
       >
         {children}
       </AppShell>
+      <Script async data-api="/_hive" src="/bee.js" />
     </PlausibleProvider>
   )
 }
