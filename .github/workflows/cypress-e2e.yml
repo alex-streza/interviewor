@@ -1,11 +1,17 @@
 name: End-to-end tests
-on: deployment
-
+on: [push]
 jobs:
   cypress-run:
     runs-on: ubuntu-20.04
     steps:
-      - uses: mikefrancis/vercel-cypress@v1
+      - name: Checkout
+        uses: actions/checkout@v2
+      # Install NPM dependencies, cache them correctly
+      # and run all Cypress tests
+      # TODO: Inject env variables
+      - name: Cypress run
+        uses: cypress-io/github-action@v4
         with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          repo: interviewor
+          build: yarn run build
+          start: yarn start
+          wait-on: 'http://localhost:3000'
