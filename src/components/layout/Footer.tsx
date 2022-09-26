@@ -2,6 +2,7 @@ import Logo from '@components/logo'
 import { createStyles, Footer, Group, Stack, Text } from '@mantine/core'
 import { container, item } from '@utils/variants'
 import { motion, useAnimation } from 'framer-motion'
+import Link from 'next/link'
 import { useEffect } from 'react'
 import { useInView } from 'react-intersection-observer'
 import { ScrollableLink } from './Navigation'
@@ -69,9 +70,11 @@ const AppFooter = () => {
       height="auto"
     >
       <Stack spacing="xxs">
-        <motion.span variants={item}>
-          <Logo />
-        </motion.span>
+        <Link href="/" passHref>
+          <motion.a variants={item}>
+            <Logo />
+          </motion.a>
+        </Link>
         <motion.span variants={item}>
           <Text size="xs">Tech interviews were never easier</Text>
         </motion.span>
