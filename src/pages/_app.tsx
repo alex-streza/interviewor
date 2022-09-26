@@ -10,7 +10,7 @@ import { queryClient } from '@api/index'
 const MyApp: AppType = ({
   Component,
   pageProps: { session, ...pageProps },
-}) => {
+}: any) => {
   return (
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools initialIsOpen={false} />
@@ -50,16 +50,7 @@ const MyApp: AppType = ({
               },
               primaryColor: 'blue',
               primaryShade: { light: 3, dark: 7 },
-              spacing: {
-                auto: 'auto',
-                none: 0,
-                xxs: 8,
-                xs: 20,
-                sm: 32,
-                lg: 100,
-                xl: 136,
-                '2xl': 180,
-              },
+              spacing: {},
               breakpoints: {
                 sm: 480,
                 md: 768,
@@ -67,6 +58,18 @@ const MyApp: AppType = ({
                 xl: 1440,
               },
               defaultRadius: 8,
+              other: {
+                spacing: {
+                  auto: 'auto',
+                  none: 0,
+                  xxs: 8,
+                  xs: 20,
+                  sm: 32,
+                  lg: 100,
+                  xl: 136,
+                  '2xl': 180,
+                },
+              },
             }}
           >
             <Layout>

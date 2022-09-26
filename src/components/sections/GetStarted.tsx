@@ -1,12 +1,5 @@
 import Separator from '@components/icons/separator.svg'
-import {
-  Button,
-  Container,
-  createStyles,
-  Stack,
-  Text,
-  Title,
-} from '@mantine/core'
+import { Button, Container, createStyles, Stack, Text } from '@mantine/core'
 import { container, item, MotionTitle } from '@utils/variants'
 import { motion, useAnimation } from 'framer-motion'
 import Link from 'next/link'
@@ -22,6 +15,7 @@ const useStyles = createStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    width: '100%',
 
     [`@media (min-width: ${theme.breakpoints.md}px)`]: {
       paddingBlock: '100px',
@@ -102,7 +96,7 @@ const GetStarted = () => {
             link with your interviewer and start explaining concepts know.
           </Text>
         </motion.span>
-        <Stack mt="sm" align="center" spacing="xxs">
+        <Stack mt="sm" align="center" spacing={8}>
           <motion.div variants={item}>
             <Link href="/interview" passHref>
               <Button size="lg">Get started</Button>

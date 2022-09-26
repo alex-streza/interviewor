@@ -22,7 +22,6 @@ import {
   ArrowRightIcon,
   ShareAndroidIcon,
 } from '@primer/octicons-react'
-import { Category } from '@prisma/client'
 import { useQuery } from '@tanstack/react-query'
 import { useOrigin } from '@utils/useOrigin'
 import { container, item } from '@utils/variants'
@@ -30,6 +29,7 @@ import { motion } from 'framer-motion'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { getQuestionsByCategory } from 'src/api'
+import { Category } from 'src/types/generated/graphql'
 import { Question } from 'src/types/models/questions'
 import { Maybe } from 'type-graphql'
 

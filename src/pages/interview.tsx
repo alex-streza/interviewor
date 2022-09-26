@@ -1,11 +1,11 @@
 import { RoomProvider } from '@api/liveblock.config'
 import InterviewSection from '@components/sections/Interview'
-import { Category } from '@prisma/client'
 import { dehydrate } from '@tanstack/react-query'
 import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
 import fetch from 'node-fetch'
 import { getCategories, getQuestionsByCategory, queryClient } from 'src/api'
+import { Category } from 'src/types/generated/graphql'
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   await queryClient.prefetchQuery(['questionsByCategory'], () =>
@@ -17,13 +17,19 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
 
   const dehydratedState = dehydrate(queryClient)
   const questions = dehydratedState.queries
-    .map((query) => query.state?.data?.questionsByCategory)
+    .map((query) => {
+      const data = query.state?.data as any
+      return data?.questionsByCategory
+    })
     .filter((data) => data)[0]
     .sort(() => 0.5 - Math.random())
   const categories = dehydratedState.queries
-    .map((query) => query.state?.data?.categories)
+    .map((query) => {
+      const data = query.state?.data as any
+      return data?.categories
+    })
     .filter((data) => data)[0]
-    .sort((a) => (!a.active ? 1 : -1))
+    .sort((a: Category) => (!a.active ? 1 : -1))
 
   const isRoomSelected = query.roomId
   const newRoomId = Date.now() + '-' + Math.floor(Math.random() * 10000)

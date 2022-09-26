@@ -4,22 +4,11 @@ import {
 } from '@mantine/core'
 
 type CustomColors = 'blue' | 'white' | 'gray'
-type CustomSpacing = 'xxs' | 'auto' | 'none' | MantineNumberSizeBase
+type CustomSpacing = 'xxs' | '2xl' | 'auto' | 'none'
 
 declare module '@mantine/core' {
   export interface MantineThemeColorsOverride {
     colors: Record<CustomColors, Tuple<string, 10>>
   }
-  export type MantineNumberSize = CustomSpacing
+  export type MantineNumberSize = MantineNumberSizeBase | CustomSpacing
 }
-
-// // or if you want to "extend" standard colors
-// import { Tuple, DefaultMantineColor } from '@mantine/core';
-
-// type ExtendedCustomColors = 'primaryColorName' | 'secondaryColorName' | DefaultMantineColor;
-
-// declare module '@mantine/core' {
-//   export interface MantineThemeColorsOverride {
-//     colors: Record<ExtendedCustomColors, Tuple<string, 10>>;
-//   }
-// }

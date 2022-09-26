@@ -23,7 +23,6 @@ import {
   CommandPaletteIcon,
   ShareAndroidIcon,
 } from '@primer/octicons-react'
-import { Category } from '@server/schema/categories'
 import { dehydrate, useQuery } from '@tanstack/react-query'
 import { useOrigin } from '@utils/useOrigin'
 import { NextSeo } from 'next-seo'
@@ -35,6 +34,7 @@ import {
   getTotalCount,
   queryClient,
 } from 'src/api'
+import { Category } from 'src/types/generated/graphql'
 
 export async function getStaticProps() {
   await queryClient.prefetchQuery(['questionsByCategory', 1], () =>
@@ -47,9 +47,12 @@ export async function getStaticProps() {
 
   const dehydratedState = dehydrate(queryClient)
   const categories = dehydratedState.queries
-    .map((query) => query.state?.data?.categories)
+    .map((query) => {
+      const data = query.state?.data as any
+      return data?.categories
+    })
     .filter((data) => data)[0]
-    .sort((a) => (!a.active ? 1 : -1))
+    .sort((a: Category) => (!a.active ? 1 : -1))
 
   return {
     props: {
@@ -59,7 +62,11 @@ export async function getStaticProps() {
   }
 }
 
-const useStyles = createStyles((theme) => ({
+const useStyles = createStyles(() => ({
+  container: {
+    padding: 0,
+    margin: 'none',
+  },
   popover: {
     padding: '8px',
     width: 'fit-content',
@@ -92,7 +99,7 @@ const Home = ({ categories }: { categories: Category[] }) => {
   const totalCount = dataCount?.totalCount
 
   return (
-    <Container m="none" px="none" fluid>
+    <Container className={classes.container} fluid>
       <NextSeo
         title="Interviewor | Tech interviews made easy"
         description={`Train & collaborate on over ${totalCount} web development, theory-based questions and answers.`}
@@ -166,7 +173,7 @@ const Home = ({ categories }: { categories: Category[] }) => {
         subtitle="Never run out of questions"
         description={`Train on over ${totalCount} tech questions and answers.`}
       >
-        {/* <Text mt="xxs">Pick category:</Text> */}
+        {/* <Text mt={8}>Pick category:</Text> */}
         <Group mt="xs" mb="sm">
           {categories.map((category) => (
             <CategoryCard

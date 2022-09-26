@@ -68,14 +68,18 @@ const Live = () => {
     <>
       <Center mb="xs">
         <MotionGroup style={{ gap: '0' }} variants={container}>
-          {others.map((other) => (
-            <motion.span key={other.id} variants={item} animate="show">
-              <Avatar className={classes.avatar} radius="xl">
-                {other.presence?.name[0]}
-                {other.presence?.name.split(' ')[1][0]}
-              </Avatar>
-            </motion.span>
-          ))}
+          {others.map((other) => {
+            const name = other.presence?.name ?? 'User X'
+
+            return (
+              <motion.span key={other.id} variants={item} animate="show">
+                <Avatar className={classes.avatar} radius="xl">
+                  {name[0]}
+                  {name.split(' ').slice(1)}
+                </Avatar>
+              </motion.span>
+            )
+          })}
         </MotionGroup>
       </Center>
       {others.map((other) => (

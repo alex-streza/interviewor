@@ -173,7 +173,7 @@ const Hero = ({ questions, totalCount }: HeroProps) => {
           </Text>
         </motion.span>
         <Stack align="center" mt="sm" spacing="sm">
-          <Stack align="center" spacing="xxs">
+          <Stack align="center" spacing={8}>
             <Link href="/interview" passHref>
               <motion.div variants={item}>
                 <Button size="lg" className={classes.button}>

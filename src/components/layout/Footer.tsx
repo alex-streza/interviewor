@@ -69,7 +69,7 @@ const AppFooter = () => {
       className={classes.container}
       height="auto"
     >
-      <Stack spacing="xxs">
+      <Stack spacing={8}>
         <Link href="/" passHref>
           <motion.a variants={item}>
             <Logo />
@@ -80,7 +80,7 @@ const AppFooter = () => {
         </motion.span>
       </Stack>
       <Group position="left">
-        <Stack spacing="xxs" className={classes.linksContainer}>
+        <Stack spacing={8} className={classes.linksContainer}>
           {links.map((link, index) => (
             <motion.span key={index} variants={item}>
               <ScrollableLink label={link.label} name={link.name} />

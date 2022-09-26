@@ -3,7 +3,7 @@ query getCategories {
     id
     name
     value
-    active
     count
+    active
   }
 }

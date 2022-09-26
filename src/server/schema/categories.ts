@@ -2,7 +2,7 @@ import { Field, ID, Int, ObjectType } from 'type-graphql'
 
 @ObjectType()
 export class Category {
-  @Field(() => ID)
+  @Field(() => Int)
   id!: number
 
   @Field()

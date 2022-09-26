@@ -203,7 +203,7 @@ const Navigation = () => {
             size="full"
           >
             <Center>
-              <Stack align="center" spacing="sm">
+              <Stack align="center" spacing={32} pt={80}>
                 <NavigationItems onClick={() => setOpened(false)} centered />
               </Stack>
             </Center>
