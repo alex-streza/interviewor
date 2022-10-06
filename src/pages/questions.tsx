@@ -27,7 +27,7 @@ import {
 import { Category } from 'src/types/generated/graphql'
 
 export async function getServerSideProps() {
-  await queryClient.prefetchQuery(['questionsByCategory', 1], () =>
+  await queryClient.prefetchQuery(['questionsByCategory'], () =>
     getQuestionsByCategory({
       category_ids: [1],
     }),
