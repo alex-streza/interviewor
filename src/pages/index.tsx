@@ -39,7 +39,7 @@ import { Category } from 'src/types/generated/graphql'
 export async function getStaticProps() {
   await queryClient.prefetchQuery(['questionsByCategory', 1], () =>
     getQuestionsByCategory({
-      category_id: 1,
+      category_ids: [1],
     }),
   )
   await queryClient.prefetchQuery(['categories'], () => getCategories())
@@ -88,15 +88,15 @@ const Home = ({ categories }: { categories: Category[] }) => {
     return getTotalCount()
   })
   const { data, isLoading } = useQuery(
-    ['questionsByCategory', selectedCategory + ''],
+    ['questionsByCategory', selectedCategory],
     () =>
       getQuestionsByCategory({
-        category_id: selectedCategory,
+        category_ids: [selectedCategory],
       }),
   )
 
   const questions = data?.questionsByCategory ?? []
-  const totalCount = dataCount?.totalCount
+  const totalCount = '+' + Math.floor((dataCount?.totalCount ?? 0) / 10) * 10
 
   return (
     <Container className={classes.container} fluid>

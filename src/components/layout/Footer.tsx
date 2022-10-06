@@ -5,7 +5,7 @@ import { motion, useAnimation } from 'framer-motion'
 import Link from 'next/link'
 import { useEffect } from 'react'
 import { useInView } from 'react-intersection-observer'
-import { ScrollableLink } from './Navigation'
+import { NavigationLink } from './Navigation'
 
 const useStyles = createStyles((theme) => ({
   container: {
@@ -83,7 +83,7 @@ const AppFooter = () => {
         <Stack spacing={8} className={classes.linksContainer}>
           {links.map((link, index) => (
             <motion.span key={index} variants={item}>
-              <ScrollableLink label={link.label} name={link.name} />
+              <NavigationLink label={link.label} route={link.name} />
             </motion.span>
           ))}
         </Stack>

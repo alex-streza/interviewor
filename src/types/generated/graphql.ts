@@ -36,12 +36,19 @@ export type Query = {
   getNewRoomId: Scalars['String']
   questions: Array<Question>
   questionsByCategory: Array<Question>
-  totalCount: Scalars['String']
+  totalCount: Scalars['Int']
 }
 
 export type QueryQuestionsByCategoryArgs = {
-  category_id?: InputMaybe<Scalars['Int']>
+  category_ids?: InputMaybe<Array<Scalars['Int']>>
   page?: InputMaybe<Scalars['Int']>
+  page_size?: InputMaybe<Scalars['Int']>
+  search?: InputMaybe<Scalars['String']>
+}
+
+export type QueryTotalCountArgs = {
+  category_ids?: InputMaybe<Array<Scalars['Int']>>
+  search?: InputMaybe<Scalars['String']>
 }
 
 export type Question = {
@@ -83,8 +90,10 @@ export type GetQuestionsQuery = {
 }
 
 export type GetQuestionsByCategoryQueryVariables = Exact<{
-  category_id: Scalars['Int']
+  category_ids?: InputMaybe<Array<Scalars['Int']> | Scalars['Int']>
   page?: InputMaybe<Scalars['Int']>
+  search?: InputMaybe<Scalars['String']>
+  page_size?: InputMaybe<Scalars['Int']>
 }>
 
 export type GetQuestionsByCategoryQuery = {
@@ -102,9 +111,12 @@ export type GetNewRoomIdQueryVariables = Exact<{ [key: string]: never }>
 
 export type GetNewRoomIdQuery = { __typename?: 'Query'; getNewRoomId: string }
 
-export type GetTotalCountQueryVariables = Exact<{ [key: string]: never }>
+export type GetTotalCountQueryVariables = Exact<{
+  category_ids?: InputMaybe<Array<Scalars['Int']> | Scalars['Int']>
+  search?: InputMaybe<Scalars['String']>
+}>
 
-export type GetTotalCountQuery = { __typename?: 'Query'; totalCount: string }
+export type GetTotalCountQuery = { __typename?: 'Query'; totalCount: number }
 
 export const GetCategoriesDocument = gql`
   query getCategories {
@@ -132,8 +144,18 @@ export const GetQuestionsDocument = gql`
   }
 `
 export const GetQuestionsByCategoryDocument = gql`
-  query getQuestionsByCategory($category_id: Int!, $page: Int) {
-    questionsByCategory(category_id: $category_id, page: $page) {
+  query getQuestionsByCategory(
+    $category_ids: [Int!]
+    $page: Int
+    $search: String
+    $page_size: Int
+  ) {
+    questionsByCategory(
+      category_ids: $category_ids
+      page: $page
+      search: $search
+      page_size: $page_size
+    ) {
       id
       text
       answer
@@ -147,8 +169,8 @@ export const GetNewRoomIdDocument = gql`
   }
 `
 export const GetTotalCountDocument = gql`
-  query getTotalCount {
-    totalCount
+  query getTotalCount($category_ids: [Int!], $search: String) {
+    totalCount(category_ids: $category_ids, search: $search)
   }
 `
 
@@ -198,7 +220,7 @@ export function getSdk(
       )
     },
     getQuestionsByCategory(
-      variables: GetQuestionsByCategoryQueryVariables,
+      variables?: GetQuestionsByCategoryQueryVariables,
       requestHeaders?: Dom.RequestInit['headers'],
     ): Promise<GetQuestionsByCategoryQuery> {
       return withWrapper(

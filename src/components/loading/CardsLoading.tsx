@@ -25,7 +25,7 @@ const useStyles = createStyles((theme, { index = 0 }: { index?: number }) => ({
   },
 }))
 
-const LoadingCard = ({ index }: { index: number }) => {
+export const LoadingCard = ({ index }: { index: number }) => {
   const { classes } = useStyles({ index })
 
   return <div className={`${classes.card} skeleton`} />

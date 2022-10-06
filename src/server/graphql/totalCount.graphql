@@ -1,3 +1,3 @@
-query getTotalCount {
-  totalCount
+query getTotalCount($category_ids: [Int!], $search: String) {
+  totalCount(category_ids: $category_ids, search: $search)
 }

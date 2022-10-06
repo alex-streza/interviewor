@@ -125,7 +125,7 @@ const Interview = ({ categories }: { categories: Category[] }) => {
     ['questionsByCategory', selectedCategory, page],
     () =>
       getQuestionsByCategory({
-        category_id: selectedCategory ?? 1,
+        category_ids: [selectedCategory ?? 1],
         page,
       }),
     {

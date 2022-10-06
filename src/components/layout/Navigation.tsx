@@ -72,25 +72,25 @@ const useStyles = createStyles(
   }),
 )
 
-interface ScrollableLinkProps {
+interface NavigationLinkProps {
   label: string
-  name: string
+  route: string
   centered?: boolean
   onClick?: () => void
 }
 
-export const ScrollableLink = ({
+export const NavigationLink = ({
   label,
-  name,
+  route,
   centered,
   onClick,
-}: ScrollableLinkProps) => {
+}: NavigationLinkProps) => {
   const { classes } = useStyles({
     centered,
   })
 
   return (
-    <Link href={`/#${name}`} passHref>
+    <Link href={`/${route}`} passHref>
       <NavLink
         className={classes.link}
         label={label}
@@ -107,15 +107,15 @@ export const ScrollableLink = ({
 const links = [
   {
     label: 'Features',
-    name: 'feature1',
+    name: '#feature1',
   },
   {
     label: 'Examples',
-    name: 'feature2',
+    name: '#feature2',
   },
   {
     label: 'Testimonials',
-    name: 'testimonials',
+    name: '#testimonials',
   },
 ]
 
@@ -125,25 +125,32 @@ const NavigationItems = ({
 }: {
   onClick: () => void
   centered?: boolean
-}) => (
-  <>
-    {links.map((link, index) => (
-      <motion.span key={index} variants={item}>
-        <ScrollableLink
-          label={link.label}
-          name={link.name}
-          onClick={onClick}
-          centered={centered}
-        />
-      </motion.span>
-    ))}
-    <Link href="/interview">
-      <motion.a variants={item}>
-        <Button size="md">Get started</Button>
-      </motion.a>
-    </Link>
-  </>
-)
+}) => {
+  const { classes } = useStyles({
+    centered,
+  })
+
+  return (
+    <>
+      {links.map((link, index) => (
+        <motion.span key={index} variants={item}>
+          <NavigationLink
+            label={link.label}
+            route={link.name}
+            onClick={onClick}
+            centered={centered}
+          />
+        </motion.span>
+      ))}
+      <NavigationLink label="Questions" route="questions" centered={centered} />
+      <Link href="/interview">
+        <motion.a variants={item}>
+          <Button size="md">Get started</Button>
+        </motion.a>
+      </Link>
+    </>
+  )
+}
 
 const MotionHeader = motion(Header)
 const MotionBurger = motion(Burger)

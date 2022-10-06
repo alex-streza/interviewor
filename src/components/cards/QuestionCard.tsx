@@ -9,7 +9,8 @@ interface QuestionCardProps {
   title?: string
   answer?: string
   shown?: boolean
-  index: number
+  hideTimer?: boolean
+  index?: number
   onPause?: () => void
   onShowAnswer?: () => void
 }
@@ -55,10 +56,11 @@ const useStyles = createStyles((theme, { index }: { index: number }) => ({
 const QuestionCard = ({
   title,
   answer,
-  index,
+  index = 0,
   onPause,
   onShowAnswer,
   shown: initialShown = false,
+  hideTimer,
 }: QuestionCardProps) => {
   const [shown, setShown] = useState(false)
 
@@ -93,7 +95,7 @@ const QuestionCard = ({
           dangerouslySetInnerHTML={{ __html: answer ?? '' }}
         />
       </Collapse>
-      {index === 0 && (
+      {index === 0 && !hideTimer && (
         <Group className={classes.actionsContainer}>
           <Button
             variant="white"

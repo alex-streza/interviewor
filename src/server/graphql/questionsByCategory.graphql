@@ -1,5 +1,15 @@
-query getQuestionsByCategory($category_id: Int!, $page: Int) {
-  questionsByCategory(category_id: $category_id, page: $page) {
+query getQuestionsByCategory(
+  $category_ids: [Int!]
+  $page: Int
+  $search: String
+  $page_size: Int
+) {
+  questionsByCategory(
+    category_ids: $category_ids
+    page: $page
+    search: $search
+    page_size: $page_size
+  ) {
     id
     text
     answer
