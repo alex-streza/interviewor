@@ -1,4 +1,6 @@
+import CategoryCard from '@components/cards/CategoryCard'
 import QuestionCard from '@components/cards/QuestionCard'
+import { categoryIcons } from '@components/icons/categoryIcons'
 import { LoadingCard } from '@components/loading/CardsLoading'
 import {
   Button,
@@ -6,13 +8,17 @@ import {
   Container,
   createStyles,
   Group,
+  Drawer,
+  CloseButton,
+  Col,
+  Grid,
   Pagination,
   Stack,
   Text,
   Title,
   useMantineTheme,
 } from '@mantine/core'
-import { FilterIcon } from '@primer/octicons-react'
+import { FilterIcon, XIcon } from '@primer/octicons-react'
 import { dehydrate, useQuery } from '@tanstack/react-query'
 import { useOrigin } from '@utils/useOrigin'
 import { NextSeo } from 'next-seo'
@@ -25,6 +31,7 @@ import {
   queryClient,
 } from 'src/api'
 import { Category } from 'src/types/generated/graphql'
+import { Maybe } from 'type-graphql'
 
 export async function getServerSideProps() {
   await queryClient.prefetchQuery(['questionsByCategory'], () =>
@@ -61,6 +68,16 @@ const useStyles = createStyles((theme) => ({
       fontSize: 40,
     },
   },
+  drawer: {
+    '& .mantine-Drawer-header': {
+      display: 'none',
+    },
+  },
+  filterButton: {
+    [`@media (min-width: ${theme.breakpoints.md}px)`]: {
+      display: 'none',
+    },
+  },
   container: {
     paddingBlock: '40px',
 
@@ -75,11 +92,16 @@ const useStyles = createStyles((theme) => ({
     padding: '8px',
     width: 'fit-content',
   },
+  closeButton: {
+    color: theme.colors.gray[0],
+    padding: '0px',
+  },
 }))
 
 const Home = ({ categories }: { categories: Category[] }) => {
   const theme = useMantineTheme()
   const { classes } = useStyles()
+  const [opened, setOpened] = useState(false)
 
   const router = useRouter()
 
@@ -89,11 +111,12 @@ const Home = ({ categories }: { categories: Category[] }) => {
   const [selectedCategories, setSelectedCategories] = useState(
     categories.map((c) => c.id),
   )
-  const [index, setIndex] = useState(0)
-
-  const { data: dataCount } = useQuery(['totalCount'], () => {
-    return getTotalCount()
-  })
+  const { data: dataCount } = useQuery(
+    ['totalCount', selectedCategories],
+    () => {
+      return getTotalCount({ category_ids: selectedCategories })
+    },
+  )
   const { data, isLoading } = useQuery(
     ['questionsByCategory', selectedCategories, page],
     () =>
@@ -132,6 +155,46 @@ const Home = ({ categories }: { categories: Category[] }) => {
           cardType: 'summary_large_image',
         }}
       />
+      <Drawer
+        opened={opened}
+        onClose={() => setOpened(false)}
+        padding="xl"
+        className={classes.drawer}
+        size="xl"
+      >
+        <Group position="apart" mb={32}>
+          <Title order={2}>Filters</Title>
+          <Button
+            variant="subtle"
+            onClick={() => setOpened(false)}
+            className={classes.closeButton}
+          >
+            <XIcon size={40} />
+          </Button>
+        </Group>
+        <Grid my="xs">
+          {categories.map((category) => (
+            <Col key={category.id} span={6}>
+              <CategoryCard
+                selected={selectedCategories.includes(category.id)}
+                onSelect={() => {
+                  setSelectedCategories(
+                    selectedCategories.includes(category.id)
+                      ? selectedCategories.filter((c) => c !== category.id)
+                      : [...selectedCategories, category.id],
+                  )
+
+                  setOpened(false)
+                }}
+                inactive={!category.active}
+              >
+                {categoryIcons[category.name as keyof typeof categoryIcons]}
+                {category.value} ({category.count})
+              </CategoryCard>
+            </Col>
+          ))}
+        </Grid>
+      </Drawer>
       <Container px={0}>
         <Stack>
           <Group position="apart" className={classes.headerContainer}>
@@ -144,8 +207,8 @@ const Home = ({ categories }: { categories: Category[] }) => {
             <Button
               variant="light"
               size="lg"
-              // className={classes.button}
-              // onClick={() => {}}
+              onClick={() => setOpened(true)}
+              className={classes.filterButton}
             >
               <FilterIcon size={20} />
               Filters
@@ -157,8 +220,26 @@ const Home = ({ categories }: { categories: Category[] }) => {
             questions.map((question) => (
               <QuestionCard
                 key={question.id}
-                title={question.text}
+                title={
+                  <Group align="center" spacing={12}>
+                    {
+                      categoryIcons[
+                        categories.filter(
+                          (c) => c.id === question.category_id,
+                        )[0]?.name as keyof typeof categoryIcons
+                      ]
+                    }
+                    <span
+                      style={{
+                        maxWidth: 'calc(100% - 50px)',
+                      }}
+                    >
+                      {question.text}
+                    </span>
+                  </Group>
+                }
                 answer={question.answer}
+                canHideAnswer={false}
                 hideTimer
                 shown
               />

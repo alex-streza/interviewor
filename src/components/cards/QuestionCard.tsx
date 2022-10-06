@@ -3,13 +3,14 @@ import useTimer from '@utils/useTimer'
 import { item } from '@utils/variants'
 import { darken } from 'color2k'
 import { motion } from 'framer-motion'
-import { useCallback, useEffect, useState } from 'react'
+import { ReactNode, useCallback, useEffect, useState } from 'react'
 
 interface QuestionCardProps {
-  title?: string
+  title?: ReactNode
   answer?: string
   shown?: boolean
   hideTimer?: boolean
+  canHideAnswer?: boolean
   index?: number
   onPause?: () => void
   onShowAnswer?: () => void
@@ -59,6 +60,7 @@ const QuestionCard = ({
   index = 0,
   onPause,
   onShowAnswer,
+  canHideAnswer = true,
   shown: initialShown = false,
   hideTimer,
 }: QuestionCardProps) => {
@@ -68,13 +70,15 @@ const QuestionCard = ({
   const { time } = useTimer({ reset: title, pause: !title })
 
   const handleShowAnswer = useCallback(() => {
-    if (onShowAnswer) {
-      onShowAnswer()
-    } else {
-      setShown(!shown)
+    if (canHideAnswer) {
+      if (onShowAnswer) {
+        onShowAnswer()
+      } else {
+        setShown(!shown)
+      }
+      onPause && onPause()
     }
-    onPause && onPause()
-  }, [onPause, onShowAnswer, shown])
+  }, [onPause, canHideAnswer, onShowAnswer, shown])
 
   useEffect(() => {
     setShown(initialShown)
@@ -89,12 +93,19 @@ const QuestionCard = ({
       <Title order={3} className={classes.title}>
         {title}
       </Title>
-      <Collapse in={shown}>
+      {canHideAnswer ? (
+        <Collapse in={shown}>
+          <div
+            className={classes.answer}
+            dangerouslySetInnerHTML={{ __html: answer ?? '' }}
+          />
+        </Collapse>
+      ) : (
         <div
           className={classes.answer}
           dangerouslySetInnerHTML={{ __html: answer ?? '' }}
         />
-      </Collapse>
+      )}
       {index === 0 && !hideTimer && (
         <Group className={classes.actionsContainer}>
           <Button

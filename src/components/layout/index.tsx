@@ -40,14 +40,14 @@ const Layout = ({ children }: LayoutProps) => {
             color: theme.colors.white[0],
           },
 
+          html: {
+            scrollBehavior: 'smooth',
+          },
+
           '@keyframes shimmer': {
             '100%': {
               transform: 'translateX(100%)',
             },
-          },
-
-          html: {
-            scrollBehavior: 'smooth',
           },
 
           '.skeleton': {

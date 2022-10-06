@@ -14,7 +14,7 @@ const useStyles = createStyles((theme, { index = 0 }: { index?: number }) => ({
     zIndex: 3 - index,
     width: '100%',
     maxWidth: '400px',
-    minHeight: '120px',
+    minHeight: '180px',
     position: 'relative',
   },
   button: {
