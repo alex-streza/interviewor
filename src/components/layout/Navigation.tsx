@@ -28,7 +28,11 @@ const useStyles = createStyles(
       border: 'none',
 
       [`@media (min-width: ${theme.breakpoints.md}px)`]: {
-        paddingInline: '180px',
+        paddingInline: 180,
+      },
+
+      [`@media (min-width: ${theme.breakpoints.md}px)`]: {
+        paddingInline: 300,
       },
     },
     desktopItems: {

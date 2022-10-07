@@ -67,7 +67,7 @@ const QuestionCard = ({
   const [shown, setShown] = useState(false)
 
   const { classes } = useStyles({ index })
-  const { time } = useTimer({ reset: title, pause: !title })
+  const { time } = useTimer({ pause: !title })
 
   const handleShowAnswer = useCallback(() => {
     if (canHideAnswer) {

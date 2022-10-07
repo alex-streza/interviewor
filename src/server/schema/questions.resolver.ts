@@ -1,10 +1,9 @@
 import { PrismaClient, Question as QuestionType } from '@prisma/client'
 import { pageSize as defaultPageSize } from 'src/api'
 import { Arg, Int, Query, Resolver } from 'type-graphql'
+import { prisma } from './client'
 import { Question } from './questions'
 
-const prisma = new PrismaClient()
-@Resolver(Question)
 export class QuestionsResolver {
   @Query(() => [Question])
   async questionsByCategory(

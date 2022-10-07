@@ -5,24 +5,20 @@ import { LoadingCard } from '@components/loading/CardsLoading'
 import {
   Button,
   Center,
+  Col,
   Container,
   createStyles,
-  Group,
   Drawer,
-  CloseButton,
-  Col,
   Grid,
+  Group,
   Pagination,
   Stack,
   Text,
   Title,
-  useMantineTheme,
 } from '@mantine/core'
 import { FilterIcon, XIcon } from '@primer/octicons-react'
 import { dehydrate, useQuery } from '@tanstack/react-query'
-import { useOrigin } from '@utils/useOrigin'
 import { NextSeo } from 'next-seo'
-import { useRouter } from 'next/router'
 import { useState } from 'react'
 import {
   getCategories,
@@ -31,7 +27,6 @@ import {
   queryClient,
 } from 'src/api'
 import { Category } from 'src/types/generated/graphql'
-import { Maybe } from 'type-graphql'
 
 export async function getServerSideProps() {
   await queryClient.prefetchQuery(['questionsByCategory'], () =>
@@ -99,13 +94,8 @@ const useStyles = createStyles((theme) => ({
 }))
 
 const Home = ({ categories }: { categories: Category[] }) => {
-  const theme = useMantineTheme()
   const { classes } = useStyles()
   const [opened, setOpened] = useState(false)
-
-  const router = useRouter()
-
-  const origin = useOrigin()
 
   const [page, setPage] = useState(1)
   const [selectedCategories, setSelectedCategories] = useState(
