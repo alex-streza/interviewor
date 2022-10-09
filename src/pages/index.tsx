@@ -37,7 +37,7 @@ import {
 import { Category } from 'src/types/generated/graphql'
 
 export async function getStaticProps() {
-  await queryClient.prefetchQuery(['questionsByCategory'], () =>
+  await queryClient.prefetchQuery(['questionsByCategory', 1], () =>
     getQuestionsByCategory({
       category_ids: [1],
     }),
@@ -87,9 +87,7 @@ const Home = ({ categories }: { categories: Category[] }) => {
   const [selectedCategory, setSelectedCategory] = useState(1)
   const [index, setIndex] = useState(0)
 
-  const { data: dataCount } = useQuery(['totalCount'], () => {
-    return getTotalCount()
-  })
+  const { data: dataCount } = useQuery(['totalCount'], () => getTotalCount())
   const { data, isLoading } = useQuery(
     ['questionsByCategory', selectedCategory],
     () =>
