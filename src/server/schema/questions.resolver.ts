@@ -9,7 +9,7 @@ export class QuestionsResolver {
   async questionsByCategory(
     @Arg('category_ids', () => [Int], { nullable: true })
     category_ids = [1, 2, 3, 4, 5, 6],
-    @Arg('page', () => Int, { nullable: true }) page?: number,
+    @Arg('page', () => Int, { nullable: true }) page = 1,
     @Arg('page_size', () => Int, { nullable: true })
     page_size = defaultPageSize,
     @Arg('search', () => String, { nullable: true }) search = '',
@@ -19,20 +19,24 @@ export class QuestionsResolver {
         category_id: {
           in: category_ids,
         },
-        AND: {
-          text: {
-            contains: search,
-          },
-        },
+        // AND: {
+        //   text: {
+        //     contains: search,
+        //   },
+        // },
       },
       include: {
         category: true,
       },
-      take: page_size,
-      skip: ((page ?? 1) - 1) * page_size,
+      // take: page_size,
+      // skip: ((page ?? 1) - 1) * page_size,
+      take: 5,
+      skip: 0,
     })
+    // console.log('questions.length', questions.length)
 
     return questions
+    // return []
   }
 
   @Query(() => [Question])
@@ -55,11 +59,11 @@ export class QuestionsResolver {
         category_id: {
           in: category_ids,
         },
-        AND: {
-          text: {
-            contains: search,
-          },
-        },
+        // AND: {
+        //   text: {
+        //     contains: search,
+        //   },
+        // },
       },
     })
     return count
