@@ -8,7 +8,7 @@ import { getCategories, getQuestionsByCategory, queryClient } from 'src/api'
 import { Category } from 'src/types/generated/graphql'
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  await queryClient.prefetchQuery(['questionsByCategory'], () =>
+  await queryClient.prefetchQuery(['questionsByCategory', 1], () =>
     getQuestionsByCategory({
       category_ids: [1],
     }),
@@ -16,20 +16,22 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   await queryClient.prefetchQuery(['categories'], () => getCategories())
 
   const dehydratedState = dehydrate(queryClient)
-  const questions = dehydratedState.queries
-    .map((query) => {
-      const data = query.state?.data as any
-      return data?.questionsByCategory
-    })
-    .filter((data) => data)[0]
-    .sort(() => 0.5 - Math.random())
-  const categories = dehydratedState.queries
-    .map((query) => {
-      const data = query.state?.data as any
-      return data?.categories
-    })
-    .filter((data) => data)[0]
-    .sort((a: Category) => (!a.active ? 1 : -1))
+  const questions = (
+    dehydratedState.queries
+      .map((query) => {
+        const data = query.state?.data as any
+        return data?.questionsByCategory
+      })
+      .filter((data) => data)[0] ?? []
+  ).sort(() => 0.5 - Math.random())
+  const categories = (
+    dehydratedState.queries
+      .map((query) => {
+        const data = query.state?.data as any
+        return data?.categories
+      })
+      .filter((data) => data)[0] ?? []
+  ).sort((a: Category) => (!a.active ? 1 : -1))
 
   const isRoomSelected = query.roomId
   const newRoomId = Date.now() + '-' + Math.floor(Math.random() * 10000)

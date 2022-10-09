@@ -29,7 +29,7 @@ import {
 import { Category } from 'src/types/generated/graphql'
 
 export async function getServerSideProps() {
-  await queryClient.prefetchQuery(['questionsByCategory', [1]], () =>
+  await queryClient.prefetchQuery(['questionsByCategory', 1, 1], () =>
     getQuestionsByCategory({
       category_ids: [1],
     }),
@@ -38,18 +38,19 @@ export async function getServerSideProps() {
   await queryClient.prefetchQuery(['totalCount'], () => getTotalCount())
 
   const dehydratedState = dehydrate(queryClient)
-  const categories = dehydratedState.queries
-    .map((query) => {
-      const data = query.state?.data as any
-      return data?.categories
-    })
-    .filter((data) => data)[0]
-    .sort((a: Category) => (!a.active ? 1 : -1))
+  const categories = (
+    dehydratedState.queries
+      .map((query) => {
+        const data = query.state?.data as any
+        return data?.categories
+      })
+      .filter((data) => data)[0] ?? []
+  ).sort((a: Category) => (!a.active ? 1 : -1))
 
   return {
     props: {
-      categories: categories ?? [],
-      dehydratedState: dehydrate(queryClient),
+      categories: categories,
+      dehydratedState,
     },
   }
 }
@@ -102,13 +103,13 @@ const Home = ({ categories }: { categories: Category[] }) => {
     categories.map((c) => c.id),
   )
   const { data: dataCount } = useQuery(
-    ['totalCount', selectedCategories],
+    ['totalCount', selectedCategories.join(',')],
     () => {
       return getTotalCount({ category_ids: selectedCategories })
     },
   )
   const { data, isLoading } = useQuery(
-    ['questionsByCategory', selectedCategories, page],
+    ['questionsByCategory', selectedCategories.join(','), page],
     () =>
       getQuestionsByCategory({
         category_ids: selectedCategories,
